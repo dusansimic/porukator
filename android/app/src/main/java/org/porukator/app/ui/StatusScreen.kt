@@ -1,7 +1,6 @@
 package org.porukator.app.ui
 
 import android.Manifest
-import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.map
+import org.porukator.app.SENDER_PERMISSIONS
 import org.porukator.app.data.ConnectionStore
 import org.porukator.app.service.SenderService
 import org.porukator.app.service.SenderState
@@ -41,11 +41,6 @@ fun StatusScreen(onEditConnection: () -> Unit) {
     val configured by remember { ConnectionStore.flow(context).map { it.isComplete } }.collectAsState(initial = false)
 
     // Request the runtime permissions the sender needs, then start it.
-    val perms = buildList {
-        add(Manifest.permission.SEND_SMS)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) add(Manifest.permission.POST_NOTIFICATIONS)
-    }.toTypedArray()
-
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions(),
     ) { granted ->
@@ -79,7 +74,7 @@ fun StatusScreen(onEditConnection: () -> Unit) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             if (!status.running) {
                 Button(
-                    onClick = { launcher.launch(perms) },
+                    onClick = { launcher.launch(SENDER_PERMISSIONS) },
                     enabled = configured,
                 ) { Text("Start") }
             } else {

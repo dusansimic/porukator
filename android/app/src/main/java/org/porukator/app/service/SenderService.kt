@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.porukator.app.data.ConnectionStore
+import org.porukator.app.hasSmsPermission
 import org.porukator.app.net.Clients
 import porukator.v1.Porukator
 import kotlin.random.Random
@@ -94,14 +95,23 @@ class SenderService : Service() {
     ) {
         var ok = true
         var errMsg = ""
-        try {
-            val sms = smsManager()
-            val parts = sms.divideMessage(job.content)
-            sms.sendMultipartTextMessage(job.phoneNumber, null, parts, null, null)
-        } catch (t: Throwable) {
+        if (!hasSmsPermission(applicationContext)) {
+            // Guard the send so a missing grant surfaces a clear message instead
+            // of a raw SecurityException ("uid ... does not have ...SEND_SMS").
             ok = false
-            errMsg = t.message ?: "send failed"
-            Log.w(TAG, "sms send failed", t)
+            errMsg = "SEND_SMS permission not granted"
+            SenderState.setError(errMsg)
+            Log.w(TAG, errMsg)
+        } else {
+            try {
+                val sms = smsManager()
+                val parts = sms.divideMessage(job.content)
+                sms.sendMultipartTextMessage(job.phoneNumber, null, parts, null, null)
+            } catch (t: Throwable) {
+                ok = false
+                errMsg = t.message ?: "send failed"
+                Log.w(TAG, "sms send failed", t)
+            }
         }
 
         val now = System.currentTimeMillis()

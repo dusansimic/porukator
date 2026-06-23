@@ -1,5 +1,8 @@
 package org.porukator.app.ui
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,14 +26,29 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import org.porukator.app.SENDER_PERMISSIONS
 import org.porukator.app.data.ConnectionConfig
 import org.porukator.app.data.ConnectionStore
+import org.porukator.app.hasSmsPermission
 import org.porukator.app.service.SenderService
 
 @Composable
 fun SetupScreen(onScan: () -> Unit, onSaved: () -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    // Starting the sender from here must first secure SEND_SMS at runtime —
+    // otherwise every send fails with a SecurityException. The config is saved
+    // before the prompt, so it persists even if the user denies.
+    val permLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions(),
+    ) { granted ->
+        if (granted[Manifest.permission.SEND_SMS] == true) {
+            SenderService.stop(context)
+            SenderService.start(context)
+        }
+        onSaved()
+    }
 
     var host by remember { mutableStateOf("") }
     var token by remember { mutableStateOf("") }
@@ -76,10 +94,15 @@ fun SetupScreen(onScan: () -> Unit, onSaved: () -> Unit, onBack: () -> Unit) {
                 onClick = {
                     scope.launch {
                         ConnectionStore.save(context, ConnectionConfig(host.trim(), token.trim(), name.trim()))
-                        // Restart the sender so it picks up the new params.
-                        SenderService.stop(context)
-                        SenderService.start(context)
-                        onSaved()
+                        if (hasSmsPermission(context)) {
+                            // Already granted — restart the sender with new params.
+                            SenderService.stop(context)
+                            SenderService.start(context)
+                            onSaved()
+                        } else {
+                            // Prompt; the launcher callback starts the sender.
+                            permLauncher.launch(SENDER_PERMISSIONS)
+                        }
                     }
                 },
                 enabled = host.isNotBlank() && token.isNotBlank(),
