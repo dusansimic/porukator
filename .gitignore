@@ -1,5 +1,6 @@
 # Go
 /porukator
+/porukatorctl
 /bin/
 *.test
 coverage.*

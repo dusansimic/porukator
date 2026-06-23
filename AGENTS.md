@@ -102,6 +102,21 @@ Config is `config/config.yaml` plus `PORUKATOR_*` env overrides
 (`PORUKATOR_AUTH_MASTER_PASSWORD`, `PORUKATOR_POSTGRES_URL`,
 `PORUKATOR_HTTP_ADDR`, `PORUKATOR_HTTP_PUBLIC_HOST`). Migrations run on boot.
 
+### Test CLI (`porukatorctl`)
+
+A small ProducerService client for exercising a running service by hand
+(`cmd/porukatorctl`, built with `just build-ctl`). Pass `--host`/`--token` (or
+env `PORUKATOR_HOST`/`PORUKATOR_TOKEN`); add `--json` for raw output.
+
+```bash
+just build-ctl
+./porukatorctl --host localhost:8080 --token <api-token> list
+./porukatorctl --host localhost:8080 --token <api-token> send \
+    --to +38160111 --to +38160222 --message "hello" --client <device-id>
+```
+`send` requires at least one `--client`; the message body is sent to every
+`--to`, balanced round-robin across the given devices.
+
 ### Web UI
 ```bash
 cd webui

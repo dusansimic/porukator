@@ -80,6 +80,10 @@ build:
 run: build
     ./{{binary_name}}
 
+# Build the test CLI (porukatorctl).
+build-ctl:
+    go build -o porukatorctl ./cmd/porukatorctl
+
 # Run tests.
 test:
     go test -v -race ./...
