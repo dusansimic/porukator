@@ -122,13 +122,15 @@ sequenceDiagram
 
 - **Go 1.25+**
 - **Buf** (protobuf generation) and **just** (task runner)
-- **Postgres** (or Docker, to run it via `docker compose`)
+- **Docker** (for Postgres via `docker compose`)
 - **Node.js + pnpm** for the web UI
+- **mprocs** to run the whole stack in one terminal (`just dev`)
 - **Android SDK + JDK 17** (Android Studio recommended) for the app; SMS sending
   requires a real device with a SIM
 
-See [`AGENTS.md`](AGENTS.md) for build, run, and code-generation commands for each
-component.
+`just dev` brings up Postgres, the backend, and the web UI together under mprocs;
+quitting it stops the docker compose stack. See [`AGENTS.md`](AGENTS.md) for this
+and the per-component build, run, and code-generation commands.
 
 ## A note on AI-assisted development
 

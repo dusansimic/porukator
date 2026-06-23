@@ -12,7 +12,9 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      # Published on 55432 to avoid clashing with other local Postgres (5432).
+      # In-container service-to-service traffic still uses 5432.
+      - "55432:5432"
     networks:
       - porukator_internal
     healthcheck:

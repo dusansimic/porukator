@@ -1,0 +1,22 @@
+# Dev process runner — launched by `just dev`.
+#
+# `just dev` starts Postgres (waited until healthy) before mprocs, and tears the
+# docker compose stack down again when mprocs exits. These panes are the app
+# processes plus a live infra log tail.
+#
+# Quit mprocs with `q` (or Ctrl-C the whole thing) — `just dev` then stops the
+# Postgres container for you. The backend listens on :8080, so that port must be
+# free.
+procs:
+  server:
+    # Local backend with hot env overrides pointing Postgres at the published
+    # localhost:55432. Master password is "dev-pass". Press `r` in mprocs to
+    # rebuild + restart after Go changes.
+    shell: "PORUKATOR_POSTGRES_URL='postgres://porukator:porukator@localhost:55432/porukator?sslmode=disable' PORUKATOR_AUTH_MASTER_PASSWORD='dev-pass' PORUKATOR_LOGGING_FORMAT='development' just run"
+  ui:
+    shell: "pnpm --dir webui dev"
+  infra-logs:
+    # Run docker directly (no shell wrapper) so mprocs' stop signal reaches the
+    # `docker compose logs -f` process itself and the pane quits on `q`.
+    cmd: ["docker", "compose", "-f", "deployments/docker-compose.yml", "logs", "-f", "postgres"]
+    stop: SIGINT

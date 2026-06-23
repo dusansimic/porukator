@@ -76,6 +76,19 @@ deployments/  Dockerfile + docker-compose.yml
 
 ## Build & run
 
+### Everything in one terminal (`just dev`)
+
+```bash
+just dev   # deps + codegen + Postgres (waited healthy) + backend + web UI, under mprocs
+```
+Requires [`mprocs`](https://github.com/pvolok/mprocs). It starts Postgres
+(published on host port **55432** to avoid clashing with other local Postgres),
+then runs the backend (master password `dev-pass`) and the web UI as mprocs
+panes plus an infra log tail. **The backend listens on `:8080`, so that port must
+be free.** Quit with `q` (or Ctrl-C) — `just dev` then stops the docker compose
+stack automatically. `mprocs.yaml` defines the panes; press `r` on the `server`
+pane to rebuild + restart after Go changes.
+
 ### Service
 ```bash
 cp config/config.example.yaml config/config.yaml   # set auth.master_password

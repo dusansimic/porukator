@@ -2,6 +2,33 @@ binary_name := "porukator"
 docker_compose := "docker compose -f deployments/docker-compose.yml"
 migrations_dir := "internal/db/migrations"
 
+# list available recipes
+default:
+    @just --list
+
+# Quitting mprocs (`q`) or Ctrl-C stops Postgres too. Backend needs :8080 free.
+# Run the whole stack in one terminal: Postgres + backend + web UI under mprocs.
+dev: dev-setup gen
+    #!/usr/bin/env bash
+    set -u
+    trap '{{docker_compose}} down' EXIT
+    {{docker_compose}} up -d --wait postgres
+    mprocs
+
+# Install Go + web UI dependencies.
+dev-setup:
+    go mod download
+    pnpm --dir webui install
+
+# Regenerate all generated code: Go (gen/go) + web UI TypeScript (webui/src/gen).
+gen:
+    buf generate
+    pnpm --dir webui run proto
+
+# Start only Postgres (waited healthy); leaves it running.
+infra-up:
+    {{docker_compose}} up -d --wait postgres
+
 # Regenerate Go code from proto (TS/Kotlin are generated in webui/ and android/).
 proto:
     buf lint
