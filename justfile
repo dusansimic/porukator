@@ -39,6 +39,39 @@ proto:
 sqlc-gen:
     sqlc generate
 
+# Regenerate the Android client stubs (Java-Lite + connect-kotlin).
+android-gen:
+    cd android && buf generate
+
+# Build the debug APK. Picks a JDK 17-21 (Android Studio's JBR) since newer
+# JDKs break AGP; override with JAVA_HOME=/path/to/jdk just android-apk.
+android-apk:
+    #!/usr/bin/env bash
+    set -eu
+    cd android
+    jdk="${JAVA_HOME:-}"
+    if [ -z "$jdk" ] || ! "$jdk/bin/java" -version 2>&1 | grep -qE '"(17|21)\.'; then
+        jdk="$(ls -d "$HOME/.local/lib/android-studio/jbr" /opt/android-studio/jbr "$HOME/android-studio/jbr" /usr/lib/jvm/java-21-openjdk* 2>/dev/null | head -1)"
+    fi
+    [ -n "$jdk" ] || { echo "No JDK 17-21 found; set JAVA_HOME"; exit 1; }
+    export JAVA_HOME="$jdk"
+    echo "Using JAVA_HOME=$JAVA_HOME"
+    ./gradlew :app:assembleDebug
+    echo "APK: android/app/build/outputs/apk/debug/app-debug.apk"
+
+# Install the debug APK on a connected device/emulator (adb).
+android-install:
+    #!/usr/bin/env bash
+    set -eu
+    cd android
+    jdk="${JAVA_HOME:-}"
+    if [ -z "$jdk" ] || ! "$jdk/bin/java" -version 2>&1 | grep -qE '"(17|21)\.'; then
+        jdk="$(ls -d "$HOME/.local/lib/android-studio/jbr" /opt/android-studio/jbr "$HOME/android-studio/jbr" /usr/lib/jvm/java-21-openjdk* 2>/dev/null | head -1)"
+    fi
+    [ -n "$jdk" ] || { echo "No JDK 17-21 found; set JAVA_HOME"; exit 1; }
+    export JAVA_HOME="$jdk"
+    ./gradlew :app:installDebug
+
 # Build the server binary.
 build:
     go build -o {{binary_name}} ./cmd/porukator

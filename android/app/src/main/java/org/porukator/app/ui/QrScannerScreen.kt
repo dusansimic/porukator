@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
@@ -30,6 +31,9 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.Executors
 
+// ExperimentalGetImage is a Java marker, so the AndroidX OptIn (not Kotlin's) is
+// what the UnsafeOptInUsageError lint check recognizes.
+@androidx.annotation.OptIn(ExperimentalGetImage::class)
 @Composable
 fun QrScannerScreen(onResult: (String) -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
