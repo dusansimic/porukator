@@ -14473,6 +14473,19 @@ public final class Porukator {
      * @return The jitterMs.
      */
     int getJitterMs();
+
+    /**
+     * <pre>
+     * Keepalive marks a heartbeat frame, sent periodically so the stream is never
+     * idle (intermediary proxies cut silent server streams). The client ignores
+     * these: no SMS, no delivery report, no pacing delay. All other fields are
+     * unset when true.
+     * </pre>
+     *
+     * <code>bool keepalive = 6 [json_name = "keepalive"];</code>
+     * @return The keepalive.
+     */
+    boolean getKeepalive();
   }
   /**
    * <pre>
@@ -14767,6 +14780,53 @@ public final class Porukator {
     private void clearJitterMs() {
 
       jitterMs_ = 0;
+    }
+
+    public static final int KEEPALIVE_FIELD_NUMBER = 6;
+    private boolean keepalive_;
+    /**
+     * <pre>
+     * Keepalive marks a heartbeat frame, sent periodically so the stream is never
+     * idle (intermediary proxies cut silent server streams). The client ignores
+     * these: no SMS, no delivery report, no pacing delay. All other fields are
+     * unset when true.
+     * </pre>
+     *
+     * <code>bool keepalive = 6 [json_name = "keepalive"];</code>
+     * @return The keepalive.
+     */
+    @java.lang.Override
+    public boolean getKeepalive() {
+      return keepalive_;
+    }
+    /**
+     * <pre>
+     * Keepalive marks a heartbeat frame, sent periodically so the stream is never
+     * idle (intermediary proxies cut silent server streams). The client ignores
+     * these: no SMS, no delivery report, no pacing delay. All other fields are
+     * unset when true.
+     * </pre>
+     *
+     * <code>bool keepalive = 6 [json_name = "keepalive"];</code>
+     * @param value The keepalive to set.
+     */
+    private void setKeepalive(boolean value) {
+      
+      keepalive_ = value;
+    }
+    /**
+     * <pre>
+     * Keepalive marks a heartbeat frame, sent periodically so the stream is never
+     * idle (intermediary proxies cut silent server streams). The client ignores
+     * these: no SMS, no delivery report, no pacing delay. All other fields are
+     * unset when true.
+     * </pre>
+     *
+     * <code>bool keepalive = 6 [json_name = "keepalive"];</code>
+     */
+    private void clearKeepalive() {
+
+      keepalive_ = false;
     }
 
     public static porukator.v1.Porukator.Job parseFrom(
@@ -15158,6 +15218,55 @@ public final class Porukator {
         return this;
       }
 
+      /**
+       * <pre>
+       * Keepalive marks a heartbeat frame, sent periodically so the stream is never
+       * idle (intermediary proxies cut silent server streams). The client ignores
+       * these: no SMS, no delivery report, no pacing delay. All other fields are
+       * unset when true.
+       * </pre>
+       *
+       * <code>bool keepalive = 6 [json_name = "keepalive"];</code>
+       * @return The keepalive.
+       */
+      @java.lang.Override
+      public boolean getKeepalive() {
+        return instance.getKeepalive();
+      }
+      /**
+       * <pre>
+       * Keepalive marks a heartbeat frame, sent periodically so the stream is never
+       * idle (intermediary proxies cut silent server streams). The client ignores
+       * these: no SMS, no delivery report, no pacing delay. All other fields are
+       * unset when true.
+       * </pre>
+       *
+       * <code>bool keepalive = 6 [json_name = "keepalive"];</code>
+       * @param value The keepalive to set.
+       * @return This builder for chaining.
+       */
+      public Builder setKeepalive(boolean value) {
+        copyOnWrite();
+        instance.setKeepalive(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Keepalive marks a heartbeat frame, sent periodically so the stream is never
+       * idle (intermediary proxies cut silent server streams). The client ignores
+       * these: no SMS, no delivery report, no pacing delay. All other fields are
+       * unset when true.
+       * </pre>
+       *
+       * <code>bool keepalive = 6 [json_name = "keepalive"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearKeepalive() {
+        copyOnWrite();
+        instance.clearKeepalive();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:porukator.v1.Job)
     }
     @java.lang.Override
@@ -15179,10 +15288,11 @@ public final class Porukator {
               "content_",
               "delayMs_",
               "jitterMs_",
+              "keepalive_",
             };
             java.lang.String info =
-                "\u0000\u0005\u0000\u0000\u0001\u0005\u0005\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
-                "\u0003\u0208\u0004\u0004\u0005\u0004";
+                "\u0000\u0006\u0000\u0000\u0001\u0006\u0006\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
+                "\u0003\u0208\u0004\u0004\u0005\u0004\u0006\u0007";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through

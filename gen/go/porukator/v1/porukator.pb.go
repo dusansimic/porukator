@@ -1664,7 +1664,12 @@ type Job struct {
 	// Base inter-send delay in milliseconds.
 	DelayMs int32 `protobuf:"varint,4,opt,name=delay_ms,json=delayMs,proto3" json:"delay_ms,omitempty"`
 	// Maximum extra random delay in milliseconds.
-	JitterMs      int32 `protobuf:"varint,5,opt,name=jitter_ms,json=jitterMs,proto3" json:"jitter_ms,omitempty"`
+	JitterMs int32 `protobuf:"varint,5,opt,name=jitter_ms,json=jitterMs,proto3" json:"jitter_ms,omitempty"`
+	// Keepalive marks a heartbeat frame, sent periodically so the stream is never
+	// idle (intermediary proxies cut silent server streams). The client ignores
+	// these: no SMS, no delivery report, no pacing delay. All other fields are
+	// unset when true.
+	Keepalive     bool `protobuf:"varint,6,opt,name=keepalive,proto3" json:"keepalive,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1732,6 +1737,13 @@ func (x *Job) GetJitterMs() int32 {
 		return x.JitterMs
 	}
 	return 0
+}
+
+func (x *Job) GetKeepalive() bool {
+	if x != nil {
+		return x.Keepalive
+	}
+	return false
 }
 
 // ReportDeliveryRequest reports one send outcome.
@@ -1936,14 +1948,15 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"\bbatch_id\x18\x01 \x01(\tR\abatchId\x12\x1f\n" +
 	"\vmessage_ids\x18\x02 \x03(\tR\n" +
 	"messageIds\"\x13\n" +
-	"\x11StreamJobsRequest\"\x99\x01\n" +
+	"\x11StreamJobsRequest\"\xb7\x01\n" +
 	"\x03Job\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\tR\tmessageId\x12!\n" +
 	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber\x12\x18\n" +
 	"\acontent\x18\x03 \x01(\tR\acontent\x12\x19\n" +
 	"\bdelay_ms\x18\x04 \x01(\x05R\adelayMs\x12\x1b\n" +
-	"\tjitter_ms\x18\x05 \x01(\x05R\bjitterMs\"\x9b\x01\n" +
+	"\tjitter_ms\x18\x05 \x01(\x05R\bjitterMs\x12\x1c\n" +
+	"\tkeepalive\x18\x06 \x01(\bR\tkeepalive\"\x9b\x01\n" +
 	"\x15ReportDeliveryRequest\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\tR\tmessageId\x12\x18\n" +

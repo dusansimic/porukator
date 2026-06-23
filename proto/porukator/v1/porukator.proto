@@ -296,6 +296,11 @@ message Job {
   int32 delay_ms = 4;
   // Maximum extra random delay in milliseconds.
   int32 jitter_ms = 5;
+  // Keepalive marks a heartbeat frame, sent periodically so the stream is never
+  // idle (intermediary proxies cut silent server streams). The client ignores
+  // these: no SMS, no delivery report, no pacing delay. All other fields are
+  // unset when true.
+  bool keepalive = 6;
 }
 
 // ReportDeliveryRequest reports one send outcome.

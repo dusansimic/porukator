@@ -71,6 +71,9 @@ class SenderService : Service() {
                 backoffMs = 1000L
 
                 for (job in stream.responseChannel()) {
+                    // Heartbeat frames keep the stream alive through proxies;
+                    // they carry no SMS, so skip send/report/pacing.
+                    if (job.keepalive) continue
                     sendAndReport(svc, config.token, job)
                     val jitter = if (job.jitterMs > 0) Random.nextInt(job.jitterMs) else 0
                     delay((job.delayMs + jitter).toLong().coerceAtLeast(0))

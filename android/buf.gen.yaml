@@ -1,15 +1,18 @@
 version: v2
 inputs:
   - directory: ../proto
+# Output to a dedicated generated source root (registered in app/build.gradle.kts)
+# so clean can safely wipe it without touching hand-written code under
+# src/main/java.
 clean: true
 plugins:
   # Protobuf message types (Java Lite runtime, suited to Android).
   - remote: buf.build/protocolbuffers/java:v28.3
-    out: app/src/main/java
+    out: app/src/main/generated
     opt:
       - lite
   # Connect-Kotlin service clients (unary + server-stream).
   - remote: buf.build/connectrpc/kotlin:v0.7.1
-    out: app/src/main/java
+    out: app/src/main/generated
     opt:
       - lite

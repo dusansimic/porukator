@@ -8,6 +8,11 @@ android {
     namespace = "org.porukator.app"
     compileSdk = 35
 
+    // buf-generated protobuf/connect code lands here (see android/buf.gen.yaml),
+    // kept out of src/main/java so codegen's `clean` never touches hand-written
+    // sources.
+    sourceSets["main"].java.srcDir("src/main/generated")
+
     defaultConfig {
         applicationId = "org.porukator.app"
         minSdk = 26

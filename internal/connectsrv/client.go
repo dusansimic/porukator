@@ -3,6 +3,7 @@ package connectsrv
 import (
 	"context"
 	"errors"
+	"time"
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -12,6 +13,11 @@ import (
 	"github.com/dusansimic/porukator/internal/pgconv"
 	"github.com/dusansimic/porukator/internal/repository"
 )
+
+// heartbeatInterval is how often the server sends a keepalive frame on an idle
+// job stream. Kept well under the ~10s idle timeouts common to reverse proxies
+// so a silent stream is never cut.
+const heartbeatInterval = 5 * time.Second
 
 // StreamJobs marks the calling device online and streams SMS jobs to it. On
 // connect it drains any jobs that piled up while the device was offline, then
@@ -54,11 +60,19 @@ func (h *Handler) StreamJobs(ctx context.Context, req *connect.Request[porukator
 		}
 	}
 
-	// Forward live jobs.
+	// Forward live jobs. The heartbeat ticker shares this goroutine so all
+	// stream.Send calls stay serialized (connect ServerStream.Send is not safe
+	// for concurrent use).
+	ticker := time.NewTicker(heartbeatInterval)
+	defer ticker.Stop()
 	for {
 		select {
 		case <-ctx.Done():
 			return nil
+		case <-ticker.C:
+			if err := stream.Send(&porukatorv1.Job{Keepalive: true}); err != nil {
+				return err
+			}
 		case job, ok := <-jobs:
 			if !ok {
 				// Superseded by a newer connection for the same client.
