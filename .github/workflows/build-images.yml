@@ -1,0 +1,68 @@
+name: build-images
+
+# Build each image only when files affecting it change. On tags and manual
+# runs, both images are always built (releases).
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      server: ${{ steps.filter.outputs.server }}
+      webui: ${{ steps.filter.outputs.webui }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Detect changed components
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            server:
+              - 'cmd/**'
+              - 'internal/**'
+              - 'pkg/**'
+              - 'gen/**'
+              - 'queries/**'
+              - 'go.mod'
+              - 'go.sum'
+              - 'deployments/Dockerfile.server'
+              - '.dockerignore'
+              - '.github/workflows/build-image.yml'
+              - '.github/workflows/build-images.yml'
+            webui:
+              - 'webui/**'
+              - 'deployments/Dockerfile.webui'
+              - 'deployments/nginx.conf'
+              - '.dockerignore'
+              - '.github/workflows/build-image.yml'
+              - '.github/workflows/build-images.yml'
+
+  server:
+    needs: changes
+    if: ${{ needs.changes.outputs.server == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/build-image.yml
+    with:
+      name: server
+      dockerfile: deployments/Dockerfile.server
+
+  webui:
+    needs: changes
+    if: ${{ needs.changes.outputs.webui == 'true' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/build-image.yml
+    with:
+      name: webui
+      dockerfile: deployments/Dockerfile.webui

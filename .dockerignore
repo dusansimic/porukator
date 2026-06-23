@@ -1,0 +1,17 @@
+# Build outputs and deps — rebuilt inside the images.
+**/node_modules
+webui/dist
+/porukator
+bin/
+
+# Android build artifacts (not needed by any image).
+android/build
+android/app/build
+android/.gradle
+android/.cxx
+android/local.properties
+
+# VCS / editor / misc.
+.git
+.idea
+*.log

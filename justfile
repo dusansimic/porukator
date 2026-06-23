@@ -1,6 +1,7 @@
 binary_name := "porukator"
 docker_compose := "docker compose -f deployments/docker-compose.yml"
 migrations_dir := "internal/db/migrations"
+ghcr_image := "ghcr.io/dusansimic/porukator"
 
 # list available recipes
 default:
@@ -83,3 +84,14 @@ docker-down:
 # Tail container logs.
 docker-logs:
     {{docker_compose}} logs -f
+
+# Build the server + webui images tagged for GHCR.
+images-build:
+    docker build -t {{ghcr_image}}/server:latest -f deployments/Dockerfile.server .
+    docker build -t {{ghcr_image}}/webui:latest -f deployments/Dockerfile.webui .
+
+# Build and push both images to GHCR. Authenticate first:
+#   echo $GITHUB_TOKEN | docker login ghcr.io -u dusansimic --password-stdin
+images-push: images-build
+    docker push {{ghcr_image}}/server:latest
+    docker push {{ghcr_image}}/webui:latest

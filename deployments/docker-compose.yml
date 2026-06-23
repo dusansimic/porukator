@@ -27,7 +27,7 @@ services:
   porukator:
     build:
       context: ..
-      dockerfile: deployments/Dockerfile
+      dockerfile: deployments/Dockerfile.server
     container_name: porukator
     hostname: porukator
     environment:
@@ -51,6 +51,18 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+  # Static SPA only — an external reverse proxy routes /porukator.v1.* to the
+  # backend, so the web UI has no backend dependency of its own.
+  webui:
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile.webui
+    container_name: porukator_webui
+    hostname: webui
+    ports:
+      - "8090:80"
+    restart: unless-stopped
 
 volumes:
   postgres-data:

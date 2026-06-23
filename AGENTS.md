@@ -127,6 +127,24 @@ Edit `proto/porukator/v1/porukator.proto`, then regenerate each consumer:
 `just proto` (Go), `cd webui && pnpm proto` (TS), `cd android && buf generate`
 (Kotlin/Java). Generated code is committed.
 
+## Container images
+
+Two images, built from `deployments/`:
+
+- **server** (`Dockerfile.server`) — builds and runs the Go service.
+- **webui** (`Dockerfile.webui`) — builds the SPA in Node, serves the static
+  bundle with nginx (SPA history fallback only — **no backend proxying**).
+
+The web UI assumes an **external reverse proxy** in front that routes
+`/porukator.v1.*` to the server and everything else to the webui; the SPA issues
+same-origin requests that reach the backend through it.
+
+```bash
+just images-build   # build ghcr.io/dusansimic/porukator/{server,webui}:latest
+just images-push    # build + push (docker login ghcr.io -u dusansimic first)
+just docker-up      # full local stack: postgres + server + webui via docker compose
+```
+
 ## Commit conventions
 
 Keep commit messages clean: Conventional Commits, imperative subject, body only

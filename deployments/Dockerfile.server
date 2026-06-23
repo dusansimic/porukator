@@ -1,4 +1,4 @@
-# Build stage. Context is the porukator repo root (self-contained module).
+# Backend image: builds and runs the Go service. Build context is the repo root.
 FROM golang:1.25-alpine AS builder
 
 WORKDIR /build
