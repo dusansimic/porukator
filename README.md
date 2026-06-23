@@ -36,25 +36,29 @@ React web UI, and an Android app.
 Porukator is one protobuf contract exposing three services, consumed by three
 clients:
 
-```
-                 ┌─────────────────────────────────────────────┐
-                 │              Porukator service (Go)          │
-   Web UI  ─────▶│  AdminService     (master-password auth)     │
- (React SPA)     │                                              │
-                 │  ProducerService  (API-token auth)  ◀─────── Your upstream
-                 │                                              │   services
-                 │  ClientService    (client-token auth)        │
-                 └───────────────▲──────────────┬───────────────┘
-                                 │ StreamJobs    │ Job (phone, text,
-                  ReportDelivery │ (server       │ delay, jitter)
-                                 │  stream)      ▼
-                         ┌───────┴───────────────────────┐
-                         │   Android app (Kotlin)         │  ──▶  SMS via SIM
-                         │   foreground sender service    │
-                         └────────────────────────────────┘
+```mermaid
+flowchart TB
+    webui["Web UI<br/>(React SPA)"]
+    producers["Your upstream<br/>services"]
+    app["Android app<br/>(foreground sender)"]
+    sim(["SMS via SIM"])
 
-                 Postgres  ◀── devices, API tokens, pacing settings,
-                                message log (status + timestamps)
+    subgraph svc["Porukator service (Go)"]
+        admin["AdminService<br/>(master-password auth)"]
+        producer["ProducerService<br/>(API-token auth)"]
+        client["ClientService<br/>(client-token auth)"]
+    end
+
+    db[("Postgres<br/>devices · API tokens<br/>pacing · message log")]
+
+    webui <--> admin
+    producers --> producer
+    client -- "Job (phone, text, delay, jitter)" --> app
+    app -- "ReportDelivery" --> client
+    app --> sim
+    admin <--> db
+    producer --> db
+    client <--> db
 ```
 
 ### Components
@@ -86,13 +90,23 @@ clients:
 
 ### How a message flows
 
-1. A producer calls `SendMessages` with a batch and a list of device IDs.
-2. The service stores each message and assigns it round-robin to a device; if
-   that device is online, the job is pushed onto its open stream.
-3. The device receives the job, sends the SMS from its SIM, waits
-   `delay + random(jitter)`, and calls `ReportDelivery`.
-4. The service records the outcome and the send timestamp. Messages for an
-   offline device stay pending and are delivered when it reconnects.
+```mermaid
+sequenceDiagram
+    participant P as Producer service
+    participant S as Porukator service
+    participant DB as Postgres
+    participant A as Android device
+
+    A->>S: StreamJobs (opens stream, marked online)
+    P->>S: SendMessages(batch, device_ids)
+    S->>DB: store messages (PENDING), assign round-robin
+    S-->>P: batch_id + message_ids
+    S->>A: Job (phone, text, delay, jitter)
+    Note over A: send SMS via SIM,<br/>then wait delay + random(jitter)
+    A->>S: ReportDelivery(message_id, success, sent_at)
+    S->>DB: mark SENT / FAILED + timestamp
+    Note over S,A: device offline → messages stay PENDING,<br/>drained on reconnect
+```
 
 ## Tech stack
 
