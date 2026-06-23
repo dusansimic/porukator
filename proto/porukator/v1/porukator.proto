@@ -1,0 +1,313 @@
+syntax = "proto3";
+
+// Porukator is a self-hosted SMS gateway. Upstream services submit messages and
+// a set of client devices (Android phones) to send from; the service balances
+// the messages across those devices, which send them as real SMS and report
+// each delivery back. This file defines all three RPC surfaces:
+//   - AdminService:    master-password auth, used by the web UI.
+//   - ProducerService: API-token auth, used by upstream services.
+//   - ClientService:   client-access-token auth, used by the Android app.
+package porukator.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/dusansimic/porukator/gen/go/porukator/v1;porukatorv1";
+
+// MessageStatus tracks a single SMS through its lifecycle.
+enum MessageStatus {
+  // Default, never persisted.
+  MESSAGE_STATUS_UNSPECIFIED = 0;
+  // Accepted and assigned to a client, not yet handed to a device.
+  MESSAGE_STATUS_PENDING = 1;
+  // Pushed to a connected client's job stream.
+  MESSAGE_STATUS_DISPATCHED = 2;
+  // Client confirmed the SMS was handed to the radio.
+  MESSAGE_STATUS_SENT = 3;
+  // Client reported a send failure.
+  MESSAGE_STATUS_FAILED = 4;
+}
+
+// Message is one SMS tracked by the service.
+message Message {
+  // Server-generated UUID.
+  string id = 1;
+  // Destination phone number in E.164 form.
+  string phone_number = 2;
+  // SMS body.
+  string content = 3;
+  // UUID of the client device assigned to send this message.
+  string client_id = 4;
+  // Current lifecycle status.
+  MessageStatus status = 5;
+  // Failure detail when status is FAILED.
+  string error = 6;
+  // When the service accepted the message.
+  google.protobuf.Timestamp received_at = 7;
+  // When the message was pushed to a client stream.
+  google.protobuf.Timestamp dispatched_at = 8;
+  // When the client reported the SMS sent.
+  google.protobuf.Timestamp sent_at = 9;
+  // UUID grouping messages submitted in one SendMessages call.
+  string batch_id = 10;
+}
+
+// Client is an Android sending device.
+message Client {
+  // Server-generated UUID.
+  string id = 1;
+  // Human-readable name shown in the UI and returned to producers.
+  string name = 2;
+  // True when the device currently holds an open job stream.
+  bool online = 3;
+  // Last time the device was connected.
+  google.protobuf.Timestamp last_seen_at = 4;
+  // When the client was created.
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// ApiToken is a credential for an upstream producer service.
+message ApiToken {
+  // Server-generated UUID.
+  string id = 1;
+  // Human-readable name.
+  string name = 2;
+  // When the token was created.
+  google.protobuf.Timestamp created_at = 3;
+  // Last time the token authenticated a request.
+  google.protobuf.Timestamp last_used_at = 4;
+}
+
+// Settings holds the global send-pacing configuration.
+message Settings {
+  // Base delay a client waits between consecutive sends, in milliseconds.
+  int32 delay_ms = 1;
+  // Maximum extra random delay added to delay_ms, in milliseconds.
+  int32 jitter_ms = 2;
+}
+
+// AdminService is the management API behind the web UI. All RPCs require the
+// master password as a bearer token.
+service AdminService {
+  // Login validates the master password. Returns ok=true when it matches.
+  rpc Login(LoginRequest) returns (LoginResponse);
+
+  // CreateClient registers a device and returns its one-time access token plus
+  // the connection host, for display/QR. The token is never retrievable again.
+  rpc CreateClient(CreateClientRequest) returns (CreateClientResponse);
+  // ListClients returns all devices with live online state.
+  rpc ListClients(ListClientsRequest) returns (ListClientsResponse);
+  // RenameClient changes a device's display name.
+  rpc RenameClient(RenameClientRequest) returns (RenameClientResponse);
+  // RevokeClient deletes a device and its access token.
+  rpc RevokeClient(RevokeClientRequest) returns (RevokeClientResponse);
+
+  // CreateApiToken issues a producer token, returned once in plaintext.
+  rpc CreateApiToken(CreateApiTokenRequest) returns (CreateApiTokenResponse);
+  // ListApiTokens lists producer tokens (without secrets).
+  rpc ListApiTokens(ListApiTokensRequest) returns (ListApiTokensResponse);
+  // RevokeApiToken deletes a producer token.
+  rpc RevokeApiToken(RevokeApiTokenRequest) returns (RevokeApiTokenResponse);
+
+  // GetSettings returns the current pacing configuration.
+  rpc GetSettings(GetSettingsRequest) returns (GetSettingsResponse);
+  // UpdateSettings replaces the pacing configuration.
+  rpc UpdateSettings(UpdateSettingsRequest) returns (UpdateSettingsResponse);
+
+  // ListMessages returns recent messages, newest first, with optional filters.
+  rpc ListMessages(ListMessagesRequest) returns (ListMessagesResponse);
+}
+
+// LoginRequest carries the master password.
+message LoginRequest {
+  // The master password configured at service start.
+  string password = 1;
+}
+// LoginResponse reports whether the password matched.
+message LoginResponse {
+  // True when the password is valid.
+  bool ok = 1;
+}
+
+// CreateClientRequest names a new device.
+message CreateClientRequest {
+  // Display name for the device.
+  string name = 1;
+}
+// CreateClientResponse returns the new device and its one-time token.
+message CreateClientResponse {
+  // The created client record.
+  Client client = 1;
+  // One-time plaintext access token; store it on the device.
+  string access_token = 2;
+  // Service host the device should connect to (from server config).
+  string host = 3;
+}
+
+// ListClientsRequest is empty.
+message ListClientsRequest {}
+// ListClientsResponse returns all devices.
+message ListClientsResponse {
+  // All registered devices.
+  repeated Client clients = 1;
+}
+
+// RenameClientRequest renames a device.
+message RenameClientRequest {
+  // UUID of the device.
+  string id = 1;
+  // New display name.
+  string name = 2;
+}
+// RenameClientResponse returns the updated device.
+message RenameClientResponse {
+  // The updated client record.
+  Client client = 1;
+}
+
+// RevokeClientRequest identifies a device to delete.
+message RevokeClientRequest {
+  // UUID of the device.
+  string id = 1;
+}
+// RevokeClientResponse is empty.
+message RevokeClientResponse {}
+
+// CreateApiTokenRequest names a new producer token.
+message CreateApiTokenRequest {
+  // Display name for the token.
+  string name = 1;
+}
+// CreateApiTokenResponse returns the token metadata and one-time secret.
+message CreateApiTokenResponse {
+  // The created token record.
+  ApiToken token = 1;
+  // One-time plaintext token value.
+  string secret = 2;
+}
+
+// ListApiTokensRequest is empty.
+message ListApiTokensRequest {}
+// ListApiTokensResponse returns all producer tokens.
+message ListApiTokensResponse {
+  // All producer tokens (no secrets).
+  repeated ApiToken tokens = 1;
+}
+
+// RevokeApiTokenRequest identifies a token to delete.
+message RevokeApiTokenRequest {
+  // UUID of the token.
+  string id = 1;
+}
+// RevokeApiTokenResponse is empty.
+message RevokeApiTokenResponse {}
+
+// GetSettingsRequest is empty.
+message GetSettingsRequest {}
+// GetSettingsResponse returns the pacing configuration.
+message GetSettingsResponse {
+  // Current pacing settings.
+  Settings settings = 1;
+}
+
+// UpdateSettingsRequest carries new pacing values.
+message UpdateSettingsRequest {
+  // New pacing settings.
+  Settings settings = 1;
+}
+// UpdateSettingsResponse returns the stored settings.
+message UpdateSettingsResponse {
+  // The persisted pacing settings.
+  Settings settings = 1;
+}
+
+// ListMessagesRequest filters the message log.
+message ListMessagesRequest {
+  // Optional status filter; UNSPECIFIED means all.
+  MessageStatus status = 1;
+  // Optional client UUID filter; empty means all.
+  string client_id = 2;
+  // Max rows to return (server clamps).
+  int32 limit = 3;
+}
+// ListMessagesResponse returns matching messages.
+message ListMessagesResponse {
+  // Messages newest-first.
+  repeated Message messages = 1;
+}
+
+// ProducerService is the ingest API for upstream services. All RPCs require an
+// API token as a bearer token.
+service ProducerService {
+  // ListClients returns devices so the producer can pick which to send from.
+  rpc ListClients(ListClientsRequest) returns (ListClientsResponse);
+  // SendMessages enqueues messages, balanced round-robin across client_ids.
+  rpc SendMessages(SendMessagesRequest) returns (SendMessagesResponse);
+}
+
+// OutgoingMessage is one message a producer wants sent.
+message OutgoingMessage {
+  // Destination phone number in E.164 form.
+  string phone_number = 1;
+  // SMS body.
+  string content = 2;
+}
+
+// SendMessagesRequest submits a batch and the devices to balance it across.
+message SendMessagesRequest {
+  // Messages to send.
+  repeated OutgoingMessage messages = 1;
+  // UUIDs of client devices to distribute the messages across.
+  repeated string client_ids = 2;
+}
+// SendMessagesResponse acknowledges acceptance.
+message SendMessagesResponse {
+  // UUID grouping this submission.
+  string batch_id = 1;
+  // Server-generated UUIDs, one per accepted message, in input order.
+  repeated string message_ids = 2;
+}
+
+// ClientService is the device API for the Android app. All RPCs require the
+// device's access token as a bearer token; the device identity is derived from
+// the token, never from request fields.
+service ClientService {
+  // StreamJobs opens a server stream the service pushes SMS jobs onto. The
+  // device is marked online for the life of the stream. On connect the service
+  // first drains any jobs left pending while the device was offline.
+  rpc StreamJobs(StreamJobsRequest) returns (stream Job);
+  // ReportDelivery records the outcome of one send. The device calls this after
+  // each SMS, success or failure.
+  rpc ReportDelivery(ReportDeliveryRequest) returns (ReportDeliveryResponse);
+}
+
+// StreamJobsRequest is empty; identity comes from the access token.
+message StreamJobsRequest {}
+
+// Job is a single SMS for the device to send. The device paces consecutive
+// sends using delay_ms plus a random value in [0, jitter_ms].
+message Job {
+  // UUID of the message; echo it back in ReportDelivery.
+  string message_id = 1;
+  // Destination phone number in E.164 form.
+  string phone_number = 2;
+  // SMS body.
+  string content = 3;
+  // Base inter-send delay in milliseconds.
+  int32 delay_ms = 4;
+  // Maximum extra random delay in milliseconds.
+  int32 jitter_ms = 5;
+}
+
+// ReportDeliveryRequest reports one send outcome.
+message ReportDeliveryRequest {
+  // UUID of the message that was sent.
+  string message_id = 1;
+  // True when the SMS was handed to the radio successfully.
+  bool success = 2;
+  // When the device sent the SMS.
+  google.protobuf.Timestamp sent_at = 3;
+  // Failure detail when success is false.
+  string error = 4;
+}
+// ReportDeliveryResponse is empty.
+message ReportDeliveryResponse {}

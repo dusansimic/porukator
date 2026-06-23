@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS messages;
+DROP TYPE IF EXISTS message_status;
+DROP TABLE IF EXISTS settings;
+DROP TABLE IF EXISTS api_tokens;
+DROP TABLE IF EXISTS clients;

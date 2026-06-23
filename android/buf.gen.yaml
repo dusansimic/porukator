@@ -1,0 +1,15 @@
+version: v2
+inputs:
+  - directory: ../proto
+clean: true
+plugins:
+  # Protobuf message types (Java Lite runtime, suited to Android).
+  - remote: buf.build/protocolbuffers/java:v28.3
+    out: app/src/main/java
+    opt:
+      - lite
+  # Connect-Kotlin service clients (unary + server-stream).
+  - remote: buf.build/connectrpc/kotlin:v0.7.1
+    out: app/src/main/java
+    opt:
+      - lite

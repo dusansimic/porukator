@@ -1,0 +1,21 @@
+http:
+  # Listen address for the Connect/gRPC server.
+  addr: ":8080"
+  # Externally reachable base URL advertised to client devices and embedded in
+  # the QR code shown in the web UI. Set this to the host your phones can reach.
+  public_host: "http://localhost:8080"
+
+postgres:
+  url: "postgres://porukator:porukator@postgres:5432/porukator?sslmode=disable"
+
+auth:
+  # Single master password that gates the admin API / web UI. REQUIRED.
+  # Override in production with PORUKATOR_AUTH_MASTER_PASSWORD.
+  master_password: "change-me"
+
+logging:
+  level: "info"
+  format: "json"
+
+app:
+  env: "production"
