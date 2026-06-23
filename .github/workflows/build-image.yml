@@ -52,5 +52,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          # Consumed only by the webui image (shown under the UI title); the
+          # server Dockerfile ignores it.
+          build-args: |
+            GIT_SHA=${{ github.sha }}
           cache-from: type=gha,scope=${{ inputs.name }}
           cache-to: type=gha,mode=max,scope=${{ inputs.name }}

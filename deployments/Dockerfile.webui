@@ -12,6 +12,11 @@ RUN pnpm install --frozen-lockfile
 
 # Sources (generated TS in webui/src/gen is committed, so no buf step needed).
 COPY webui/ ./
+
+# Git SHA the bundle is built from (.git is not in the build context, so it is
+# passed in). Shown in the UI under the title.
+ARG GIT_SHA=unknown
+ENV VITE_GIT_SHA=$GIT_SHA
 RUN pnpm build
 
 # Serve stage.

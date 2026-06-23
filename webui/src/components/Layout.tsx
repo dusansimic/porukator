@@ -18,7 +18,12 @@ export function Layout() {
   return (
     <div className="min-h-screen flex">
       <aside className="w-60 border-r bg-card flex flex-col">
-        <div className="p-5 text-lg font-semibold tracking-tight">Porukator</div>
+        <div className="p-5">
+          <div className="text-lg font-semibold tracking-tight">Porukator</div>
+          <div className="text-xs text-muted-foreground font-mono" title="build commit">
+            {__GIT_SHA__}
+          </div>
+        </div>
         <nav className="flex-1 px-2 space-y-1">
           {nav.map(({ to, label, icon: Icon }) => (
             <NavLink

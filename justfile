@@ -125,7 +125,7 @@ docker-logs:
 # Build the server + webui images tagged for GHCR.
 images-build:
     docker build -t {{ghcr_image}}/server:latest -f deployments/Dockerfile.server .
-    docker build -t {{ghcr_image}}/webui:latest -f deployments/Dockerfile.webui .
+    docker build -t {{ghcr_image}}/webui:latest --build-arg GIT_SHA=$(git rev-parse --short HEAD) -f deployments/Dockerfile.webui .
 
 # Build and push both images to GHCR. Authenticate first:
 #   echo $GITHUB_TOKEN | docker login ghcr.io -u dusansimic --password-stdin

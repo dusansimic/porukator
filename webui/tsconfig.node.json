@@ -10,7 +10,9 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "composite": true,
-    "strict": true
+    "strict": true,
+    "outDir": "./node_modules/.cache/tsc-node",
+    "tsBuildInfoFile": "./node_modules/.cache/tsc-node/.tsbuildinfo"
   },
   "include": ["vite.config.ts"]
 }
