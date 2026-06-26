@@ -18,6 +18,13 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -o porukator \
     ./cmd/porukator
 
+# authctl: in-container user administration (bootstrap the first admin, etc.).
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+    -ldflags='-w -s -extldflags "-static"' \
+    -a -installsuffix cgo \
+    -o authctl \
+    ./cmd/authctl
+
 # Runtime stage.
 FROM alpine:latest
 
@@ -26,6 +33,7 @@ RUN apk --no-cache add ca-certificates tzdata
 WORKDIR /app
 
 COPY --from=builder /build/porukator .
+COPY --from=builder /build/authctl /usr/local/bin/authctl
 
 RUN addgroup -S appgroup && \
     adduser -S appuser -G appgroup && \

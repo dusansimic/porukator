@@ -49,6 +49,7 @@ type Querier interface {
 	MarkSent(ctx context.Context, arg MarkSentParams) (Message, error)
 	RenameClient(ctx context.Context, arg RenameClientParams) (Client, error)
 	SetUserDisabled(ctx context.Context, arg SetUserDisabledParams) (User, error)
+	SetUserPassword(ctx context.Context, arg SetUserPasswordParams) error
 	SetUserRole(ctx context.Context, arg SetUserRoleParams) (User, error)
 	TouchApiTokenLastUsed(ctx context.Context, id pgtype.UUID) error
 	TouchClientLastSeen(ctx context.Context, id pgtype.UUID) error

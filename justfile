@@ -84,11 +84,15 @@ run: build
 build-ctl:
     go build -o porukatorctl ./cmd/porukatorctl
 
+# Build the user-admin CLI (authctl).
+build-authctl:
+    go build -o authctl ./cmd/authctl
+
 # Create a web-UI account. Usage: just create-user admin secret true
 # (username password is-admin). Defaults to the dev Postgres on :55432.
 create-user username password admin="false":
     PORUKATOR_POSTGRES_URL="${PORUKATOR_POSTGRES_URL:-postgres://porukator:porukator@localhost:55432/porukator?sslmode=disable}" \
-        go run ./cmd/porukator create-user --username {{username}} --password {{password}} {{ if admin == "true" { "--admin" } else { "" } }}
+        go run ./cmd/authctl create --username {{username}} --password {{password}} {{ if admin == "true" { "--admin" } else { "" } }}
 
 # Run tests.
 test:

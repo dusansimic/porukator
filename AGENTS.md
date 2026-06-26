@@ -34,7 +34,7 @@ proto/porukator/v1/porukator.proto   ── one contract, three services
   - Admin-only: settings, user management (create / set-role / disable / delete)
     and session management (list / revoke). Disabling a user deletes all their
     sessions; admins may act on themselves (no last-admin guard). Bootstrap the
-    first admin with `porukator create-user --admin`.
+    first admin with `authctl create --admin` (bundled in the server image).
   - **API tokens** (created in the UI, sha256-hashed at rest) gate
     ProducerService. **Managers may create them too** — tokens are owned
     (`api_tokens.created_by`) and managed only by their creator + admins.
@@ -121,12 +121,33 @@ just build && just run
 just test       # go test -race ./...
 just docker-up  # postgres + service via docker compose
 
-# Bootstrap the first admin (CLI subcommand; runs migrations, then inserts):
-./porukator create-user --username admin --password <pw> --admin
+# Bootstrap the first admin (authctl; runs migrations, then inserts):
+just build-authctl && ./authctl create --username admin --password <pw> --admin
 ```
 Config is `config/config.yaml` plus `PORUKATOR_*` env overrides
 (`PORUKATOR_POSTGRES_URL`, `PORUKATOR_HTTP_ADDR`, `PORUKATOR_HTTP_PUBLIC_HOST`).
 Migrations run on boot. Web-UI access is via user accounts (no master password).
+
+### User admin CLI (`authctl`)
+
+Manages web-UI user accounts **directly against the database** (`cmd/authctl`,
+built with `just build-authctl`). It is **bundled in the server image** (on
+`PATH`) for in-container administration — chiefly bootstrapping the first admin,
+which can't go through AdminService (that requires an existing admin). Reads the
+same config/env as the server (`PORUKATOR_POSTGRES_URL`); runs migrations on
+start.
+
+```bash
+authctl create --username admin --password <pw> --admin   # manager without --admin
+authctl list
+authctl set-role --username u --role admin|manager
+authctl disable --username u      # blocks login + revokes their sessions
+authctl enable  --username u
+authctl passwd  --username u      # prompts if --password omitted
+authctl delete  --username u
+```
+In a deployment: `docker compose exec porukator authctl create --username admin
+--password <pw> --admin`.
 
 ### Test CLI (`porukatorctl`)
 
@@ -199,7 +220,7 @@ attribution** to commits.
 ## End-to-end smoke test
 
 With the service up (`just docker-up` or `just run`):
-1. `porukator create-user --username admin --password pw --admin`, then
+1. `authctl create --username admin --password pw --admin`, then
    `AdminService.Login` with those credentials → session token.
 2. `CreateClient` → access token; `CreateApiToken` → producer secret.
 3. Open `ClientService.StreamJobs` with the client token → `ListClients` shows it

@@ -88,7 +88,7 @@ flowchart TB
   "online" flag) and persists everything else in Postgres.
 
 - **Web UI (`webui/`)** — a React single-page app. Users sign in with an account
-  (the first admin is created with `porukator create-user --admin`). Admins
+  (the first admin is created with `authctl create --admin`). Admins
   manage devices, API tokens, pacing settings, the message log, and user/session
   administration; managers see only their own devices and those devices' messages.
 

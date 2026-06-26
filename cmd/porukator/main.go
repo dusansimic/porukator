@@ -20,16 +20,6 @@ import (
 )
 
 func main() {
-	// Subcommand dispatch: `porukator create-user ...` runs the CLI and exits;
-	// otherwise the server boots.
-	if len(os.Args) > 1 && os.Args[1] == "create-user" {
-		if err := runCreateUser(os.Args[2:]); err != nil {
-			fmt.Fprintln(os.Stderr, "error:", err)
-			os.Exit(1)
-		}
-		return
-	}
-
 	cfg, err := config.Load()
 	if err != nil {
 		panic(fmt.Sprintf("failed to load config: %v", err))

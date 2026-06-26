@@ -9,8 +9,8 @@ postgres:
   url: "postgres://porukator:porukator@postgres:5432/porukator?sslmode=disable"
 
 # Web-UI access is via user accounts (no master password). Bootstrap the first
-# admin once the service can reach Postgres:
-#   porukator create-user --username admin --password <pw> --admin
+# admin once the service can reach Postgres (authctl ships in the server image):
+#   authctl create --username admin --password <pw> --admin
 
 logging:
   level: "info"

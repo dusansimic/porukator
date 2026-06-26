@@ -18,6 +18,9 @@ UPDATE users SET role = $2 WHERE id = $1 RETURNING *;
 -- name: SetUserDisabled :one
 UPDATE users SET disabled = $2 WHERE id = $1 RETURNING *;
 
+-- name: SetUserPassword :exec
+UPDATE users SET password_hash = $2 WHERE id = $1;
+
 -- name: DeleteUser :exec
 DELETE FROM users WHERE id = $1;
 
