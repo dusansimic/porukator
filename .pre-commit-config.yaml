@@ -1,0 +1,37 @@
+# Pre-commit hooks for the Porukator monorepo. See https://pre-commit.com.
+#
+# Setup (once):  pre-commit install
+# Run manually:  pre-commit run --all-files
+#
+# Hooks use the project's own tooling (language: system), so buf, go and the
+# web UI's pnpm dependencies must be installed.
+repos:
+  - repo: local
+    hooks:
+      - id: buf-lint
+        name: buf lint (proto)
+        language: system
+        entry: buf lint
+        files: \.proto$
+        pass_filenames: false
+
+      - id: go-fmt
+        name: gofmt (backend)
+        language: system
+        entry: gofmt -l -w
+        types: [go]
+        exclude: ^gen/
+
+      - id: go-vet
+        name: go vet (backend)
+        language: system
+        entry: go vet ./...
+        types: [go]
+        pass_filenames: false
+
+      - id: biome
+        name: biome (web UI format + lint)
+        language: system
+        entry: bash -c 'cd webui && pnpm exec biome check --write .'
+        files: ^webui/src/
+        pass_filenames: false

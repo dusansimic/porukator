@@ -211,11 +211,20 @@ just images-push    # build + push (docker login ghcr.io -u dusansimic first)
 just docker-up      # full local stack: postgres + server + webui via docker compose
 ```
 
+## Pre-commit hooks
+
+`.pre-commit-config.yaml` gates commits with the project's own tooling (run
+`pre-commit install` once per clone): **buf lint** (proto), **gofmt** + **go vet**
+(backend), and **biome** format + lint (web UI; config in `webui/biome.json`,
+scoped to `src` excluding generated code and Tailwind CSS). Run them by hand with
+`pre-commit run --all-files`.
+
 ## Commit conventions
 
 Keep commit messages clean: Conventional Commits, imperative subject, body only
 when the *why* isn't obvious. **Do not add `Co-Authored-By` trailers or any AI
-attribution** to commits.
+attribution** to commits. **When asked to commit, run the commit yourself** —
+don't just print the message for the user to paste.
 
 ## End-to-end smoke test
 
