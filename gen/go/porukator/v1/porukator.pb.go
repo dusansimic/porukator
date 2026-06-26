@@ -554,7 +554,11 @@ type ApiToken struct {
 	// When the token was created.
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// Last time the token authenticated a request.
-	LastUsedAt    *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=last_used_at,json=lastUsedAt,proto3" json:"last_used_at,omitempty"`
+	LastUsedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=last_used_at,json=lastUsedAt,proto3" json:"last_used_at,omitempty"`
+	// UUID of the user who created the token; empty if the owner was removed.
+	CreatedBy string `protobuf:"bytes,5,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
+	// Username of the owner, for display; empty when unowned.
+	OwnerUsername string `protobuf:"bytes,6,opt,name=owner_username,json=ownerUsername,proto3" json:"owner_username,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -615,6 +619,20 @@ func (x *ApiToken) GetLastUsedAt() *timestamppb.Timestamp {
 		return x.LastUsedAt
 	}
 	return nil
+}
+
+func (x *ApiToken) GetCreatedBy() string {
+	if x != nil {
+		return x.CreatedBy
+	}
+	return ""
+}
+
+func (x *ApiToken) GetOwnerUsername() string {
+	if x != nil {
+		return x.OwnerUsername
+	}
+	return ""
 }
 
 // Settings holds the global send-pacing configuration.
@@ -2963,14 +2981,17 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12<\n" +
 	"\flast_used_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"lastUsedAt\x12\x18\n" +
-	"\acurrent\x18\x06 \x01(\bR\acurrent\"\xa7\x01\n" +
+	"\acurrent\x18\x06 \x01(\bR\acurrent\"\xed\x01\n" +
 	"\bApiToken\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x129\n" +
 	"\n" +
 	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12<\n" +
 	"\flast_used_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"lastUsedAt\"B\n" +
+	"lastUsedAt\x12\x1d\n" +
+	"\n" +
+	"created_by\x18\x05 \x01(\tR\tcreatedBy\x12%\n" +
+	"\x0eowner_username\x18\x06 \x01(\tR\rownerUsername\"B\n" +
 	"\bSettings\x12\x19\n" +
 	"\bdelay_ms\x18\x01 \x01(\x05R\adelayMs\x12\x1b\n" +
 	"\tjitter_ms\x18\x02 \x01(\x05R\bjitterMs\"F\n" +

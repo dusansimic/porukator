@@ -1,13 +1,31 @@
 -- name: CreateApiToken :one
-INSERT INTO api_tokens (name, token_hash)
-VALUES ($1, $2)
+INSERT INTO api_tokens (name, token_hash, created_by)
+VALUES ($1, $2, $3)
 RETURNING *;
 
--- name: GetApiTokenByHash :one
-SELECT * FROM api_tokens WHERE token_hash = $1;
+-- name: GetApiToken :one
+SELECT * FROM api_tokens WHERE id = $1;
 
--- name: ListApiTokens :many
-SELECT * FROM api_tokens ORDER BY created_at;
+-- name: GetApiTokenByHashWithOwner :one
+SELECT
+    api_tokens.id, api_tokens.created_by,
+    users.role AS owner_role, users.disabled AS owner_disabled
+FROM api_tokens
+LEFT JOIN users ON users.id = api_tokens.created_by
+WHERE api_tokens.token_hash = $1;
+
+-- name: ListApiTokensWithOwner :many
+SELECT api_tokens.*, users.username AS owner_username
+FROM api_tokens
+LEFT JOIN users ON users.id = api_tokens.created_by
+ORDER BY api_tokens.created_at;
+
+-- name: ListApiTokensForOwner :many
+SELECT api_tokens.*, users.username AS owner_username
+FROM api_tokens
+LEFT JOIN users ON users.id = api_tokens.created_by
+WHERE api_tokens.created_by = $1
+ORDER BY api_tokens.created_at;
 
 -- name: DeleteApiToken :exec
 DELETE FROM api_tokens WHERE id = $1;

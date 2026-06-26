@@ -5347,6 +5347,46 @@ public final class Porukator {
      * @return The lastUsedAt.
      */
     com.google.protobuf.Timestamp getLastUsedAt();
+
+    /**
+     * <pre>
+     * UUID of the user who created the token; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 5 [json_name = "createdBy"];</code>
+     * @return The createdBy.
+     */
+    java.lang.String getCreatedBy();
+    /**
+     * <pre>
+     * UUID of the user who created the token; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 5 [json_name = "createdBy"];</code>
+     * @return The bytes for createdBy.
+     */
+    com.google.protobuf.ByteString
+        getCreatedByBytes();
+
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+     * @return The ownerUsername.
+     */
+    java.lang.String getOwnerUsername();
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+     * @return The bytes for ownerUsername.
+     */
+    com.google.protobuf.ByteString
+        getOwnerUsernameBytes();
   }
   /**
    * <pre>
@@ -5363,6 +5403,8 @@ public final class Porukator {
     private ApiToken() {
       id_ = "";
       name_ = "";
+      createdBy_ = "";
+      ownerUsername_ = "";
     }
     private int bitField0_;
     public static final int ID_FIELD_NUMBER = 1;
@@ -5629,6 +5671,140 @@ public final class Porukator {
      */
     private void clearLastUsedAt() {  lastUsedAt_ = null;
       bitField0_ = (bitField0_ & ~0x00000002);
+    }
+
+    public static final int CREATED_BY_FIELD_NUMBER = 5;
+    private java.lang.String createdBy_;
+    /**
+     * <pre>
+     * UUID of the user who created the token; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 5 [json_name = "createdBy"];</code>
+     * @return The createdBy.
+     */
+    @java.lang.Override
+    public java.lang.String getCreatedBy() {
+      return createdBy_;
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the token; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 5 [json_name = "createdBy"];</code>
+     * @return The bytes for createdBy.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getCreatedByBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(createdBy_);
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the token; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 5 [json_name = "createdBy"];</code>
+     * @param value The createdBy to set.
+     */
+    private void setCreatedBy(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      createdBy_ = value;
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the token; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 5 [json_name = "createdBy"];</code>
+     */
+    private void clearCreatedBy() {
+
+      createdBy_ = getDefaultInstance().getCreatedBy();
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the token; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 5 [json_name = "createdBy"];</code>
+     * @param value The bytes for createdBy to set.
+     */
+    private void setCreatedByBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      createdBy_ = value.toStringUtf8();
+
+    }
+
+    public static final int OWNER_USERNAME_FIELD_NUMBER = 6;
+    private java.lang.String ownerUsername_;
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+     * @return The ownerUsername.
+     */
+    @java.lang.Override
+    public java.lang.String getOwnerUsername() {
+      return ownerUsername_;
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+     * @return The bytes for ownerUsername.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getOwnerUsernameBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(ownerUsername_);
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+     * @param value The ownerUsername to set.
+     */
+    private void setOwnerUsername(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      ownerUsername_ = value;
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+     */
+    private void clearOwnerUsername() {
+
+      ownerUsername_ = getDefaultInstance().getOwnerUsername();
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+     * @param value The bytes for ownerUsername to set.
+     */
+    private void setOwnerUsernameBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      ownerUsername_ = value.toStringUtf8();
+
     }
 
     public static porukator.v1.Porukator.ApiToken parseFrom(
@@ -6012,6 +6188,144 @@ public final class Porukator {
         return this;
       }
 
+      /**
+       * <pre>
+       * UUID of the user who created the token; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 5 [json_name = "createdBy"];</code>
+       * @return The createdBy.
+       */
+      @java.lang.Override
+      public java.lang.String getCreatedBy() {
+        return instance.getCreatedBy();
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the token; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 5 [json_name = "createdBy"];</code>
+       * @return The bytes for createdBy.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getCreatedByBytes() {
+        return instance.getCreatedByBytes();
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the token; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 5 [json_name = "createdBy"];</code>
+       * @param value The createdBy to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCreatedBy(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setCreatedBy(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the token; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 5 [json_name = "createdBy"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCreatedBy() {
+        copyOnWrite();
+        instance.clearCreatedBy();
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the token; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 5 [json_name = "createdBy"];</code>
+       * @param value The bytes for createdBy to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCreatedByBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setCreatedByBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+       * @return The ownerUsername.
+       */
+      @java.lang.Override
+      public java.lang.String getOwnerUsername() {
+        return instance.getOwnerUsername();
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+       * @return The bytes for ownerUsername.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getOwnerUsernameBytes() {
+        return instance.getOwnerUsernameBytes();
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+       * @param value The ownerUsername to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOwnerUsername(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setOwnerUsername(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOwnerUsername() {
+        copyOnWrite();
+        instance.clearOwnerUsername();
+        return this;
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 6 [json_name = "ownerUsername"];</code>
+       * @param value The bytes for ownerUsername to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOwnerUsernameBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setOwnerUsernameBytes(value);
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:porukator.v1.ApiToken)
     }
     @java.lang.Override
@@ -6033,10 +6347,12 @@ public final class Porukator {
               "name_",
               "createdAt_",
               "lastUsedAt_",
+              "createdBy_",
+              "ownerUsername_",
             };
             java.lang.String info =
-                "\u0000\u0004\u0000\u0001\u0001\u0004\u0004\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
-                "\u0003\u1009\u0000\u0004\u1009\u0001";
+                "\u0000\u0006\u0000\u0001\u0001\u0006\u0006\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
+                "\u0003\u1009\u0000\u0004\u1009\u0001\u0005\u0208\u0006\u0208";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through

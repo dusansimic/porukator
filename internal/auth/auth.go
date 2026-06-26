@@ -52,11 +52,20 @@ type AuthUser struct {
 // IsAdmin reports whether the user has the admin role.
 func (u AuthUser) IsAdmin() bool { return u.Role == repository.UserRoleAdmin }
 
+// TokenPrincipal is the API-token caller attached to ProducerService requests.
+// GrantsAll is true for admin-owned and legacy (unowned) tokens; otherwise the
+// caller is scoped to OwnerID's devices.
+type TokenPrincipal struct {
+	OwnerID   string
+	GrantsAll bool
+}
+
 type ctxKey int
 
 const (
 	clientIDKey ctxKey = iota
 	userKey
+	tokenKey
 )
 
 // ClientIDFromContext returns the authenticated client id for ClientService
@@ -70,6 +79,12 @@ func ClientIDFromContext(ctx context.Context) (string, bool) {
 func UserFromContext(ctx context.Context) (AuthUser, bool) {
 	u, ok := ctx.Value(userKey).(AuthUser)
 	return u, ok
+}
+
+// TokenFromContext returns the API-token principal for ProducerService requests.
+func TokenFromContext(ctx context.Context) (TokenPrincipal, bool) {
+	t, ok := ctx.Value(tokenKey).(TokenPrincipal)
+	return t, ok
 }
 
 // Interceptor enforces per-service authentication.
@@ -103,6 +118,10 @@ var managerAllowed = map[string]bool{
 	adminPrefix + "RenameClient":   true,
 	adminPrefix + "RevokeClient":   true,
 	adminPrefix + "ListMessages":   true,
+	// API keys are owned + manager-creatable; ownership is enforced in handlers.
+	adminPrefix + "CreateApiToken": true,
+	adminPrefix + "ListApiTokens":  true,
+	adminPrefix + "RevokeApiToken": true,
 }
 
 func bearer(h interface{ Get(string) string }) string {
@@ -156,15 +175,28 @@ func (i *Interceptor) authenticate(ctx context.Context, procedure, token string)
 			return ctx, errUnauthenticated
 		}
 		q := repository.New(i.pool)
-		tok, err := q.GetApiTokenByHash(ctx, HashToken(token))
+		tok, err := q.GetApiTokenByHashWithOwner(ctx, HashToken(token))
 		if err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
 				return ctx, errUnauthenticated
 			}
 			return ctx, connect.NewError(connect.CodeInternal, err)
 		}
+		// A disabled owner's keys stop working (mirrors dropping their sessions).
+		if tok.OwnerDisabled.Valid && tok.OwnerDisabled.Bool {
+			return ctx, errUnauthenticated
+		}
 		_ = q.TouchApiTokenLastUsed(ctx, tok.ID)
-		return ctx, nil
+
+		// Admin-owned and legacy (unowned) keys reach all devices; a
+		// manager-owned key is scoped to its owner's devices.
+		grantsAll := !tok.CreatedBy.Valid ||
+			(tok.OwnerRole.Valid && tok.OwnerRole.UserRole == repository.UserRoleAdmin)
+		principal := TokenPrincipal{
+			OwnerID:   pgconv.UUIDString(tok.CreatedBy),
+			GrantsAll: grantsAll,
+		}
+		return context.WithValue(ctx, tokenKey, principal), nil
 
 	case strings.Contains(procedure, "ClientService"):
 		if token == "" {

@@ -103,6 +103,7 @@ type ApiToken struct {
 	TokenHash  string
 	CreatedAt  pgtype.Timestamptz
 	LastUsedAt pgtype.Timestamptz
+	CreatedBy  pgtype.UUID
 }
 
 type Client struct {

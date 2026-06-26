@@ -23,8 +23,11 @@ React web UI, and an Android app.
 - **Simple device onboarding** — add a device in the UI and pair it by typing
   the host + token into the app, or by scanning a generated QR code.
 - **User accounts with roles** — admins manage everything; managers manage only
-  their own devices and see those devices' messages. Argon2id-hashed passwords,
-  DB-backed sessions, admin-controlled disable/revoke/role changes.
+  their own devices and API keys and see those devices' messages. Argon2id-hashed
+  passwords, DB-backed sessions, admin-controlled disable/revoke/role changes.
+- **Owner-scoped API keys** — any user can mint keys for their external services;
+  a key reaches only its owner's devices (admin keys reach all). Disabling or
+  deleting the owner stops the keys.
 - **Three clear access surfaces** — user sessions for the admin UI, per-service
   API tokens for producers, and per-device access tokens for the phones.
 - **Durable, auditable log** — every message is stored in Postgres with its

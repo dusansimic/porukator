@@ -121,6 +121,24 @@ func apiTokenToProto(t repository.ApiToken) *porukatorv1.ApiToken {
 		Name:       t.Name,
 		CreatedAt:  pgconv.PbTime(t.CreatedAt),
 		LastUsedAt: pgconv.PbTime(t.LastUsedAt),
+		CreatedBy:  pgconv.UUIDString(t.CreatedBy),
+	}
+}
+
+// apiTokenWithOwnerToProto renders a token list row that carries the joined
+// owner username.
+func apiTokenWithOwnerToProto(id pgtype.UUID, name string, createdAt, lastUsedAt pgtype.Timestamptz, createdBy pgtype.UUID, ownerUsername pgtype.Text) *porukatorv1.ApiToken {
+	owner := ""
+	if ownerUsername.Valid {
+		owner = ownerUsername.String
+	}
+	return &porukatorv1.ApiToken{
+		Id:            pgconv.UUIDString(id),
+		Name:          name,
+		CreatedAt:     pgconv.PbTime(createdAt),
+		LastUsedAt:    pgconv.PbTime(lastUsedAt),
+		CreatedBy:     pgconv.UUIDString(createdBy),
+		OwnerUsername: owner,
 	}
 }
 

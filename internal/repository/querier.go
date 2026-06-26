@@ -23,7 +23,8 @@ type Querier interface {
 	DeleteSessionByHash(ctx context.Context, tokenHash string) error
 	DeleteSessionsByUser(ctx context.Context, userID pgtype.UUID) error
 	DeleteUser(ctx context.Context, id pgtype.UUID) error
-	GetApiTokenByHash(ctx context.Context, tokenHash string) (ApiToken, error)
+	GetApiToken(ctx context.Context, id pgtype.UUID) (ApiToken, error)
+	GetApiTokenByHashWithOwner(ctx context.Context, tokenHash string) (GetApiTokenByHashWithOwnerRow, error)
 	GetClient(ctx context.Context, id pgtype.UUID) (Client, error)
 	GetClientByTokenHash(ctx context.Context, accessTokenHash string) (Client, error)
 	GetSessionByHash(ctx context.Context, tokenHash string) (GetSessionByHashRow, error)
@@ -31,7 +32,8 @@ type Querier interface {
 	GetUser(ctx context.Context, id pgtype.UUID) (User, error)
 	GetUserByUsername(ctx context.Context, username string) (User, error)
 	InsertMessage(ctx context.Context, arg InsertMessageParams) (Message, error)
-	ListApiTokens(ctx context.Context) ([]ApiToken, error)
+	ListApiTokensForOwner(ctx context.Context, createdBy pgtype.UUID) ([]ListApiTokensForOwnerRow, error)
+	ListApiTokensWithOwner(ctx context.Context) ([]ListApiTokensWithOwnerRow, error)
 	ListClients(ctx context.Context) ([]Client, error)
 	ListClientsForOwner(ctx context.Context, createdBy pgtype.UUID) ([]ListClientsForOwnerRow, error)
 	ListClientsWithOwner(ctx context.Context) ([]ListClientsWithOwnerRow, error)

@@ -13,7 +13,7 @@ const admin = createClient(AdminService, transport);
 const nav = [
   { to: "/clients", label: "Devices", icon: Smartphone, adminOnly: false },
   { to: "/messages", label: "Messages", icon: MessageSquare, adminOnly: false },
-  { to: "/tokens", label: "API Tokens", icon: KeyRound, adminOnly: true },
+  { to: "/tokens", label: "API Tokens", icon: KeyRound, adminOnly: false },
   { to: "/settings", label: "Settings", icon: SlidersHorizontal, adminOnly: true },
   { to: "/users", label: "Users", icon: UsersIcon, adminOnly: true },
 ];

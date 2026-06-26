@@ -31,18 +31,22 @@ proto/porukator/v1/porukator.proto   ── one contract, three services
     devices + those devices' messages). A coarse role gate in the interceptor
     rejects manager calls to admin-only procedures with `PermissionDenied`;
     per-device ownership is enforced in the handlers.
-  - Admin-only: API tokens, settings, user management (create / set-role /
-    disable / delete) and session management (list / revoke). Disabling a user
-    deletes all their sessions; admins may act on themselves (no last-admin
-    guard). Bootstrap the first admin with `porukator create-user --admin`.
+  - Admin-only: settings, user management (create / set-role / disable / delete)
+    and session management (list / revoke). Disabling a user deletes all their
+    sessions; admins may act on themselves (no last-admin guard). Bootstrap the
+    first admin with `porukator create-user --admin`.
   - **API tokens** (created in the UI, sha256-hashed at rest) gate
-    ProducerService.
+    ProducerService. **Managers may create them too** — tokens are owned
+    (`api_tokens.created_by`) and managed only by their creator + admins.
   - **Client access tokens** (created per device, sha256-hashed) gate
     ClientService; the device identity is derived from the token, never sent in
     the request.
-- **Device ownership**: `clients.created_by` records the creating user; managers
-  see/manage only their own devices, admins see all. ProducerService listing is
-  unscoped (producers are external API-token callers).
+- **Ownership scoping**: `clients.created_by` / `api_tokens.created_by` record the
+  creating user; managers see/manage only their own devices and tokens, admins see
+  all. **A ProducerService call is scoped to its API key's owner**: a
+  manager-owned key lists/sends only to that manager's devices; an admin-owned (or
+  legacy NULL-owner) key reaches all. A disabled owner's keys are rejected;
+  deleting an owner removes their keys (`ON DELETE CASCADE`).
 - **Pacing**: the service stores global `delay_ms` + `jitter_ms` (the `settings`
   table) and ships them with every `Job`. The **client paces its own sends** —
   it waits `delay_ms + random(0, jitter_ms)` between SMS — and **reports each

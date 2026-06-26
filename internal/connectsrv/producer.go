@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 
 	porukatorv1 "github.com/dusansimic/porukator/gen/go/porukator/v1"
+	"github.com/dusansimic/porukator/internal/auth"
 	"github.com/dusansimic/porukator/internal/pgconv"
 	"github.com/dusansimic/porukator/internal/repository"
 )
@@ -29,6 +30,10 @@ func (h *Handler) SendMessages(ctx context.Context, req *connect.Request[porukat
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("client_ids must not be empty"))
 	}
 
+	// A manager-owned key may only send through its owner's devices; admin-owned
+	// and legacy keys may use any device.
+	tok, _ := auth.TokenFromContext(ctx)
+
 	// Parse and validate every target client up front.
 	pgIDs := make([]pgtype.UUID, len(clientIDs))
 	for i, cid := range clientIDs {
@@ -36,11 +41,15 @@ func (h *Handler) SendMessages(ctx context.Context, req *connect.Request[porukat
 		if err != nil || !id.Valid {
 			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid client_id: "+cid))
 		}
-		if _, err := h.q().GetClient(ctx, id); err != nil {
+		c, err := h.q().GetClient(ctx, id)
+		if err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("unknown client_id: "+cid))
 			}
 			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if !tok.GrantsAll && pgconv.UUIDString(c.CreatedBy) != tok.OwnerID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("not your device: "+cid))
 		}
 		pgIDs[i] = id
 	}

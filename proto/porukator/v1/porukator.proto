@@ -119,6 +119,10 @@ message ApiToken {
   google.protobuf.Timestamp created_at = 3;
   // Last time the token authenticated a request.
   google.protobuf.Timestamp last_used_at = 4;
+  // UUID of the user who created the token; empty if the owner was removed.
+  string created_by = 5;
+  // Username of the owner, for display; empty when unowned.
+  string owner_username = 6;
 }
 
 // Settings holds the global send-pacing configuration.

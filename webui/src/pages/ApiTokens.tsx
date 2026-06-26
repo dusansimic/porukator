@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@connectrpc/connect-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2, Copy } from "lucide-react";
 import { AdminService, type ApiToken } from "@/gen/porukator/v1/porukator_pb";
+import { useAuthStore, isAdmin } from "@/stores/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +16,7 @@ import {
 
 export function ApiTokens() {
   const qc = useQueryClient();
+  const showOwner = isAdmin(useAuthStore((s) => s.user));
   const { data } = useQuery(AdminService.method.listApiTokens, {});
   const create = useMutation(AdminService.method.createApiToken);
   const revoke = useMutation(AdminService.method.revokeApiToken);
@@ -75,6 +77,7 @@ export function ApiTokens() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
+            {showOwner && <TableHead>Owner</TableHead>}
             <TableHead>Created</TableHead>
             <TableHead>Last used</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -84,6 +87,9 @@ export function ApiTokens() {
           {(data?.tokens ?? []).map((t: ApiToken) => (
             <TableRow key={t.id}>
               <TableCell className="font-medium">{t.name}</TableCell>
+              {showOwner && (
+                <TableCell className="text-muted-foreground">{t.ownerUsername || "—"}</TableCell>
+              )}
               <TableCell className="text-muted-foreground">
                 {t.createdAt ? new Date(Number(t.createdAt.seconds) * 1000).toLocaleString() : "—"}
               </TableCell>
@@ -108,7 +114,7 @@ export function ApiTokens() {
           ))}
           {data && data.tokens.length === 0 && (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+              <TableCell colSpan={showOwner ? 5 : 4} className="text-center text-muted-foreground py-8">
                 No tokens yet.
               </TableCell>
             </TableRow>

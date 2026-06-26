@@ -123,12 +123,26 @@ func (h *Handler) CreateClient(ctx context.Context, req *connect.Request[porukat
 	}), nil
 }
 
-// ListClients returns all devices for admins, own devices for managers.
+// ListClients is shared by AdminService and ProducerService. The caller is
+// distinguished by the context principal: a user (web UI) scopes by role, an API
+// token (producer) scopes by the token's owner. "All" listings use the
+// with-owner query; scoped listings use the owner query.
 func (h *Handler) ListClients(ctx context.Context, req *connect.Request[porukatorv1.ListClientsRequest]) (*connect.Response[porukatorv1.ListClientsResponse], error) {
-	user, _ := auth.UserFromContext(ctx)
-	var out []*porukatorv1.Client
+	all := false
+	scopedOwner := ""
 
-	if user.IsAdmin() {
+	if user, ok := auth.UserFromContext(ctx); ok {
+		all = user.IsAdmin()
+		scopedOwner = user.ID
+	} else if tok, ok := auth.TokenFromContext(ctx); ok {
+		all = tok.GrantsAll
+		scopedOwner = tok.OwnerID
+	} else {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no principal"))
+	}
+
+	out := []*porukatorv1.Client{}
+	if all {
 		rows, err := h.q().ListClientsWithOwner(ctx)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
@@ -138,7 +152,7 @@ func (h *Handler) ListClients(ctx context.Context, req *connect.Request[porukato
 			out[i] = h.clientWithOwnerToProto(r.ID, r.Name, r.LastSeenAt, r.CreatedAt, r.CreatedBy, r.OwnerUsername)
 		}
 	} else {
-		ownerID, err := pgconv.ParseUUID(user.ID)
+		ownerID, err := pgconv.ParseUUID(scopedOwner)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
@@ -206,10 +220,15 @@ func (h *Handler) RevokeClient(ctx context.Context, req *connect.Request[porukat
 
 // --- API tokens (admin only, gated by the interceptor) ---
 
-// CreateApiToken issues a producer token, returned once.
+// CreateApiToken issues a producer token owned by the caller, returned once.
 func (h *Handler) CreateApiToken(ctx context.Context, req *connect.Request[porukatorv1.CreateApiTokenRequest]) (*connect.Response[porukatorv1.CreateApiTokenResponse], error) {
+	user, _ := auth.UserFromContext(ctx)
 	if req.Msg.Name == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name is required"))
+	}
+	ownerID, err := pgconv.ParseUUID(user.ID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	secret, err := auth.GenerateToken()
 	if err != nil {
@@ -218,34 +237,67 @@ func (h *Handler) CreateApiToken(ctx context.Context, req *connect.Request[poruk
 	t, err := h.q().CreateApiToken(ctx, repository.CreateApiTokenParams{
 		Name:      req.Msg.Name,
 		TokenHash: auth.HashToken(secret),
+		CreatedBy: ownerID,
 	})
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
+	proto := apiTokenToProto(t)
+	proto.OwnerUsername = user.Username
 	return connect.NewResponse(&porukatorv1.CreateApiTokenResponse{
-		Token:  apiTokenToProto(t),
+		Token:  proto,
 		Secret: secret,
 	}), nil
 }
 
-// ListApiTokens lists producer tokens without secrets.
+// ListApiTokens lists producer tokens (no secrets): all for admins, own for
+// managers.
 func (h *Handler) ListApiTokens(ctx context.Context, req *connect.Request[porukatorv1.ListApiTokensRequest]) (*connect.Response[porukatorv1.ListApiTokensResponse], error) {
-	rows, err := h.q().ListApiTokens(ctx)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	out := make([]*porukatorv1.ApiToken, len(rows))
-	for i, r := range rows {
-		out[i] = apiTokenToProto(r)
+	user, _ := auth.UserFromContext(ctx)
+	out := []*porukatorv1.ApiToken{}
+
+	if user.IsAdmin() {
+		rows, err := h.q().ListApiTokensWithOwner(ctx)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		out = make([]*porukatorv1.ApiToken, len(rows))
+		for i, r := range rows {
+			out[i] = apiTokenWithOwnerToProto(r.ID, r.Name, r.CreatedAt, r.LastUsedAt, r.CreatedBy, r.OwnerUsername)
+		}
+	} else {
+		ownerID, err := pgconv.ParseUUID(user.ID)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		rows, err := h.q().ListApiTokensForOwner(ctx, ownerID)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		out = make([]*porukatorv1.ApiToken, len(rows))
+		for i, r := range rows {
+			out[i] = apiTokenWithOwnerToProto(r.ID, r.Name, r.CreatedAt, r.LastUsedAt, r.CreatedBy, r.OwnerUsername)
+		}
 	}
 	return connect.NewResponse(&porukatorv1.ListApiTokensResponse{Tokens: out}), nil
 }
 
-// RevokeApiToken deletes a producer token.
+// RevokeApiToken deletes a producer token (managers: own tokens only).
 func (h *Handler) RevokeApiToken(ctx context.Context, req *connect.Request[porukatorv1.RevokeApiTokenRequest]) (*connect.Response[porukatorv1.RevokeApiTokenResponse], error) {
+	user, _ := auth.UserFromContext(ctx)
 	id, err := pgconv.ParseUUID(req.Msg.Id)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid id"))
+	}
+	t, err := h.q().GetApiToken(ctx, id)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("token not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if !user.IsAdmin() && pgconv.UUIDString(t.CreatedBy) != user.ID {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("not your token"))
 	}
 	if err := h.q().DeleteApiToken(ctx, id); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)

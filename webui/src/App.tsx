@@ -63,7 +63,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/clients" replace />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/messages" element={<Messages />} />
-        <Route path="/tokens" element={<AdminRoute><ApiTokens /></AdminRoute>} />
+        <Route path="/tokens" element={<ApiTokens />} />
         <Route path="/settings" element={<AdminRoute><Settings /></AdminRoute>} />
         <Route path="/users" element={<AdminRoute><Users /></AdminRoute>} />
       </Route>

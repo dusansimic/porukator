@@ -12,18 +12,19 @@ import (
 )
 
 const createApiToken = `-- name: CreateApiToken :one
-INSERT INTO api_tokens (name, token_hash)
-VALUES ($1, $2)
-RETURNING id, name, token_hash, created_at, last_used_at
+INSERT INTO api_tokens (name, token_hash, created_by)
+VALUES ($1, $2, $3)
+RETURNING id, name, token_hash, created_at, last_used_at, created_by
 `
 
 type CreateApiTokenParams struct {
 	Name      string
 	TokenHash string
+	CreatedBy pgtype.UUID
 }
 
 func (q *Queries) CreateApiToken(ctx context.Context, arg CreateApiTokenParams) (ApiToken, error) {
-	row := q.db.QueryRow(ctx, createApiToken, arg.Name, arg.TokenHash)
+	row := q.db.QueryRow(ctx, createApiToken, arg.Name, arg.TokenHash, arg.CreatedBy)
 	var i ApiToken
 	err := row.Scan(
 		&i.ID,
@@ -31,6 +32,7 @@ func (q *Queries) CreateApiToken(ctx context.Context, arg CreateApiTokenParams) 
 		&i.TokenHash,
 		&i.CreatedAt,
 		&i.LastUsedAt,
+		&i.CreatedBy,
 	)
 	return i, err
 }
@@ -44,12 +46,12 @@ func (q *Queries) DeleteApiToken(ctx context.Context, id pgtype.UUID) error {
 	return err
 }
 
-const getApiTokenByHash = `-- name: GetApiTokenByHash :one
-SELECT id, name, token_hash, created_at, last_used_at FROM api_tokens WHERE token_hash = $1
+const getApiToken = `-- name: GetApiToken :one
+SELECT id, name, token_hash, created_at, last_used_at, created_by FROM api_tokens WHERE id = $1
 `
 
-func (q *Queries) GetApiTokenByHash(ctx context.Context, tokenHash string) (ApiToken, error) {
-	row := q.db.QueryRow(ctx, getApiTokenByHash, tokenHash)
+func (q *Queries) GetApiToken(ctx context.Context, id pgtype.UUID) (ApiToken, error) {
+	row := q.db.QueryRow(ctx, getApiToken, id)
 	var i ApiToken
 	err := row.Scan(
 		&i.ID,
@@ -57,29 +59,119 @@ func (q *Queries) GetApiTokenByHash(ctx context.Context, tokenHash string) (ApiT
 		&i.TokenHash,
 		&i.CreatedAt,
 		&i.LastUsedAt,
+		&i.CreatedBy,
 	)
 	return i, err
 }
 
-const listApiTokens = `-- name: ListApiTokens :many
-SELECT id, name, token_hash, created_at, last_used_at FROM api_tokens ORDER BY created_at
+const getApiTokenByHashWithOwner = `-- name: GetApiTokenByHashWithOwner :one
+SELECT
+    api_tokens.id, api_tokens.created_by,
+    users.role AS owner_role, users.disabled AS owner_disabled
+FROM api_tokens
+LEFT JOIN users ON users.id = api_tokens.created_by
+WHERE api_tokens.token_hash = $1
 `
 
-func (q *Queries) ListApiTokens(ctx context.Context) ([]ApiToken, error) {
-	rows, err := q.db.Query(ctx, listApiTokens)
+type GetApiTokenByHashWithOwnerRow struct {
+	ID            pgtype.UUID
+	CreatedBy     pgtype.UUID
+	OwnerRole     NullUserRole
+	OwnerDisabled pgtype.Bool
+}
+
+func (q *Queries) GetApiTokenByHashWithOwner(ctx context.Context, tokenHash string) (GetApiTokenByHashWithOwnerRow, error) {
+	row := q.db.QueryRow(ctx, getApiTokenByHashWithOwner, tokenHash)
+	var i GetApiTokenByHashWithOwnerRow
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedBy,
+		&i.OwnerRole,
+		&i.OwnerDisabled,
+	)
+	return i, err
+}
+
+const listApiTokensForOwner = `-- name: ListApiTokensForOwner :many
+SELECT api_tokens.id, api_tokens.name, api_tokens.token_hash, api_tokens.created_at, api_tokens.last_used_at, api_tokens.created_by, users.username AS owner_username
+FROM api_tokens
+LEFT JOIN users ON users.id = api_tokens.created_by
+WHERE api_tokens.created_by = $1
+ORDER BY api_tokens.created_at
+`
+
+type ListApiTokensForOwnerRow struct {
+	ID            pgtype.UUID
+	Name          string
+	TokenHash     string
+	CreatedAt     pgtype.Timestamptz
+	LastUsedAt    pgtype.Timestamptz
+	CreatedBy     pgtype.UUID
+	OwnerUsername pgtype.Text
+}
+
+func (q *Queries) ListApiTokensForOwner(ctx context.Context, createdBy pgtype.UUID) ([]ListApiTokensForOwnerRow, error) {
+	rows, err := q.db.Query(ctx, listApiTokensForOwner, createdBy)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ApiToken
+	var items []ListApiTokensForOwnerRow
 	for rows.Next() {
-		var i ApiToken
+		var i ListApiTokensForOwnerRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
 			&i.TokenHash,
 			&i.CreatedAt,
 			&i.LastUsedAt,
+			&i.CreatedBy,
+			&i.OwnerUsername,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listApiTokensWithOwner = `-- name: ListApiTokensWithOwner :many
+SELECT api_tokens.id, api_tokens.name, api_tokens.token_hash, api_tokens.created_at, api_tokens.last_used_at, api_tokens.created_by, users.username AS owner_username
+FROM api_tokens
+LEFT JOIN users ON users.id = api_tokens.created_by
+ORDER BY api_tokens.created_at
+`
+
+type ListApiTokensWithOwnerRow struct {
+	ID            pgtype.UUID
+	Name          string
+	TokenHash     string
+	CreatedAt     pgtype.Timestamptz
+	LastUsedAt    pgtype.Timestamptz
+	CreatedBy     pgtype.UUID
+	OwnerUsername pgtype.Text
+}
+
+func (q *Queries) ListApiTokensWithOwner(ctx context.Context) ([]ListApiTokensWithOwnerRow, error) {
+	rows, err := q.db.Query(ctx, listApiTokensWithOwner)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []ListApiTokensWithOwnerRow
+	for rows.Next() {
+		var i ListApiTokensWithOwnerRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.TokenHash,
+			&i.CreatedAt,
+			&i.LastUsedAt,
+			&i.CreatedBy,
+			&i.OwnerUsername,
 		); err != nil {
 			return nil, err
 		}
