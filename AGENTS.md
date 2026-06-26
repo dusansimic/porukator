@@ -62,7 +62,10 @@ proto/porukator/v1/porukator.proto   ── one contract, three services
   Offline devices' messages stay `PENDING` and are drained on next connect.
 
 Message lifecycle: `PENDING → DISPATCHED → SENT | FAILED`, with timestamps
-`received_at` / `dispatched_at` / `sent_at`.
+`received_at` / `dispatched_at` / `sent_at`. Producers poll status via
+`ProducerService.GetMessages` (by the ids `SendMessages` returned — strict, fails
+`PermissionDenied` if any id isn't visible to the key) or `ListMessages`
+(`batch_id` / `status` filters), both owner-scoped like everything else.
 
 ## Layout
 
@@ -136,9 +139,13 @@ just build-ctl
 ./porukatorctl --host localhost:8080 --token <api-token> list
 ./porukatorctl --host localhost:8080 --token <api-token> send \
     --to +38160111 --to +38160222 --message "hello" --client <device-id>
+./porukatorctl --host localhost:8080 --token <api-token> status --batch <batch-id>
+./porukatorctl --host localhost:8080 --token <api-token> status --id <msg-id>
 ```
 `send` requires at least one `--client`; the message body is sent to every
-`--to`, balanced round-robin across the given devices.
+`--to`, balanced round-robin across the given devices. `status` polls delivery —
+`--id` (one or more, via `GetMessages`) or `--batch`/`--status` (via
+`ListMessages`).
 
 ### Web UI
 ```bash

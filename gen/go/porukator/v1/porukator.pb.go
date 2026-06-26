@@ -2428,7 +2428,9 @@ type ListMessagesRequest struct {
 	// Optional client UUID filter; empty means all.
 	ClientId string `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
 	// Max rows to return (server clamps).
-	Limit         int32 `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	Limit int32 `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Optional batch UUID filter (from SendMessages); empty means all.
+	BatchId       string `protobuf:"bytes,4,opt,name=batch_id,json=batchId,proto3" json:"batch_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2484,6 +2486,13 @@ func (x *ListMessagesRequest) GetLimit() int32 {
 	return 0
 }
 
+func (x *ListMessagesRequest) GetBatchId() string {
+	if x != nil {
+		return x.BatchId
+	}
+	return ""
+}
+
 // ListMessagesResponse returns matching messages.
 type ListMessagesResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -2530,6 +2539,98 @@ func (x *ListMessagesResponse) GetMessages() []*Message {
 	return nil
 }
 
+// GetMessagesRequest names the messages to look up.
+type GetMessagesRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Server-generated message UUIDs (from SendMessages).
+	MessageIds    []string `protobuf:"bytes,1,rep,name=message_ids,json=messageIds,proto3" json:"message_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMessagesRequest) Reset() {
+	*x = GetMessagesRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMessagesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMessagesRequest) ProtoMessage() {}
+
+func (x *GetMessagesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMessagesRequest.ProtoReflect.Descriptor instead.
+func (*GetMessagesRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *GetMessagesRequest) GetMessageIds() []string {
+	if x != nil {
+		return x.MessageIds
+	}
+	return nil
+}
+
+// GetMessagesResponse returns the requested messages.
+type GetMessagesResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Messages in no particular order.
+	Messages      []*Message `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMessagesResponse) Reset() {
+	*x = GetMessagesResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMessagesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMessagesResponse) ProtoMessage() {}
+
+func (x *GetMessagesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMessagesResponse.ProtoReflect.Descriptor instead.
+func (*GetMessagesResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *GetMessagesResponse) GetMessages() []*Message {
+	if x != nil {
+		return x.Messages
+	}
+	return nil
+}
+
 // OutgoingMessage is one message a producer wants sent.
 type OutgoingMessage struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -2543,7 +2644,7 @@ type OutgoingMessage struct {
 
 func (x *OutgoingMessage) Reset() {
 	*x = OutgoingMessage{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[46]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2555,7 +2656,7 @@ func (x *OutgoingMessage) String() string {
 func (*OutgoingMessage) ProtoMessage() {}
 
 func (x *OutgoingMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[46]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2568,7 +2669,7 @@ func (x *OutgoingMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OutgoingMessage.ProtoReflect.Descriptor instead.
 func (*OutgoingMessage) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{46}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *OutgoingMessage) GetPhoneNumber() string {
@@ -2598,7 +2699,7 @@ type SendMessagesRequest struct {
 
 func (x *SendMessagesRequest) Reset() {
 	*x = SendMessagesRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[47]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2610,7 +2711,7 @@ func (x *SendMessagesRequest) String() string {
 func (*SendMessagesRequest) ProtoMessage() {}
 
 func (x *SendMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[47]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2623,7 +2724,7 @@ func (x *SendMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessagesRequest.ProtoReflect.Descriptor instead.
 func (*SendMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{47}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *SendMessagesRequest) GetMessages() []*OutgoingMessage {
@@ -2653,7 +2754,7 @@ type SendMessagesResponse struct {
 
 func (x *SendMessagesResponse) Reset() {
 	*x = SendMessagesResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[48]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2665,7 +2766,7 @@ func (x *SendMessagesResponse) String() string {
 func (*SendMessagesResponse) ProtoMessage() {}
 
 func (x *SendMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[48]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2678,7 +2779,7 @@ func (x *SendMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessagesResponse.ProtoReflect.Descriptor instead.
 func (*SendMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{48}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *SendMessagesResponse) GetBatchId() string {
@@ -2704,7 +2805,7 @@ type StreamJobsRequest struct {
 
 func (x *StreamJobsRequest) Reset() {
 	*x = StreamJobsRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[49]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2716,7 +2817,7 @@ func (x *StreamJobsRequest) String() string {
 func (*StreamJobsRequest) ProtoMessage() {}
 
 func (x *StreamJobsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[49]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2729,7 +2830,7 @@ func (x *StreamJobsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamJobsRequest.ProtoReflect.Descriptor instead.
 func (*StreamJobsRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{49}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{51}
 }
 
 // Job is a single SMS for the device to send. The device paces consecutive
@@ -2757,7 +2858,7 @@ type Job struct {
 
 func (x *Job) Reset() {
 	*x = Job{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[50]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2769,7 +2870,7 @@ func (x *Job) String() string {
 func (*Job) ProtoMessage() {}
 
 func (x *Job) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[50]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2782,7 +2883,7 @@ func (x *Job) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Job.ProtoReflect.Descriptor instead.
 func (*Job) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{50}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *Job) GetMessageId() string {
@@ -2844,7 +2945,7 @@ type ReportDeliveryRequest struct {
 
 func (x *ReportDeliveryRequest) Reset() {
 	*x = ReportDeliveryRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[51]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2856,7 +2957,7 @@ func (x *ReportDeliveryRequest) String() string {
 func (*ReportDeliveryRequest) ProtoMessage() {}
 
 func (x *ReportDeliveryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[51]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2869,7 +2970,7 @@ func (x *ReportDeliveryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportDeliveryRequest.ProtoReflect.Descriptor instead.
 func (*ReportDeliveryRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{51}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *ReportDeliveryRequest) GetMessageId() string {
@@ -2909,7 +3010,7 @@ type ReportDeliveryResponse struct {
 
 func (x *ReportDeliveryResponse) Reset() {
 	*x = ReportDeliveryResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[52]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2921,7 +3022,7 @@ func (x *ReportDeliveryResponse) String() string {
 func (*ReportDeliveryResponse) ProtoMessage() {}
 
 func (x *ReportDeliveryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[52]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2934,7 +3035,7 @@ func (x *ReportDeliveryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportDeliveryResponse.ProtoReflect.Descriptor instead.
 func (*ReportDeliveryResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{52}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{54}
 }
 
 var File_porukator_v1_porukator_proto protoreflect.FileDescriptor
@@ -3068,12 +3169,18 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"\x15UpdateSettingsRequest\x122\n" +
 	"\bsettings\x18\x01 \x01(\v2\x16.porukator.v1.SettingsR\bsettings\"L\n" +
 	"\x16UpdateSettingsResponse\x122\n" +
-	"\bsettings\x18\x01 \x01(\v2\x16.porukator.v1.SettingsR\bsettings\"}\n" +
+	"\bsettings\x18\x01 \x01(\v2\x16.porukator.v1.SettingsR\bsettings\"\x98\x01\n" +
 	"\x13ListMessagesRequest\x123\n" +
 	"\x06status\x18\x01 \x01(\x0e2\x1b.porukator.v1.MessageStatusR\x06status\x12\x1b\n" +
 	"\tclient_id\x18\x02 \x01(\tR\bclientId\x12\x14\n" +
-	"\x05limit\x18\x03 \x01(\x05R\x05limit\"I\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x19\n" +
+	"\bbatch_id\x18\x04 \x01(\tR\abatchId\"I\n" +
 	"\x14ListMessagesResponse\x121\n" +
+	"\bmessages\x18\x01 \x03(\v2\x15.porukator.v1.MessageR\bmessages\"5\n" +
+	"\x12GetMessagesRequest\x12\x1f\n" +
+	"\vmessage_ids\x18\x01 \x03(\tR\n" +
+	"messageIds\"H\n" +
+	"\x13GetMessagesResponse\x121\n" +
 	"\bmessages\x18\x01 \x03(\v2\x15.porukator.v1.MessageR\bmessages\"N\n" +
 	"\x0fOutgoingMessage\x12!\n" +
 	"\fphone_number\x18\x01 \x01(\tR\vphoneNumber\x12\x18\n" +
@@ -3135,10 +3242,12 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"\n" +
 	"DeleteUser\x12\x1f.porukator.v1.DeleteUserRequest\x1a .porukator.v1.DeleteUserResponse\x12U\n" +
 	"\fListSessions\x12!.porukator.v1.ListSessionsRequest\x1a\".porukator.v1.ListSessionsResponse\x12X\n" +
-	"\rRevokeSession\x12\".porukator.v1.RevokeSessionRequest\x1a#.porukator.v1.RevokeSessionResponse2\xbc\x01\n" +
+	"\rRevokeSession\x12\".porukator.v1.RevokeSessionRequest\x1a#.porukator.v1.RevokeSessionResponse2\xe7\x02\n" +
 	"\x0fProducerService\x12R\n" +
 	"\vListClients\x12 .porukator.v1.ListClientsRequest\x1a!.porukator.v1.ListClientsResponse\x12U\n" +
-	"\fSendMessages\x12!.porukator.v1.SendMessagesRequest\x1a\".porukator.v1.SendMessagesResponse2\xb0\x01\n" +
+	"\fSendMessages\x12!.porukator.v1.SendMessagesRequest\x1a\".porukator.v1.SendMessagesResponse\x12R\n" +
+	"\vGetMessages\x12 .porukator.v1.GetMessagesRequest\x1a!.porukator.v1.GetMessagesResponse\x12U\n" +
+	"\fListMessages\x12!.porukator.v1.ListMessagesRequest\x1a\".porukator.v1.ListMessagesResponse2\xb0\x01\n" +
 	"\rClientService\x12B\n" +
 	"\n" +
 	"StreamJobs\x12\x1f.porukator.v1.StreamJobsRequest\x1a\x11.porukator.v1.Job0\x01\x12[\n" +
@@ -3157,7 +3266,7 @@ func file_porukator_v1_porukator_proto_rawDescGZIP() []byte {
 }
 
 var file_porukator_v1_porukator_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_porukator_v1_porukator_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
+var file_porukator_v1_porukator_proto_msgTypes = make([]protoimpl.MessageInfo, 55)
 var file_porukator_v1_porukator_proto_goTypes = []any{
 	(MessageStatus)(0),              // 0: porukator.v1.MessageStatus
 	(Role)(0),                       // 1: porukator.v1.Role
@@ -3207,28 +3316,30 @@ var file_porukator_v1_porukator_proto_goTypes = []any{
 	(*UpdateSettingsResponse)(nil),  // 45: porukator.v1.UpdateSettingsResponse
 	(*ListMessagesRequest)(nil),     // 46: porukator.v1.ListMessagesRequest
 	(*ListMessagesResponse)(nil),    // 47: porukator.v1.ListMessagesResponse
-	(*OutgoingMessage)(nil),         // 48: porukator.v1.OutgoingMessage
-	(*SendMessagesRequest)(nil),     // 49: porukator.v1.SendMessagesRequest
-	(*SendMessagesResponse)(nil),    // 50: porukator.v1.SendMessagesResponse
-	(*StreamJobsRequest)(nil),       // 51: porukator.v1.StreamJobsRequest
-	(*Job)(nil),                     // 52: porukator.v1.Job
-	(*ReportDeliveryRequest)(nil),   // 53: porukator.v1.ReportDeliveryRequest
-	(*ReportDeliveryResponse)(nil),  // 54: porukator.v1.ReportDeliveryResponse
-	(*timestamppb.Timestamp)(nil),   // 55: google.protobuf.Timestamp
+	(*GetMessagesRequest)(nil),      // 48: porukator.v1.GetMessagesRequest
+	(*GetMessagesResponse)(nil),     // 49: porukator.v1.GetMessagesResponse
+	(*OutgoingMessage)(nil),         // 50: porukator.v1.OutgoingMessage
+	(*SendMessagesRequest)(nil),     // 51: porukator.v1.SendMessagesRequest
+	(*SendMessagesResponse)(nil),    // 52: porukator.v1.SendMessagesResponse
+	(*StreamJobsRequest)(nil),       // 53: porukator.v1.StreamJobsRequest
+	(*Job)(nil),                     // 54: porukator.v1.Job
+	(*ReportDeliveryRequest)(nil),   // 55: porukator.v1.ReportDeliveryRequest
+	(*ReportDeliveryResponse)(nil),  // 56: porukator.v1.ReportDeliveryResponse
+	(*timestamppb.Timestamp)(nil),   // 57: google.protobuf.Timestamp
 }
 var file_porukator_v1_porukator_proto_depIdxs = []int32{
 	0,  // 0: porukator.v1.Message.status:type_name -> porukator.v1.MessageStatus
-	55, // 1: porukator.v1.Message.received_at:type_name -> google.protobuf.Timestamp
-	55, // 2: porukator.v1.Message.dispatched_at:type_name -> google.protobuf.Timestamp
-	55, // 3: porukator.v1.Message.sent_at:type_name -> google.protobuf.Timestamp
-	55, // 4: porukator.v1.Client.last_seen_at:type_name -> google.protobuf.Timestamp
-	55, // 5: porukator.v1.Client.created_at:type_name -> google.protobuf.Timestamp
+	57, // 1: porukator.v1.Message.received_at:type_name -> google.protobuf.Timestamp
+	57, // 2: porukator.v1.Message.dispatched_at:type_name -> google.protobuf.Timestamp
+	57, // 3: porukator.v1.Message.sent_at:type_name -> google.protobuf.Timestamp
+	57, // 4: porukator.v1.Client.last_seen_at:type_name -> google.protobuf.Timestamp
+	57, // 5: porukator.v1.Client.created_at:type_name -> google.protobuf.Timestamp
 	1,  // 6: porukator.v1.User.role:type_name -> porukator.v1.Role
-	55, // 7: porukator.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	55, // 8: porukator.v1.Session.created_at:type_name -> google.protobuf.Timestamp
-	55, // 9: porukator.v1.Session.last_used_at:type_name -> google.protobuf.Timestamp
-	55, // 10: porukator.v1.ApiToken.created_at:type_name -> google.protobuf.Timestamp
-	55, // 11: porukator.v1.ApiToken.last_used_at:type_name -> google.protobuf.Timestamp
+	57, // 7: porukator.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	57, // 8: porukator.v1.Session.created_at:type_name -> google.protobuf.Timestamp
+	57, // 9: porukator.v1.Session.last_used_at:type_name -> google.protobuf.Timestamp
+	57, // 10: porukator.v1.ApiToken.created_at:type_name -> google.protobuf.Timestamp
+	57, // 11: porukator.v1.ApiToken.last_used_at:type_name -> google.protobuf.Timestamp
 	4,  // 12: porukator.v1.LoginResponse.user:type_name -> porukator.v1.User
 	4,  // 13: porukator.v1.GetCurrentUserResponse.user:type_name -> porukator.v1.User
 	1,  // 14: porukator.v1.CreateUserRequest.role:type_name -> porukator.v1.Role
@@ -3248,61 +3359,66 @@ var file_porukator_v1_porukator_proto_depIdxs = []int32{
 	7,  // 28: porukator.v1.UpdateSettingsResponse.settings:type_name -> porukator.v1.Settings
 	0,  // 29: porukator.v1.ListMessagesRequest.status:type_name -> porukator.v1.MessageStatus
 	2,  // 30: porukator.v1.ListMessagesResponse.messages:type_name -> porukator.v1.Message
-	48, // 31: porukator.v1.SendMessagesRequest.messages:type_name -> porukator.v1.OutgoingMessage
-	55, // 32: porukator.v1.ReportDeliveryRequest.sent_at:type_name -> google.protobuf.Timestamp
-	8,  // 33: porukator.v1.AdminService.Login:input_type -> porukator.v1.LoginRequest
-	10, // 34: porukator.v1.AdminService.Logout:input_type -> porukator.v1.LogoutRequest
-	12, // 35: porukator.v1.AdminService.GetCurrentUser:input_type -> porukator.v1.GetCurrentUserRequest
-	28, // 36: porukator.v1.AdminService.CreateClient:input_type -> porukator.v1.CreateClientRequest
-	30, // 37: porukator.v1.AdminService.ListClients:input_type -> porukator.v1.ListClientsRequest
-	32, // 38: porukator.v1.AdminService.RenameClient:input_type -> porukator.v1.RenameClientRequest
-	34, // 39: porukator.v1.AdminService.RevokeClient:input_type -> porukator.v1.RevokeClientRequest
-	36, // 40: porukator.v1.AdminService.CreateApiToken:input_type -> porukator.v1.CreateApiTokenRequest
-	38, // 41: porukator.v1.AdminService.ListApiTokens:input_type -> porukator.v1.ListApiTokensRequest
-	40, // 42: porukator.v1.AdminService.RevokeApiToken:input_type -> porukator.v1.RevokeApiTokenRequest
-	42, // 43: porukator.v1.AdminService.GetSettings:input_type -> porukator.v1.GetSettingsRequest
-	44, // 44: porukator.v1.AdminService.UpdateSettings:input_type -> porukator.v1.UpdateSettingsRequest
-	46, // 45: porukator.v1.AdminService.ListMessages:input_type -> porukator.v1.ListMessagesRequest
-	14, // 46: porukator.v1.AdminService.CreateUser:input_type -> porukator.v1.CreateUserRequest
-	16, // 47: porukator.v1.AdminService.ListUsers:input_type -> porukator.v1.ListUsersRequest
-	18, // 48: porukator.v1.AdminService.SetUserRole:input_type -> porukator.v1.SetUserRoleRequest
-	20, // 49: porukator.v1.AdminService.SetUserDisabled:input_type -> porukator.v1.SetUserDisabledRequest
-	22, // 50: porukator.v1.AdminService.DeleteUser:input_type -> porukator.v1.DeleteUserRequest
-	24, // 51: porukator.v1.AdminService.ListSessions:input_type -> porukator.v1.ListSessionsRequest
-	26, // 52: porukator.v1.AdminService.RevokeSession:input_type -> porukator.v1.RevokeSessionRequest
-	30, // 53: porukator.v1.ProducerService.ListClients:input_type -> porukator.v1.ListClientsRequest
-	49, // 54: porukator.v1.ProducerService.SendMessages:input_type -> porukator.v1.SendMessagesRequest
-	51, // 55: porukator.v1.ClientService.StreamJobs:input_type -> porukator.v1.StreamJobsRequest
-	53, // 56: porukator.v1.ClientService.ReportDelivery:input_type -> porukator.v1.ReportDeliveryRequest
-	9,  // 57: porukator.v1.AdminService.Login:output_type -> porukator.v1.LoginResponse
-	11, // 58: porukator.v1.AdminService.Logout:output_type -> porukator.v1.LogoutResponse
-	13, // 59: porukator.v1.AdminService.GetCurrentUser:output_type -> porukator.v1.GetCurrentUserResponse
-	29, // 60: porukator.v1.AdminService.CreateClient:output_type -> porukator.v1.CreateClientResponse
-	31, // 61: porukator.v1.AdminService.ListClients:output_type -> porukator.v1.ListClientsResponse
-	33, // 62: porukator.v1.AdminService.RenameClient:output_type -> porukator.v1.RenameClientResponse
-	35, // 63: porukator.v1.AdminService.RevokeClient:output_type -> porukator.v1.RevokeClientResponse
-	37, // 64: porukator.v1.AdminService.CreateApiToken:output_type -> porukator.v1.CreateApiTokenResponse
-	39, // 65: porukator.v1.AdminService.ListApiTokens:output_type -> porukator.v1.ListApiTokensResponse
-	41, // 66: porukator.v1.AdminService.RevokeApiToken:output_type -> porukator.v1.RevokeApiTokenResponse
-	43, // 67: porukator.v1.AdminService.GetSettings:output_type -> porukator.v1.GetSettingsResponse
-	45, // 68: porukator.v1.AdminService.UpdateSettings:output_type -> porukator.v1.UpdateSettingsResponse
-	47, // 69: porukator.v1.AdminService.ListMessages:output_type -> porukator.v1.ListMessagesResponse
-	15, // 70: porukator.v1.AdminService.CreateUser:output_type -> porukator.v1.CreateUserResponse
-	17, // 71: porukator.v1.AdminService.ListUsers:output_type -> porukator.v1.ListUsersResponse
-	19, // 72: porukator.v1.AdminService.SetUserRole:output_type -> porukator.v1.SetUserRoleResponse
-	21, // 73: porukator.v1.AdminService.SetUserDisabled:output_type -> porukator.v1.SetUserDisabledResponse
-	23, // 74: porukator.v1.AdminService.DeleteUser:output_type -> porukator.v1.DeleteUserResponse
-	25, // 75: porukator.v1.AdminService.ListSessions:output_type -> porukator.v1.ListSessionsResponse
-	27, // 76: porukator.v1.AdminService.RevokeSession:output_type -> porukator.v1.RevokeSessionResponse
-	31, // 77: porukator.v1.ProducerService.ListClients:output_type -> porukator.v1.ListClientsResponse
-	50, // 78: porukator.v1.ProducerService.SendMessages:output_type -> porukator.v1.SendMessagesResponse
-	52, // 79: porukator.v1.ClientService.StreamJobs:output_type -> porukator.v1.Job
-	54, // 80: porukator.v1.ClientService.ReportDelivery:output_type -> porukator.v1.ReportDeliveryResponse
-	57, // [57:81] is the sub-list for method output_type
-	33, // [33:57] is the sub-list for method input_type
-	33, // [33:33] is the sub-list for extension type_name
-	33, // [33:33] is the sub-list for extension extendee
-	0,  // [0:33] is the sub-list for field type_name
+	2,  // 31: porukator.v1.GetMessagesResponse.messages:type_name -> porukator.v1.Message
+	50, // 32: porukator.v1.SendMessagesRequest.messages:type_name -> porukator.v1.OutgoingMessage
+	57, // 33: porukator.v1.ReportDeliveryRequest.sent_at:type_name -> google.protobuf.Timestamp
+	8,  // 34: porukator.v1.AdminService.Login:input_type -> porukator.v1.LoginRequest
+	10, // 35: porukator.v1.AdminService.Logout:input_type -> porukator.v1.LogoutRequest
+	12, // 36: porukator.v1.AdminService.GetCurrentUser:input_type -> porukator.v1.GetCurrentUserRequest
+	28, // 37: porukator.v1.AdminService.CreateClient:input_type -> porukator.v1.CreateClientRequest
+	30, // 38: porukator.v1.AdminService.ListClients:input_type -> porukator.v1.ListClientsRequest
+	32, // 39: porukator.v1.AdminService.RenameClient:input_type -> porukator.v1.RenameClientRequest
+	34, // 40: porukator.v1.AdminService.RevokeClient:input_type -> porukator.v1.RevokeClientRequest
+	36, // 41: porukator.v1.AdminService.CreateApiToken:input_type -> porukator.v1.CreateApiTokenRequest
+	38, // 42: porukator.v1.AdminService.ListApiTokens:input_type -> porukator.v1.ListApiTokensRequest
+	40, // 43: porukator.v1.AdminService.RevokeApiToken:input_type -> porukator.v1.RevokeApiTokenRequest
+	42, // 44: porukator.v1.AdminService.GetSettings:input_type -> porukator.v1.GetSettingsRequest
+	44, // 45: porukator.v1.AdminService.UpdateSettings:input_type -> porukator.v1.UpdateSettingsRequest
+	46, // 46: porukator.v1.AdminService.ListMessages:input_type -> porukator.v1.ListMessagesRequest
+	14, // 47: porukator.v1.AdminService.CreateUser:input_type -> porukator.v1.CreateUserRequest
+	16, // 48: porukator.v1.AdminService.ListUsers:input_type -> porukator.v1.ListUsersRequest
+	18, // 49: porukator.v1.AdminService.SetUserRole:input_type -> porukator.v1.SetUserRoleRequest
+	20, // 50: porukator.v1.AdminService.SetUserDisabled:input_type -> porukator.v1.SetUserDisabledRequest
+	22, // 51: porukator.v1.AdminService.DeleteUser:input_type -> porukator.v1.DeleteUserRequest
+	24, // 52: porukator.v1.AdminService.ListSessions:input_type -> porukator.v1.ListSessionsRequest
+	26, // 53: porukator.v1.AdminService.RevokeSession:input_type -> porukator.v1.RevokeSessionRequest
+	30, // 54: porukator.v1.ProducerService.ListClients:input_type -> porukator.v1.ListClientsRequest
+	51, // 55: porukator.v1.ProducerService.SendMessages:input_type -> porukator.v1.SendMessagesRequest
+	48, // 56: porukator.v1.ProducerService.GetMessages:input_type -> porukator.v1.GetMessagesRequest
+	46, // 57: porukator.v1.ProducerService.ListMessages:input_type -> porukator.v1.ListMessagesRequest
+	53, // 58: porukator.v1.ClientService.StreamJobs:input_type -> porukator.v1.StreamJobsRequest
+	55, // 59: porukator.v1.ClientService.ReportDelivery:input_type -> porukator.v1.ReportDeliveryRequest
+	9,  // 60: porukator.v1.AdminService.Login:output_type -> porukator.v1.LoginResponse
+	11, // 61: porukator.v1.AdminService.Logout:output_type -> porukator.v1.LogoutResponse
+	13, // 62: porukator.v1.AdminService.GetCurrentUser:output_type -> porukator.v1.GetCurrentUserResponse
+	29, // 63: porukator.v1.AdminService.CreateClient:output_type -> porukator.v1.CreateClientResponse
+	31, // 64: porukator.v1.AdminService.ListClients:output_type -> porukator.v1.ListClientsResponse
+	33, // 65: porukator.v1.AdminService.RenameClient:output_type -> porukator.v1.RenameClientResponse
+	35, // 66: porukator.v1.AdminService.RevokeClient:output_type -> porukator.v1.RevokeClientResponse
+	37, // 67: porukator.v1.AdminService.CreateApiToken:output_type -> porukator.v1.CreateApiTokenResponse
+	39, // 68: porukator.v1.AdminService.ListApiTokens:output_type -> porukator.v1.ListApiTokensResponse
+	41, // 69: porukator.v1.AdminService.RevokeApiToken:output_type -> porukator.v1.RevokeApiTokenResponse
+	43, // 70: porukator.v1.AdminService.GetSettings:output_type -> porukator.v1.GetSettingsResponse
+	45, // 71: porukator.v1.AdminService.UpdateSettings:output_type -> porukator.v1.UpdateSettingsResponse
+	47, // 72: porukator.v1.AdminService.ListMessages:output_type -> porukator.v1.ListMessagesResponse
+	15, // 73: porukator.v1.AdminService.CreateUser:output_type -> porukator.v1.CreateUserResponse
+	17, // 74: porukator.v1.AdminService.ListUsers:output_type -> porukator.v1.ListUsersResponse
+	19, // 75: porukator.v1.AdminService.SetUserRole:output_type -> porukator.v1.SetUserRoleResponse
+	21, // 76: porukator.v1.AdminService.SetUserDisabled:output_type -> porukator.v1.SetUserDisabledResponse
+	23, // 77: porukator.v1.AdminService.DeleteUser:output_type -> porukator.v1.DeleteUserResponse
+	25, // 78: porukator.v1.AdminService.ListSessions:output_type -> porukator.v1.ListSessionsResponse
+	27, // 79: porukator.v1.AdminService.RevokeSession:output_type -> porukator.v1.RevokeSessionResponse
+	31, // 80: porukator.v1.ProducerService.ListClients:output_type -> porukator.v1.ListClientsResponse
+	52, // 81: porukator.v1.ProducerService.SendMessages:output_type -> porukator.v1.SendMessagesResponse
+	49, // 82: porukator.v1.ProducerService.GetMessages:output_type -> porukator.v1.GetMessagesResponse
+	47, // 83: porukator.v1.ProducerService.ListMessages:output_type -> porukator.v1.ListMessagesResponse
+	54, // 84: porukator.v1.ClientService.StreamJobs:output_type -> porukator.v1.Job
+	56, // 85: porukator.v1.ClientService.ReportDelivery:output_type -> porukator.v1.ReportDeliveryResponse
+	60, // [60:86] is the sub-list for method output_type
+	34, // [34:60] is the sub-list for method input_type
+	34, // [34:34] is the sub-list for extension type_name
+	34, // [34:34] is the sub-list for extension extendee
+	0,  // [0:34] is the sub-list for field type_name
 }
 
 func init() { file_porukator_v1_porukator_proto_init() }
@@ -3316,7 +3432,7 @@ func file_porukator_v1_porukator_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_porukator_v1_porukator_proto_rawDesc), len(file_porukator_v1_porukator_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   53,
+			NumMessages:   55,
 			NumExtensions: 0,
 			NumServices:   3,
 		},

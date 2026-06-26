@@ -20356,6 +20356,26 @@ public final class Porukator {
      * @return The limit.
      */
     int getLimit();
+
+    /**
+     * <pre>
+     * Optional batch UUID filter (from SendMessages); empty means all.
+     * </pre>
+     *
+     * <code>string batch_id = 4 [json_name = "batchId"];</code>
+     * @return The batchId.
+     */
+    java.lang.String getBatchId();
+    /**
+     * <pre>
+     * Optional batch UUID filter (from SendMessages); empty means all.
+     * </pre>
+     *
+     * <code>string batch_id = 4 [json_name = "batchId"];</code>
+     * @return The bytes for batchId.
+     */
+    com.google.protobuf.ByteString
+        getBatchIdBytes();
   }
   /**
    * <pre>
@@ -20371,6 +20391,7 @@ public final class Porukator {
       ListMessagesRequestOrBuilder {
     private ListMessagesRequest() {
       clientId_ = "";
+      batchId_ = "";
     }
     public static final int STATUS_FIELD_NUMBER = 1;
     private int status_;
@@ -20537,6 +20558,73 @@ public final class Porukator {
     private void clearLimit() {
 
       limit_ = 0;
+    }
+
+    public static final int BATCH_ID_FIELD_NUMBER = 4;
+    private java.lang.String batchId_;
+    /**
+     * <pre>
+     * Optional batch UUID filter (from SendMessages); empty means all.
+     * </pre>
+     *
+     * <code>string batch_id = 4 [json_name = "batchId"];</code>
+     * @return The batchId.
+     */
+    @java.lang.Override
+    public java.lang.String getBatchId() {
+      return batchId_;
+    }
+    /**
+     * <pre>
+     * Optional batch UUID filter (from SendMessages); empty means all.
+     * </pre>
+     *
+     * <code>string batch_id = 4 [json_name = "batchId"];</code>
+     * @return The bytes for batchId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getBatchIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(batchId_);
+    }
+    /**
+     * <pre>
+     * Optional batch UUID filter (from SendMessages); empty means all.
+     * </pre>
+     *
+     * <code>string batch_id = 4 [json_name = "batchId"];</code>
+     * @param value The batchId to set.
+     */
+    private void setBatchId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      batchId_ = value;
+    }
+    /**
+     * <pre>
+     * Optional batch UUID filter (from SendMessages); empty means all.
+     * </pre>
+     *
+     * <code>string batch_id = 4 [json_name = "batchId"];</code>
+     */
+    private void clearBatchId() {
+
+      batchId_ = getDefaultInstance().getBatchId();
+    }
+    /**
+     * <pre>
+     * Optional batch UUID filter (from SendMessages); empty means all.
+     * </pre>
+     *
+     * <code>string batch_id = 4 [json_name = "batchId"];</code>
+     * @param value The bytes for batchId to set.
+     */
+    private void setBatchIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      batchId_ = value.toStringUtf8();
+
     }
 
     public static porukator.v1.Porukator.ListMessagesRequest parseFrom(
@@ -20815,6 +20903,75 @@ public final class Porukator {
         return this;
       }
 
+      /**
+       * <pre>
+       * Optional batch UUID filter (from SendMessages); empty means all.
+       * </pre>
+       *
+       * <code>string batch_id = 4 [json_name = "batchId"];</code>
+       * @return The batchId.
+       */
+      @java.lang.Override
+      public java.lang.String getBatchId() {
+        return instance.getBatchId();
+      }
+      /**
+       * <pre>
+       * Optional batch UUID filter (from SendMessages); empty means all.
+       * </pre>
+       *
+       * <code>string batch_id = 4 [json_name = "batchId"];</code>
+       * @return The bytes for batchId.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getBatchIdBytes() {
+        return instance.getBatchIdBytes();
+      }
+      /**
+       * <pre>
+       * Optional batch UUID filter (from SendMessages); empty means all.
+       * </pre>
+       *
+       * <code>string batch_id = 4 [json_name = "batchId"];</code>
+       * @param value The batchId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBatchId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setBatchId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional batch UUID filter (from SendMessages); empty means all.
+       * </pre>
+       *
+       * <code>string batch_id = 4 [json_name = "batchId"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBatchId() {
+        copyOnWrite();
+        instance.clearBatchId();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional batch UUID filter (from SendMessages); empty means all.
+       * </pre>
+       *
+       * <code>string batch_id = 4 [json_name = "batchId"];</code>
+       * @param value The bytes for batchId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBatchIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setBatchIdBytes(value);
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:porukator.v1.ListMessagesRequest)
     }
     @java.lang.Override
@@ -20834,10 +20991,11 @@ public final class Porukator {
               "status_",
               "clientId_",
               "limit_",
+              "batchId_",
             };
             java.lang.String info =
-                "\u0000\u0003\u0000\u0000\u0001\u0003\u0003\u0000\u0000\u0000\u0001\f\u0002\u0208" +
-                "\u0003\u0004";
+                "\u0000\u0004\u0000\u0000\u0001\u0004\u0004\u0000\u0000\u0000\u0001\f\u0002\u0208" +
+                "\u0003\u0004\u0004\u0208";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through
@@ -21397,6 +21555,1007 @@ public final class Porukator {
     private static volatile com.google.protobuf.Parser<ListMessagesResponse> PARSER;
 
     public static com.google.protobuf.Parser<ListMessagesResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface GetMessagesRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.GetMessagesRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @return A list containing the messageIds.
+     */
+    java.util.List<java.lang.String>
+        getMessageIdsList();
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @return The count of messageIds.
+     */
+    int getMessageIdsCount();
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param index The index of the element to return.
+     * @return The messageIds at the given index.
+     */
+    java.lang.String getMessageIds(int index);
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param index The index of the element to return.
+     * @return The messageIds at the given index.
+     */
+    com.google.protobuf.ByteString
+        getMessageIdsBytes(int index);
+  }
+  /**
+   * <pre>
+   * GetMessagesRequest names the messages to look up.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.GetMessagesRequest}
+   */
+  public  static final class GetMessagesRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          GetMessagesRequest, GetMessagesRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.GetMessagesRequest)
+      GetMessagesRequestOrBuilder {
+    private GetMessagesRequest() {
+      messageIds_ = com.google.protobuf.GeneratedMessageLite.emptyProtobufList();
+    }
+    public static final int MESSAGE_IDS_FIELD_NUMBER = 1;
+    private com.google.protobuf.Internal.ProtobufList<java.lang.String> messageIds_;
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @return A list containing the messageIds.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.String> getMessageIdsList() {
+      return messageIds_;
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @return The count of messageIds.
+     */
+    @java.lang.Override
+    public int getMessageIdsCount() {
+      return messageIds_.size();
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param index The index of the element to return.
+     * @return The messageIds at the given index.
+     */
+    @java.lang.Override
+    public java.lang.String getMessageIds(int index) {
+      return messageIds_.get(index);
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the messageIds at the given index.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getMessageIdsBytes(int index) {
+      return com.google.protobuf.ByteString.copyFromUtf8(
+          messageIds_.get(index));
+    }
+    private void ensureMessageIdsIsMutable() {
+      com.google.protobuf.Internal.ProtobufList<java.lang.String> tmp =
+          messageIds_;  if (!tmp.isModifiable()) {
+        messageIds_ =
+            com.google.protobuf.GeneratedMessageLite.mutableCopy(tmp);
+       }
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param index The index to set the value at.
+     * @param value The messageIds to set.
+     */
+    private void setMessageIds(
+        int index, java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  ensureMessageIdsIsMutable();
+      messageIds_.set(index, value);
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param value The messageIds to add.
+     */
+    private void addMessageIds(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  ensureMessageIdsIsMutable();
+      messageIds_.add(value);
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param values The messageIds to add.
+     */
+    private void addAllMessageIds(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureMessageIdsIsMutable();
+      com.google.protobuf.AbstractMessageLite.addAll(
+          values, messageIds_);
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     */
+    private void clearMessageIds() {
+      messageIds_ = com.google.protobuf.GeneratedMessageLite.emptyProtobufList();
+    }
+    /**
+     * <pre>
+     * Server-generated message UUIDs (from SendMessages).
+     * </pre>
+     *
+     * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+     * @param value The bytes of the messageIds to add.
+     */
+    private void addMessageIdsBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      ensureMessageIdsIsMutable();
+      messageIds_.add(value.toStringUtf8());
+    }
+
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.GetMessagesRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.GetMessagesRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetMessagesRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.GetMessagesRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * GetMessagesRequest names the messages to look up.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.GetMessagesRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.GetMessagesRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.GetMessagesRequest)
+        porukator.v1.Porukator.GetMessagesRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.GetMessagesRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @return A list containing the messageIds.
+       */
+      @java.lang.Override
+      public java.util.List<java.lang.String>
+          getMessageIdsList() {
+        return java.util.Collections.unmodifiableList(
+            instance.getMessageIdsList());
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @return The count of messageIds.
+       */
+      @java.lang.Override
+      public int getMessageIdsCount() {
+        return instance.getMessageIdsCount();
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @param index The index of the element to return.
+       * @return The messageIds at the given index.
+       */
+      @java.lang.Override
+      public java.lang.String getMessageIds(int index) {
+        return instance.getMessageIds(index);
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the messageIds at the given index.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getMessageIdsBytes(int index) {
+        return instance.getMessageIdsBytes(index);
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @param index The index to set the value at.
+       * @param value The messageIds to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMessageIds(
+          int index, java.lang.String value) {
+        copyOnWrite();
+        instance.setMessageIds(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @param value The messageIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addMessageIds(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.addMessageIds(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @param values The messageIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllMessageIds(
+          java.lang.Iterable<java.lang.String> values) {
+        copyOnWrite();
+        instance.addAllMessageIds(values);
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMessageIds() {
+        copyOnWrite();
+        instance.clearMessageIds();
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated message UUIDs (from SendMessages).
+       * </pre>
+       *
+       * <code>repeated string message_ids = 1 [json_name = "messageIds"];</code>
+       * @param value The bytes of the messageIds to add.
+       * @return This builder for chaining.
+       */
+      public Builder addMessageIdsBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.addMessageIdsBytes(value);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.GetMessagesRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.GetMessagesRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "messageIds_",
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0001\u0000\u0001\u021a";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.GetMessagesRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.GetMessagesRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.GetMessagesRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.GetMessagesRequest)
+    private static final porukator.v1.Porukator.GetMessagesRequest DEFAULT_INSTANCE;
+    static {
+      GetMessagesRequest defaultInstance = new GetMessagesRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        GetMessagesRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.GetMessagesRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<GetMessagesRequest> PARSER;
+
+    public static com.google.protobuf.Parser<GetMessagesRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface GetMessagesResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.GetMessagesResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    java.util.List<porukator.v1.Porukator.Message> 
+        getMessagesList();
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    porukator.v1.Porukator.Message getMessages(int index);
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    int getMessagesCount();
+  }
+  /**
+   * <pre>
+   * GetMessagesResponse returns the requested messages.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.GetMessagesResponse}
+   */
+  public  static final class GetMessagesResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          GetMessagesResponse, GetMessagesResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.GetMessagesResponse)
+      GetMessagesResponseOrBuilder {
+    private GetMessagesResponse() {
+      messages_ = emptyProtobufList();
+    }
+    public static final int MESSAGES_FIELD_NUMBER = 1;
+    private com.google.protobuf.Internal.ProtobufList<porukator.v1.Porukator.Message> messages_;
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    @java.lang.Override
+    public java.util.List<porukator.v1.Porukator.Message> getMessagesList() {
+      return messages_;
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    public java.util.List<? extends porukator.v1.Porukator.MessageOrBuilder> 
+        getMessagesOrBuilderList() {
+      return messages_;
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    @java.lang.Override
+    public int getMessagesCount() {
+      return messages_.size();
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.Message getMessages(int index) {
+      return messages_.get(index);
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    public porukator.v1.Porukator.MessageOrBuilder getMessagesOrBuilder(
+        int index) {
+      return messages_.get(index);
+    }
+    private void ensureMessagesIsMutable() {
+      com.google.protobuf.Internal.ProtobufList<porukator.v1.Porukator.Message> tmp = messages_;
+      if (!tmp.isModifiable()) {
+        messages_ =
+            com.google.protobuf.GeneratedMessageLite.mutableCopy(tmp);
+       }
+    }
+
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    private void setMessages(
+        int index, porukator.v1.Porukator.Message value) {
+      value.getClass();
+  ensureMessagesIsMutable();
+      messages_.set(index, value);
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    private void addMessages(porukator.v1.Porukator.Message value) {
+      value.getClass();
+  ensureMessagesIsMutable();
+      messages_.add(value);
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    private void addMessages(
+        int index, porukator.v1.Porukator.Message value) {
+      value.getClass();
+  ensureMessagesIsMutable();
+      messages_.add(index, value);
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    private void addAllMessages(
+        java.lang.Iterable<? extends porukator.v1.Porukator.Message> values) {
+      ensureMessagesIsMutable();
+      com.google.protobuf.AbstractMessageLite.addAll(
+          values, messages_);
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    private void clearMessages() {
+      messages_ = emptyProtobufList();
+    }
+    /**
+     * <pre>
+     * Messages in no particular order.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+     */
+    private void removeMessages(int index) {
+      ensureMessagesIsMutable();
+      messages_.remove(index);
+    }
+
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.GetMessagesResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.GetMessagesResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetMessagesResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.GetMessagesResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * GetMessagesResponse returns the requested messages.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.GetMessagesResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.GetMessagesResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.GetMessagesResponse)
+        porukator.v1.Porukator.GetMessagesResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.GetMessagesResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      @java.lang.Override
+      public java.util.List<porukator.v1.Porukator.Message> getMessagesList() {
+        return java.util.Collections.unmodifiableList(
+            instance.getMessagesList());
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      @java.lang.Override
+      public int getMessagesCount() {
+        return instance.getMessagesCount();
+      }/**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.Message getMessages(int index) {
+        return instance.getMessages(index);
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder setMessages(
+          int index, porukator.v1.Porukator.Message value) {
+        copyOnWrite();
+        instance.setMessages(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder setMessages(
+          int index, porukator.v1.Porukator.Message.Builder builderForValue) {
+        copyOnWrite();
+        instance.setMessages(index,
+            builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder addMessages(porukator.v1.Porukator.Message value) {
+        copyOnWrite();
+        instance.addMessages(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder addMessages(
+          int index, porukator.v1.Porukator.Message value) {
+        copyOnWrite();
+        instance.addMessages(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder addMessages(
+          porukator.v1.Porukator.Message.Builder builderForValue) {
+        copyOnWrite();
+        instance.addMessages(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder addMessages(
+          int index, porukator.v1.Porukator.Message.Builder builderForValue) {
+        copyOnWrite();
+        instance.addMessages(index,
+            builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder addAllMessages(
+          java.lang.Iterable<? extends porukator.v1.Porukator.Message> values) {
+        copyOnWrite();
+        instance.addAllMessages(values);
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder clearMessages() {
+        copyOnWrite();
+        instance.clearMessages();
+        return this;
+      }
+      /**
+       * <pre>
+       * Messages in no particular order.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Message messages = 1 [json_name = "messages"];</code>
+       */
+      public Builder removeMessages(int index) {
+        copyOnWrite();
+        instance.removeMessages(index);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.GetMessagesResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.GetMessagesResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "messages_",
+              porukator.v1.Porukator.Message.class,
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0001\u0000\u0001\u001b";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.GetMessagesResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.GetMessagesResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.GetMessagesResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.GetMessagesResponse)
+    private static final porukator.v1.Porukator.GetMessagesResponse DEFAULT_INSTANCE;
+    static {
+      GetMessagesResponse defaultInstance = new GetMessagesResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        GetMessagesResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.GetMessagesResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<GetMessagesResponse> PARSER;
+
+    public static com.google.protobuf.Parser<GetMessagesResponse> parser() {
       return DEFAULT_INSTANCE.getParserForType();
     }
   }

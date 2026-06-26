@@ -71,7 +71,7 @@ func newRootCmd() *cobra.Command {
 	root.PersistentFlags().StringVarP(&flagToken, "token", "t", "", "API token (env PORUKATOR_TOKEN)")
 	root.PersistentFlags().BoolVar(&flagJSON, "json", false, "output raw JSON instead of a table")
 
-	root.AddCommand(newListCmd(), newSendCmd())
+	root.AddCommand(newListCmd(), newSendCmd(), newStatusCmd())
 	return root
 }
 

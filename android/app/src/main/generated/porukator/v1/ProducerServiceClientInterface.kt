@@ -21,4 +21,16 @@ public interface ProducerServiceClientInterface {
    *  SendMessages enqueues messages, balanced round-robin across client_ids.
    */
   public suspend fun sendMessages(request: Porukator.SendMessagesRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.SendMessagesResponse>
+
+  /**
+   *  GetMessages returns the status of specific messages by id. Owner-scoped:
+   *  PermissionDenied if any requested id is not visible to the calling key.
+   */
+  public suspend fun getMessages(request: Porukator.GetMessagesRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.GetMessagesResponse>
+
+  /**
+   *  ListMessages lists messages the key may see, newest first, with optional
+   *  batch_id / status filters.
+   */
+  public suspend fun listMessages(request: Porukator.ListMessagesRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.ListMessagesResponse>
 }

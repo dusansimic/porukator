@@ -390,6 +390,8 @@ message ListMessagesRequest {
   string client_id = 2;
   // Max rows to return (server clamps).
   int32 limit = 3;
+  // Optional batch UUID filter (from SendMessages); empty means all.
+  string batch_id = 4;
 }
 // ListMessagesResponse returns matching messages.
 message ListMessagesResponse {
@@ -404,6 +406,23 @@ service ProducerService {
   rpc ListClients(ListClientsRequest) returns (ListClientsResponse);
   // SendMessages enqueues messages, balanced round-robin across client_ids.
   rpc SendMessages(SendMessagesRequest) returns (SendMessagesResponse);
+  // GetMessages returns the status of specific messages by id. Owner-scoped:
+  // PermissionDenied if any requested id is not visible to the calling key.
+  rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse);
+  // ListMessages lists messages the key may see, newest first, with optional
+  // batch_id / status filters.
+  rpc ListMessages(ListMessagesRequest) returns (ListMessagesResponse);
+}
+
+// GetMessagesRequest names the messages to look up.
+message GetMessagesRequest {
+  // Server-generated message UUIDs (from SendMessages).
+  repeated string message_ids = 1;
+}
+// GetMessagesResponse returns the requested messages.
+message GetMessagesResponse {
+  // Messages in no particular order.
+  repeated Message messages = 1;
 }
 
 // OutgoingMessage is one message a producer wants sent.

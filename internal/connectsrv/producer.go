@@ -101,3 +101,57 @@ func (h *Handler) SendMessages(ctx context.Context, req *connect.Request[porukat
 		MessageIds: ids,
 	}), nil
 }
+
+// GetMessages returns the status of specific messages by id, scoped to the
+// calling key's owner. Strict: if any requested id is not visible to the key
+// (another owner's, or unknown), the whole request fails with PermissionDenied.
+func (h *Handler) GetMessages(ctx context.Context, req *connect.Request[porukatorv1.GetMessagesRequest]) (*connect.Response[porukatorv1.GetMessagesResponse], error) {
+	tok, _ := auth.TokenFromContext(ctx)
+	if len(req.Msg.MessageIds) == 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("message_ids must not be empty"))
+	}
+
+	// Parse + dedupe the requested ids.
+	seen := make(map[string]bool, len(req.Msg.MessageIds))
+	ids := make([]pgtype.UUID, 0, len(req.Msg.MessageIds))
+	for _, s := range req.Msg.MessageIds {
+		id, err := pgconv.ParseUUID(s)
+		if err != nil || !id.Valid {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid message_id: "+s))
+		}
+		if !seen[s] {
+			seen[s] = true
+			ids = append(ids, id)
+		}
+	}
+
+	var rows []repository.Message
+	var err error
+	if tok.GrantsAll {
+		rows, err = h.q().GetMessagesByIDs(ctx, ids)
+	} else {
+		ownerID, perr := pgconv.ParseUUID(tok.OwnerID)
+		if perr != nil {
+			return nil, connect.NewError(connect.CodeInternal, perr)
+		}
+		rows, err = h.q().GetMessagesByIDsForOwner(ctx, repository.GetMessagesByIDsForOwnerParams{
+			Ids:   ids,
+			Owner: ownerID,
+		})
+	}
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Strict: every requested id must be visible, else reject the whole request
+	// (uniform for forbidden and unknown ids — does not leak existence).
+	if len(rows) != len(ids) {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("one or more message_ids are not visible to this key"))
+	}
+
+	out := make([]*porukatorv1.Message, len(rows))
+	for i, r := range rows {
+		out[i] = messageToProto(r)
+	}
+	return connect.NewResponse(&porukatorv1.GetMessagesResponse{Messages: out}), nil
+}

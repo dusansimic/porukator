@@ -27,6 +27,8 @@ type Querier interface {
 	GetApiTokenByHashWithOwner(ctx context.Context, tokenHash string) (GetApiTokenByHashWithOwnerRow, error)
 	GetClient(ctx context.Context, id pgtype.UUID) (Client, error)
 	GetClientByTokenHash(ctx context.Context, accessTokenHash string) (Client, error)
+	GetMessagesByIDs(ctx context.Context, ids []pgtype.UUID) ([]Message, error)
+	GetMessagesByIDsForOwner(ctx context.Context, arg GetMessagesByIDsForOwnerParams) ([]Message, error)
 	GetSessionByHash(ctx context.Context, tokenHash string) (GetSessionByHashRow, error)
 	GetSettings(ctx context.Context) (GetSettingsRow, error)
 	GetUser(ctx context.Context, id pgtype.UUID) (User, error)

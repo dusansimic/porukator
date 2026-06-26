@@ -11,6 +11,84 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const getMessagesByIDs = `-- name: GetMessagesByIDs :many
+SELECT id, batch_id, phone_number, content, client_id, status, error, received_at, dispatched_at, sent_at FROM messages WHERE id = ANY($1::uuid[])
+`
+
+func (q *Queries) GetMessagesByIDs(ctx context.Context, ids []pgtype.UUID) ([]Message, error) {
+	rows, err := q.db.Query(ctx, getMessagesByIDs, ids)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Message
+	for rows.Next() {
+		var i Message
+		if err := rows.Scan(
+			&i.ID,
+			&i.BatchID,
+			&i.PhoneNumber,
+			&i.Content,
+			&i.ClientID,
+			&i.Status,
+			&i.Error,
+			&i.ReceivedAt,
+			&i.DispatchedAt,
+			&i.SentAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getMessagesByIDsForOwner = `-- name: GetMessagesByIDsForOwner :many
+SELECT messages.id, messages.batch_id, messages.phone_number, messages.content, messages.client_id, messages.status, messages.error, messages.received_at, messages.dispatched_at, messages.sent_at FROM messages
+JOIN clients ON clients.id = messages.client_id
+WHERE messages.id = ANY($1::uuid[])
+  AND clients.created_by = $2
+`
+
+type GetMessagesByIDsForOwnerParams struct {
+	Ids   []pgtype.UUID
+	Owner pgtype.UUID
+}
+
+func (q *Queries) GetMessagesByIDsForOwner(ctx context.Context, arg GetMessagesByIDsForOwnerParams) ([]Message, error) {
+	rows, err := q.db.Query(ctx, getMessagesByIDsForOwner, arg.Ids, arg.Owner)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Message
+	for rows.Next() {
+		var i Message
+		if err := rows.Scan(
+			&i.ID,
+			&i.BatchID,
+			&i.PhoneNumber,
+			&i.Content,
+			&i.ClientID,
+			&i.Status,
+			&i.Error,
+			&i.ReceivedAt,
+			&i.DispatchedAt,
+			&i.SentAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const insertMessage = `-- name: InsertMessage :one
 INSERT INTO messages (batch_id, phone_number, content, client_id)
 VALUES ($1, $2, $3, $4)
@@ -51,18 +129,25 @@ const listMessages = `-- name: ListMessages :many
 SELECT id, batch_id, phone_number, content, client_id, status, error, received_at, dispatched_at, sent_at FROM messages
 WHERE ($1::message_status IS NULL OR status = $1)
   AND ($2::uuid IS NULL OR client_id = $2)
+  AND ($3::uuid IS NULL OR batch_id = $3)
 ORDER BY received_at DESC
-LIMIT $3
+LIMIT $4
 `
 
 type ListMessagesParams struct {
 	Status   NullMessageStatus
 	ClientID pgtype.UUID
+	BatchID  pgtype.UUID
 	Lim      int32
 }
 
 func (q *Queries) ListMessages(ctx context.Context, arg ListMessagesParams) ([]Message, error) {
-	rows, err := q.db.Query(ctx, listMessages, arg.Status, arg.ClientID, arg.Lim)
+	rows, err := q.db.Query(ctx, listMessages,
+		arg.Status,
+		arg.ClientID,
+		arg.BatchID,
+		arg.Lim,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -98,14 +183,16 @@ JOIN clients ON clients.id = messages.client_id
 WHERE clients.created_by = $1
   AND ($2::message_status IS NULL OR messages.status = $2)
   AND ($3::uuid IS NULL OR messages.client_id = $3)
+  AND ($4::uuid IS NULL OR messages.batch_id = $4)
 ORDER BY messages.received_at DESC
-LIMIT $4
+LIMIT $5
 `
 
 type ListMessagesForOwnerParams struct {
 	Owner    pgtype.UUID
 	Status   NullMessageStatus
 	ClientID pgtype.UUID
+	BatchID  pgtype.UUID
 	Lim      int32
 }
 
@@ -114,6 +201,7 @@ func (q *Queries) ListMessagesForOwner(ctx context.Context, arg ListMessagesForO
 		arg.Owner,
 		arg.Status,
 		arg.ClientID,
+		arg.BatchID,
 		arg.Lim,
 	)
 	if err != nil {

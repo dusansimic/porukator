@@ -46,4 +46,36 @@ public class ProducerServiceClient(
     ),
   )
 
+
+  /**
+   *  GetMessages returns the status of specific messages by id. Owner-scoped:
+   *  PermissionDenied if any requested id is not visible to the calling key.
+   */
+  override suspend fun getMessages(request: Porukator.GetMessagesRequest, headers: Headers): ResponseMessage<Porukator.GetMessagesResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.ProducerService/GetMessages",
+      porukator.v1.Porukator.GetMessagesRequest::class,
+      porukator.v1.Porukator.GetMessagesResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  ListMessages lists messages the key may see, newest first, with optional
+   *  batch_id / status filters.
+   */
+  override suspend fun listMessages(request: Porukator.ListMessagesRequest, headers: Headers): ResponseMessage<Porukator.ListMessagesResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.ProducerService/ListMessages",
+      porukator.v1.Porukator.ListMessagesRequest::class,
+      porukator.v1.Porukator.ListMessagesResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
 }

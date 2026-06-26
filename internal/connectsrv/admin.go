@@ -335,9 +335,23 @@ func (h *Handler) UpdateSettings(ctx context.Context, req *connect.Request[poruk
 
 // --- Messages (ownership-scoped) ---
 
-// ListMessages returns all messages for admins, own-device messages for managers.
+// ListMessages is shared by AdminService and ProducerService. The caller is
+// distinguished by the context principal: a user (web UI) scopes by role, an API
+// token (producer) scopes by the token's owner. "All" callers see every message;
+// scoped callers see only their own devices' messages.
 func (h *Handler) ListMessages(ctx context.Context, req *connect.Request[porukatorv1.ListMessagesRequest]) (*connect.Response[porukatorv1.ListMessagesResponse], error) {
-	user, _ := auth.UserFromContext(ctx)
+	all := false
+	scopedOwner := ""
+	if user, ok := auth.UserFromContext(ctx); ok {
+		all = user.IsAdmin()
+		scopedOwner = user.ID
+	} else if tok, ok := auth.TokenFromContext(ctx); ok {
+		all = tok.GrantsAll
+		scopedOwner = tok.OwnerID
+	} else {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no principal"))
+	}
+
 	limit := req.Msg.Limit
 	if limit <= 0 {
 		limit = defaultListLimit
@@ -353,20 +367,29 @@ func (h *Handler) ListMessages(ctx context.Context, req *connect.Request[porukat
 		}
 		clientID = id
 	}
+	batchID := newNullUUID()
+	if req.Msg.BatchId != "" {
+		id, err := pgconv.ParseUUID(req.Msg.BatchId)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid batch_id"))
+		}
+		batchID = id
+	}
 
 	var rows []repository.Message
-	if user.IsAdmin() {
+	if all {
 		var err error
 		rows, err = h.q().ListMessages(ctx, repository.ListMessagesParams{
 			Status:   statusFromProto(req.Msg.Status),
 			ClientID: clientID,
+			BatchID:  batchID,
 			Lim:      limit,
 		})
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 	} else {
-		ownerID, err := pgconv.ParseUUID(user.ID)
+		ownerID, err := pgconv.ParseUUID(scopedOwner)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
@@ -374,6 +397,7 @@ func (h *Handler) ListMessages(ctx context.Context, req *connect.Request[porukat
 			Owner:    ownerID,
 			Status:   statusFromProto(req.Msg.Status),
 			ClientID: clientID,
+			BatchID:  batchID,
 			Lim:      limit,
 		})
 		if err != nil {

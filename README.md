@@ -33,6 +33,9 @@ React web UI, and an Android app.
 - **Durable, auditable log** — every message is stored in Postgres with its
   phone number, content, status, and timestamps for when it was received and
   when it was sent.
+- **Status queries for producers** — external services poll delivery status
+  (pending / dispatched / sent / failed) for the messages or batches they
+  submitted, through their API key (scoped to the key's owner).
 - **Resilient delivery** — messages for an offline device are held and delivered
   when it reconnects; dispatch is exactly-once.
 

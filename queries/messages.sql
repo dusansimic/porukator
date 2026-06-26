@@ -29,6 +29,7 @@ RETURNING *;
 SELECT * FROM messages
 WHERE (sqlc.narg('status')::message_status IS NULL OR status = sqlc.narg('status'))
   AND (sqlc.narg('client_id')::uuid IS NULL OR client_id = sqlc.narg('client_id'))
+  AND (sqlc.narg('batch_id')::uuid IS NULL OR batch_id = sqlc.narg('batch_id'))
 ORDER BY received_at DESC
 LIMIT sqlc.arg('lim');
 
@@ -38,5 +39,15 @@ JOIN clients ON clients.id = messages.client_id
 WHERE clients.created_by = sqlc.arg('owner')
   AND (sqlc.narg('status')::message_status IS NULL OR messages.status = sqlc.narg('status'))
   AND (sqlc.narg('client_id')::uuid IS NULL OR messages.client_id = sqlc.narg('client_id'))
+  AND (sqlc.narg('batch_id')::uuid IS NULL OR messages.batch_id = sqlc.narg('batch_id'))
 ORDER BY messages.received_at DESC
 LIMIT sqlc.arg('lim');
+
+-- name: GetMessagesByIDs :many
+SELECT * FROM messages WHERE id = ANY(sqlc.arg('ids')::uuid[]);
+
+-- name: GetMessagesByIDsForOwner :many
+SELECT messages.* FROM messages
+JOIN clients ON clients.id = messages.client_id
+WHERE messages.id = ANY(sqlc.arg('ids')::uuid[])
+  AND clients.created_by = sqlc.arg('owner');

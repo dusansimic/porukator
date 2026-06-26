@@ -105,6 +105,12 @@ const (
 	// ProducerServiceSendMessagesProcedure is the fully-qualified name of the ProducerService's
 	// SendMessages RPC.
 	ProducerServiceSendMessagesProcedure = "/porukator.v1.ProducerService/SendMessages"
+	// ProducerServiceGetMessagesProcedure is the fully-qualified name of the ProducerService's
+	// GetMessages RPC.
+	ProducerServiceGetMessagesProcedure = "/porukator.v1.ProducerService/GetMessages"
+	// ProducerServiceListMessagesProcedure is the fully-qualified name of the ProducerService's
+	// ListMessages RPC.
+	ProducerServiceListMessagesProcedure = "/porukator.v1.ProducerService/ListMessages"
 	// ClientServiceStreamJobsProcedure is the fully-qualified name of the ClientService's StreamJobs
 	// RPC.
 	ClientServiceStreamJobsProcedure = "/porukator.v1.ClientService/StreamJobs"
@@ -729,6 +735,12 @@ type ProducerServiceClient interface {
 	ListClients(context.Context, *connect.Request[v1.ListClientsRequest]) (*connect.Response[v1.ListClientsResponse], error)
 	// SendMessages enqueues messages, balanced round-robin across client_ids.
 	SendMessages(context.Context, *connect.Request[v1.SendMessagesRequest]) (*connect.Response[v1.SendMessagesResponse], error)
+	// GetMessages returns the status of specific messages by id. Owner-scoped:
+	// PermissionDenied if any requested id is not visible to the calling key.
+	GetMessages(context.Context, *connect.Request[v1.GetMessagesRequest]) (*connect.Response[v1.GetMessagesResponse], error)
+	// ListMessages lists messages the key may see, newest first, with optional
+	// batch_id / status filters.
+	ListMessages(context.Context, *connect.Request[v1.ListMessagesRequest]) (*connect.Response[v1.ListMessagesResponse], error)
 }
 
 // NewProducerServiceClient constructs a client for the porukator.v1.ProducerService service. By
@@ -754,6 +766,18 @@ func NewProducerServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(producerServiceMethods.ByName("SendMessages")),
 			connect.WithClientOptions(opts...),
 		),
+		getMessages: connect.NewClient[v1.GetMessagesRequest, v1.GetMessagesResponse](
+			httpClient,
+			baseURL+ProducerServiceGetMessagesProcedure,
+			connect.WithSchema(producerServiceMethods.ByName("GetMessages")),
+			connect.WithClientOptions(opts...),
+		),
+		listMessages: connect.NewClient[v1.ListMessagesRequest, v1.ListMessagesResponse](
+			httpClient,
+			baseURL+ProducerServiceListMessagesProcedure,
+			connect.WithSchema(producerServiceMethods.ByName("ListMessages")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -761,6 +785,8 @@ func NewProducerServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 type producerServiceClient struct {
 	listClients  *connect.Client[v1.ListClientsRequest, v1.ListClientsResponse]
 	sendMessages *connect.Client[v1.SendMessagesRequest, v1.SendMessagesResponse]
+	getMessages  *connect.Client[v1.GetMessagesRequest, v1.GetMessagesResponse]
+	listMessages *connect.Client[v1.ListMessagesRequest, v1.ListMessagesResponse]
 }
 
 // ListClients calls porukator.v1.ProducerService.ListClients.
@@ -773,12 +799,28 @@ func (c *producerServiceClient) SendMessages(ctx context.Context, req *connect.R
 	return c.sendMessages.CallUnary(ctx, req)
 }
 
+// GetMessages calls porukator.v1.ProducerService.GetMessages.
+func (c *producerServiceClient) GetMessages(ctx context.Context, req *connect.Request[v1.GetMessagesRequest]) (*connect.Response[v1.GetMessagesResponse], error) {
+	return c.getMessages.CallUnary(ctx, req)
+}
+
+// ListMessages calls porukator.v1.ProducerService.ListMessages.
+func (c *producerServiceClient) ListMessages(ctx context.Context, req *connect.Request[v1.ListMessagesRequest]) (*connect.Response[v1.ListMessagesResponse], error) {
+	return c.listMessages.CallUnary(ctx, req)
+}
+
 // ProducerServiceHandler is an implementation of the porukator.v1.ProducerService service.
 type ProducerServiceHandler interface {
 	// ListClients returns devices so the producer can pick which to send from.
 	ListClients(context.Context, *connect.Request[v1.ListClientsRequest]) (*connect.Response[v1.ListClientsResponse], error)
 	// SendMessages enqueues messages, balanced round-robin across client_ids.
 	SendMessages(context.Context, *connect.Request[v1.SendMessagesRequest]) (*connect.Response[v1.SendMessagesResponse], error)
+	// GetMessages returns the status of specific messages by id. Owner-scoped:
+	// PermissionDenied if any requested id is not visible to the calling key.
+	GetMessages(context.Context, *connect.Request[v1.GetMessagesRequest]) (*connect.Response[v1.GetMessagesResponse], error)
+	// ListMessages lists messages the key may see, newest first, with optional
+	// batch_id / status filters.
+	ListMessages(context.Context, *connect.Request[v1.ListMessagesRequest]) (*connect.Response[v1.ListMessagesResponse], error)
 }
 
 // NewProducerServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -800,12 +842,28 @@ func NewProducerServiceHandler(svc ProducerServiceHandler, opts ...connect.Handl
 		connect.WithSchema(producerServiceMethods.ByName("SendMessages")),
 		connect.WithHandlerOptions(opts...),
 	)
+	producerServiceGetMessagesHandler := connect.NewUnaryHandler(
+		ProducerServiceGetMessagesProcedure,
+		svc.GetMessages,
+		connect.WithSchema(producerServiceMethods.ByName("GetMessages")),
+		connect.WithHandlerOptions(opts...),
+	)
+	producerServiceListMessagesHandler := connect.NewUnaryHandler(
+		ProducerServiceListMessagesProcedure,
+		svc.ListMessages,
+		connect.WithSchema(producerServiceMethods.ByName("ListMessages")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/porukator.v1.ProducerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ProducerServiceListClientsProcedure:
 			producerServiceListClientsHandler.ServeHTTP(w, r)
 		case ProducerServiceSendMessagesProcedure:
 			producerServiceSendMessagesHandler.ServeHTTP(w, r)
+		case ProducerServiceGetMessagesProcedure:
+			producerServiceGetMessagesHandler.ServeHTTP(w, r)
+		case ProducerServiceListMessagesProcedure:
+			producerServiceListMessagesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -821,6 +879,14 @@ func (UnimplementedProducerServiceHandler) ListClients(context.Context, *connect
 
 func (UnimplementedProducerServiceHandler) SendMessages(context.Context, *connect.Request[v1.SendMessagesRequest]) (*connect.Response[v1.SendMessagesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.ProducerService.SendMessages is not implemented"))
+}
+
+func (UnimplementedProducerServiceHandler) GetMessages(context.Context, *connect.Request[v1.GetMessagesRequest]) (*connect.Response[v1.GetMessagesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.ProducerService.GetMessages is not implemented"))
+}
+
+func (UnimplementedProducerServiceHandler) ListMessages(context.Context, *connect.Request[v1.ListMessagesRequest]) (*connect.Response[v1.ListMessagesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.ProducerService.ListMessages is not implemented"))
 }
 
 // ClientServiceClient is a client for the porukator.v1.ClientService service.
