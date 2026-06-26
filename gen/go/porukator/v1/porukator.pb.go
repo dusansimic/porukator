@@ -91,6 +91,59 @@ func (MessageStatus) EnumDescriptor() ([]byte, []int) {
 	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{0}
 }
 
+// Role is a user's permission level.
+type Role int32
+
+const (
+	// Default, never persisted.
+	Role_ROLE_UNSPECIFIED Role = 0
+	// Full access to everything.
+	Role_ROLE_ADMIN Role = 1
+	// May manage only their own client devices and view those devices' messages.
+	Role_ROLE_MANAGER Role = 2
+)
+
+// Enum value maps for Role.
+var (
+	Role_name = map[int32]string{
+		0: "ROLE_UNSPECIFIED",
+		1: "ROLE_ADMIN",
+		2: "ROLE_MANAGER",
+	}
+	Role_value = map[string]int32{
+		"ROLE_UNSPECIFIED": 0,
+		"ROLE_ADMIN":       1,
+		"ROLE_MANAGER":     2,
+	}
+)
+
+func (x Role) Enum() *Role {
+	p := new(Role)
+	*p = x
+	return p
+}
+
+func (x Role) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Role) Descriptor() protoreflect.EnumDescriptor {
+	return file_porukator_v1_porukator_proto_enumTypes[1].Descriptor()
+}
+
+func (Role) Type() protoreflect.EnumType {
+	return &file_porukator_v1_porukator_proto_enumTypes[1]
+}
+
+func (x Role) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Role.Descriptor instead.
+func (Role) EnumDescriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{1}
+}
+
 // Message is one SMS tracked by the service.
 type Message struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -230,7 +283,11 @@ type Client struct {
 	// Last time the device was connected.
 	LastSeenAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=last_seen_at,json=lastSeenAt,proto3" json:"last_seen_at,omitempty"`
 	// When the client was created.
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// UUID of the user who created the device; empty if the owner was removed.
+	CreatedBy string `protobuf:"bytes,6,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
+	// Username of the owner, for display; empty when unowned.
+	OwnerUsername string `protobuf:"bytes,7,opt,name=owner_username,json=ownerUsername,proto3" json:"owner_username,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -300,6 +357,193 @@ func (x *Client) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Client) GetCreatedBy() string {
+	if x != nil {
+		return x.CreatedBy
+	}
+	return ""
+}
+
+func (x *Client) GetOwnerUsername() string {
+	if x != nil {
+		return x.OwnerUsername
+	}
+	return ""
+}
+
+// User is a web-UI account.
+type User struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Server-generated UUID.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Unique login name.
+	Username string `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	// Permission level.
+	Role Role `protobuf:"varint,3,opt,name=role,proto3,enum=porukator.v1.Role" json:"role,omitempty"`
+	// True when the account is disabled (cannot log in; sessions revoked).
+	Disabled bool `protobuf:"varint,4,opt,name=disabled,proto3" json:"disabled,omitempty"`
+	// When the account was created.
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *User) Reset() {
+	*x = User{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *User) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *User) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *User) GetRole() Role {
+	if x != nil {
+		return x.Role
+	}
+	return Role_ROLE_UNSPECIFIED
+}
+
+func (x *User) GetDisabled() bool {
+	if x != nil {
+		return x.Disabled
+	}
+	return false
+}
+
+func (x *User) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+// Session is an active web-UI login.
+type Session struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Server-generated UUID.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// UUID of the owning user.
+	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// Username of the owning user, for display.
+	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	// When the session was created.
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// Last time the session authenticated a request.
+	LastUsedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_used_at,json=lastUsedAt,proto3" json:"last_used_at,omitempty"`
+	// True if this is the session making the current request.
+	Current       bool `protobuf:"varint,6,opt,name=current,proto3" json:"current,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Session) Reset() {
+	*x = Session{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Session) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Session) ProtoMessage() {}
+
+func (x *Session) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Session.ProtoReflect.Descriptor instead.
+func (*Session) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Session) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Session) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *Session) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *Session) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Session) GetLastUsedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastUsedAt
+	}
+	return nil
+}
+
+func (x *Session) GetCurrent() bool {
+	if x != nil {
+		return x.Current
+	}
+	return false
+}
+
 // ApiToken is a credential for an upstream producer service.
 type ApiToken struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -317,7 +561,7 @@ type ApiToken struct {
 
 func (x *ApiToken) Reset() {
 	*x = ApiToken{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[2]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -329,7 +573,7 @@ func (x *ApiToken) String() string {
 func (*ApiToken) ProtoMessage() {}
 
 func (x *ApiToken) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[2]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -342,7 +586,7 @@ func (x *ApiToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApiToken.ProtoReflect.Descriptor instead.
 func (*ApiToken) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{2}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ApiToken) GetId() string {
@@ -386,7 +630,7 @@ type Settings struct {
 
 func (x *Settings) Reset() {
 	*x = Settings{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[3]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -398,7 +642,7 @@ func (x *Settings) String() string {
 func (*Settings) ProtoMessage() {}
 
 func (x *Settings) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[3]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -411,7 +655,7 @@ func (x *Settings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Settings.ProtoReflect.Descriptor instead.
 func (*Settings) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{3}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Settings) GetDelayMs() int32 {
@@ -428,18 +672,20 @@ func (x *Settings) GetJitterMs() int32 {
 	return 0
 }
 
-// LoginRequest carries the master password.
+// LoginRequest carries the account credentials.
 type LoginRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// The master password configured at service start.
-	Password      string `protobuf:"bytes,1,opt,name=password,proto3" json:"password,omitempty"`
+	// Account login name.
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	// Account password.
+	Password      string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *LoginRequest) Reset() {
 	*x = LoginRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[4]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -451,7 +697,7 @@ func (x *LoginRequest) String() string {
 func (*LoginRequest) ProtoMessage() {}
 
 func (x *LoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[4]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -464,7 +710,14 @@ func (x *LoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
 func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{4}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *LoginRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
 }
 
 func (x *LoginRequest) GetPassword() string {
@@ -474,18 +727,20 @@ func (x *LoginRequest) GetPassword() string {
 	return ""
 }
 
-// LoginResponse reports whether the password matched.
+// LoginResponse returns the session token and the authenticated user.
 type LoginResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// True when the password is valid.
-	Ok            bool `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
+	// Opaque session bearer token; send it as Authorization on later requests.
+	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	// The authenticated user.
+	User          *User `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *LoginResponse) Reset() {
 	*x = LoginResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[5]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -497,7 +752,7 @@ func (x *LoginResponse) String() string {
 func (*LoginResponse) ProtoMessage() {}
 
 func (x *LoginResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[5]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -510,14 +765,822 @@ func (x *LoginResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
 func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{5}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *LoginResponse) GetOk() bool {
+func (x *LoginResponse) GetToken() string {
 	if x != nil {
-		return x.Ok
+		return x.Token
+	}
+	return ""
+}
+
+func (x *LoginResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// LogoutRequest is empty; the session comes from the bearer token.
+type LogoutRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogoutRequest) Reset() {
+	*x = LogoutRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogoutRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogoutRequest) ProtoMessage() {}
+
+func (x *LogoutRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogoutRequest.ProtoReflect.Descriptor instead.
+func (*LogoutRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{8}
+}
+
+// LogoutResponse is empty.
+type LogoutResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogoutResponse) Reset() {
+	*x = LogoutResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogoutResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogoutResponse) ProtoMessage() {}
+
+func (x *LogoutResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogoutResponse.ProtoReflect.Descriptor instead.
+func (*LogoutResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{9}
+}
+
+// GetCurrentUserRequest is empty.
+type GetCurrentUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCurrentUserRequest) Reset() {
+	*x = GetCurrentUserRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCurrentUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCurrentUserRequest) ProtoMessage() {}
+
+func (x *GetCurrentUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCurrentUserRequest.ProtoReflect.Descriptor instead.
+func (*GetCurrentUserRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{10}
+}
+
+// GetCurrentUserResponse returns the authenticated user.
+type GetCurrentUserResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The authenticated user.
+	User          *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCurrentUserResponse) Reset() {
+	*x = GetCurrentUserResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCurrentUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCurrentUserResponse) ProtoMessage() {}
+
+func (x *GetCurrentUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCurrentUserResponse.ProtoReflect.Descriptor instead.
+func (*GetCurrentUserResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetCurrentUserResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// CreateUserRequest names a new account.
+type CreateUserRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unique login name.
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	// Initial password.
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	// Permission level.
+	Role          Role `protobuf:"varint,3,opt,name=role,proto3,enum=porukator.v1.Role" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserRequest) Reset() {
+	*x = CreateUserRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserRequest) ProtoMessage() {}
+
+func (x *CreateUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserRequest.ProtoReflect.Descriptor instead.
+func (*CreateUserRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *CreateUserRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetRole() Role {
+	if x != nil {
+		return x.Role
+	}
+	return Role_ROLE_UNSPECIFIED
+}
+
+// CreateUserResponse returns the created account.
+type CreateUserResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The created user.
+	User          *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserResponse) Reset() {
+	*x = CreateUserResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserResponse) ProtoMessage() {}
+
+func (x *CreateUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserResponse.ProtoReflect.Descriptor instead.
+func (*CreateUserResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CreateUserResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// ListUsersRequest is empty.
+type ListUsersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUsersRequest) Reset() {
+	*x = ListUsersRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersRequest) ProtoMessage() {}
+
+func (x *ListUsersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersRequest.ProtoReflect.Descriptor instead.
+func (*ListUsersRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{14}
+}
+
+// ListUsersResponse returns all accounts.
+type ListUsersResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// All accounts.
+	Users         []*User `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUsersResponse) Reset() {
+	*x = ListUsersResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersResponse) ProtoMessage() {}
+
+func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersResponse.ProtoReflect.Descriptor instead.
+func (*ListUsersResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ListUsersResponse) GetUsers() []*User {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+// SetUserRoleRequest changes an account's role.
+type SetUserRoleRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// UUID of the account.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// New role.
+	Role          Role `protobuf:"varint,2,opt,name=role,proto3,enum=porukator.v1.Role" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetUserRoleRequest) Reset() {
+	*x = SetUserRoleRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetUserRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetUserRoleRequest) ProtoMessage() {}
+
+func (x *SetUserRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetUserRoleRequest.ProtoReflect.Descriptor instead.
+func (*SetUserRoleRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *SetUserRoleRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SetUserRoleRequest) GetRole() Role {
+	if x != nil {
+		return x.Role
+	}
+	return Role_ROLE_UNSPECIFIED
+}
+
+// SetUserRoleResponse returns the updated account.
+type SetUserRoleResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The updated user.
+	User          *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetUserRoleResponse) Reset() {
+	*x = SetUserRoleResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetUserRoleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetUserRoleResponse) ProtoMessage() {}
+
+func (x *SetUserRoleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetUserRoleResponse.ProtoReflect.Descriptor instead.
+func (*SetUserRoleResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *SetUserRoleResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// SetUserDisabledRequest enables or disables an account.
+type SetUserDisabledRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// UUID of the account.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// True to disable (and revoke sessions), false to enable.
+	Disabled      bool `protobuf:"varint,2,opt,name=disabled,proto3" json:"disabled,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetUserDisabledRequest) Reset() {
+	*x = SetUserDisabledRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetUserDisabledRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetUserDisabledRequest) ProtoMessage() {}
+
+func (x *SetUserDisabledRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetUserDisabledRequest.ProtoReflect.Descriptor instead.
+func (*SetUserDisabledRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *SetUserDisabledRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SetUserDisabledRequest) GetDisabled() bool {
+	if x != nil {
+		return x.Disabled
 	}
 	return false
+}
+
+// SetUserDisabledResponse returns the updated account.
+type SetUserDisabledResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The updated user.
+	User          *User `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetUserDisabledResponse) Reset() {
+	*x = SetUserDisabledResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetUserDisabledResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetUserDisabledResponse) ProtoMessage() {}
+
+func (x *SetUserDisabledResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetUserDisabledResponse.ProtoReflect.Descriptor instead.
+func (*SetUserDisabledResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *SetUserDisabledResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+// DeleteUserRequest identifies an account to remove.
+type DeleteUserRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// UUID of the account.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteUserRequest) Reset() {
+	*x = DeleteUserRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteUserRequest) ProtoMessage() {}
+
+func (x *DeleteUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteUserRequest.ProtoReflect.Descriptor instead.
+func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *DeleteUserRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+// DeleteUserResponse is empty.
+type DeleteUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteUserResponse) Reset() {
+	*x = DeleteUserResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteUserResponse) ProtoMessage() {}
+
+func (x *DeleteUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteUserResponse.ProtoReflect.Descriptor instead.
+func (*DeleteUserResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{21}
+}
+
+// ListSessionsRequest is empty.
+type ListSessionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSessionsRequest) Reset() {
+	*x = ListSessionsRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsRequest) ProtoMessage() {}
+
+func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsRequest.ProtoReflect.Descriptor instead.
+func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{22}
+}
+
+// ListSessionsResponse returns active sessions.
+type ListSessionsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// All active sessions.
+	Sessions      []*Session `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSessionsResponse) Reset() {
+	*x = ListSessionsResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsResponse) ProtoMessage() {}
+
+func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
+func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *ListSessionsResponse) GetSessions() []*Session {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
+// RevokeSessionRequest identifies a session to delete.
+type RevokeSessionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// UUID of the session.
+	Id            string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeSessionRequest) Reset() {
+	*x = RevokeSessionRequest{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeSessionRequest) ProtoMessage() {}
+
+func (x *RevokeSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeSessionRequest.ProtoReflect.Descriptor instead.
+func (*RevokeSessionRequest) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *RevokeSessionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+// RevokeSessionResponse is empty.
+type RevokeSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeSessionResponse) Reset() {
+	*x = RevokeSessionResponse{}
+	mi := &file_porukator_v1_porukator_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeSessionResponse) ProtoMessage() {}
+
+func (x *RevokeSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_porukator_v1_porukator_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeSessionResponse.ProtoReflect.Descriptor instead.
+func (*RevokeSessionResponse) Descriptor() ([]byte, []int) {
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{25}
 }
 
 // CreateClientRequest names a new device.
@@ -531,7 +1594,7 @@ type CreateClientRequest struct {
 
 func (x *CreateClientRequest) Reset() {
 	*x = CreateClientRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[6]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -543,7 +1606,7 @@ func (x *CreateClientRequest) String() string {
 func (*CreateClientRequest) ProtoMessage() {}
 
 func (x *CreateClientRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[6]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -556,7 +1619,7 @@ func (x *CreateClientRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateClientRequest.ProtoReflect.Descriptor instead.
 func (*CreateClientRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{6}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *CreateClientRequest) GetName() string {
@@ -581,7 +1644,7 @@ type CreateClientResponse struct {
 
 func (x *CreateClientResponse) Reset() {
 	*x = CreateClientResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[7]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -593,7 +1656,7 @@ func (x *CreateClientResponse) String() string {
 func (*CreateClientResponse) ProtoMessage() {}
 
 func (x *CreateClientResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[7]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -606,7 +1669,7 @@ func (x *CreateClientResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateClientResponse.ProtoReflect.Descriptor instead.
 func (*CreateClientResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{7}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *CreateClientResponse) GetClient() *Client {
@@ -639,7 +1702,7 @@ type ListClientsRequest struct {
 
 func (x *ListClientsRequest) Reset() {
 	*x = ListClientsRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[8]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -651,7 +1714,7 @@ func (x *ListClientsRequest) String() string {
 func (*ListClientsRequest) ProtoMessage() {}
 
 func (x *ListClientsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[8]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -664,7 +1727,7 @@ func (x *ListClientsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListClientsRequest.ProtoReflect.Descriptor instead.
 func (*ListClientsRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{8}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{28}
 }
 
 // ListClientsResponse returns all devices.
@@ -678,7 +1741,7 @@ type ListClientsResponse struct {
 
 func (x *ListClientsResponse) Reset() {
 	*x = ListClientsResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[9]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -690,7 +1753,7 @@ func (x *ListClientsResponse) String() string {
 func (*ListClientsResponse) ProtoMessage() {}
 
 func (x *ListClientsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[9]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -703,7 +1766,7 @@ func (x *ListClientsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListClientsResponse.ProtoReflect.Descriptor instead.
 func (*ListClientsResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{9}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ListClientsResponse) GetClients() []*Client {
@@ -726,7 +1789,7 @@ type RenameClientRequest struct {
 
 func (x *RenameClientRequest) Reset() {
 	*x = RenameClientRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[10]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -738,7 +1801,7 @@ func (x *RenameClientRequest) String() string {
 func (*RenameClientRequest) ProtoMessage() {}
 
 func (x *RenameClientRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[10]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -751,7 +1814,7 @@ func (x *RenameClientRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RenameClientRequest.ProtoReflect.Descriptor instead.
 func (*RenameClientRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{10}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *RenameClientRequest) GetId() string {
@@ -779,7 +1842,7 @@ type RenameClientResponse struct {
 
 func (x *RenameClientResponse) Reset() {
 	*x = RenameClientResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[11]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -791,7 +1854,7 @@ func (x *RenameClientResponse) String() string {
 func (*RenameClientResponse) ProtoMessage() {}
 
 func (x *RenameClientResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[11]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -804,7 +1867,7 @@ func (x *RenameClientResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RenameClientResponse.ProtoReflect.Descriptor instead.
 func (*RenameClientResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{11}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *RenameClientResponse) GetClient() *Client {
@@ -825,7 +1888,7 @@ type RevokeClientRequest struct {
 
 func (x *RevokeClientRequest) Reset() {
 	*x = RevokeClientRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[12]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -837,7 +1900,7 @@ func (x *RevokeClientRequest) String() string {
 func (*RevokeClientRequest) ProtoMessage() {}
 
 func (x *RevokeClientRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[12]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -850,7 +1913,7 @@ func (x *RevokeClientRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeClientRequest.ProtoReflect.Descriptor instead.
 func (*RevokeClientRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{12}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *RevokeClientRequest) GetId() string {
@@ -869,7 +1932,7 @@ type RevokeClientResponse struct {
 
 func (x *RevokeClientResponse) Reset() {
 	*x = RevokeClientResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[13]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -881,7 +1944,7 @@ func (x *RevokeClientResponse) String() string {
 func (*RevokeClientResponse) ProtoMessage() {}
 
 func (x *RevokeClientResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[13]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -894,7 +1957,7 @@ func (x *RevokeClientResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeClientResponse.ProtoReflect.Descriptor instead.
 func (*RevokeClientResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{13}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{33}
 }
 
 // CreateApiTokenRequest names a new producer token.
@@ -908,7 +1971,7 @@ type CreateApiTokenRequest struct {
 
 func (x *CreateApiTokenRequest) Reset() {
 	*x = CreateApiTokenRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[14]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -920,7 +1983,7 @@ func (x *CreateApiTokenRequest) String() string {
 func (*CreateApiTokenRequest) ProtoMessage() {}
 
 func (x *CreateApiTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[14]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -933,7 +1996,7 @@ func (x *CreateApiTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateApiTokenRequest.ProtoReflect.Descriptor instead.
 func (*CreateApiTokenRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{14}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *CreateApiTokenRequest) GetName() string {
@@ -956,7 +2019,7 @@ type CreateApiTokenResponse struct {
 
 func (x *CreateApiTokenResponse) Reset() {
 	*x = CreateApiTokenResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[15]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -968,7 +2031,7 @@ func (x *CreateApiTokenResponse) String() string {
 func (*CreateApiTokenResponse) ProtoMessage() {}
 
 func (x *CreateApiTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[15]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -981,7 +2044,7 @@ func (x *CreateApiTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateApiTokenResponse.ProtoReflect.Descriptor instead.
 func (*CreateApiTokenResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{15}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *CreateApiTokenResponse) GetToken() *ApiToken {
@@ -1007,7 +2070,7 @@ type ListApiTokensRequest struct {
 
 func (x *ListApiTokensRequest) Reset() {
 	*x = ListApiTokensRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[16]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1019,7 +2082,7 @@ func (x *ListApiTokensRequest) String() string {
 func (*ListApiTokensRequest) ProtoMessage() {}
 
 func (x *ListApiTokensRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[16]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1032,7 +2095,7 @@ func (x *ListApiTokensRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListApiTokensRequest.ProtoReflect.Descriptor instead.
 func (*ListApiTokensRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{16}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{36}
 }
 
 // ListApiTokensResponse returns all producer tokens.
@@ -1046,7 +2109,7 @@ type ListApiTokensResponse struct {
 
 func (x *ListApiTokensResponse) Reset() {
 	*x = ListApiTokensResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[17]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1058,7 +2121,7 @@ func (x *ListApiTokensResponse) String() string {
 func (*ListApiTokensResponse) ProtoMessage() {}
 
 func (x *ListApiTokensResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[17]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1071,7 +2134,7 @@ func (x *ListApiTokensResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListApiTokensResponse.ProtoReflect.Descriptor instead.
 func (*ListApiTokensResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{17}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ListApiTokensResponse) GetTokens() []*ApiToken {
@@ -1092,7 +2155,7 @@ type RevokeApiTokenRequest struct {
 
 func (x *RevokeApiTokenRequest) Reset() {
 	*x = RevokeApiTokenRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[18]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1104,7 +2167,7 @@ func (x *RevokeApiTokenRequest) String() string {
 func (*RevokeApiTokenRequest) ProtoMessage() {}
 
 func (x *RevokeApiTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[18]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1117,7 +2180,7 @@ func (x *RevokeApiTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeApiTokenRequest.ProtoReflect.Descriptor instead.
 func (*RevokeApiTokenRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{18}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *RevokeApiTokenRequest) GetId() string {
@@ -1136,7 +2199,7 @@ type RevokeApiTokenResponse struct {
 
 func (x *RevokeApiTokenResponse) Reset() {
 	*x = RevokeApiTokenResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[19]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1148,7 +2211,7 @@ func (x *RevokeApiTokenResponse) String() string {
 func (*RevokeApiTokenResponse) ProtoMessage() {}
 
 func (x *RevokeApiTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[19]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1161,7 +2224,7 @@ func (x *RevokeApiTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeApiTokenResponse.ProtoReflect.Descriptor instead.
 func (*RevokeApiTokenResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{19}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{39}
 }
 
 // GetSettingsRequest is empty.
@@ -1173,7 +2236,7 @@ type GetSettingsRequest struct {
 
 func (x *GetSettingsRequest) Reset() {
 	*x = GetSettingsRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[20]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1185,7 +2248,7 @@ func (x *GetSettingsRequest) String() string {
 func (*GetSettingsRequest) ProtoMessage() {}
 
 func (x *GetSettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[20]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1198,7 +2261,7 @@ func (x *GetSettingsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSettingsRequest.ProtoReflect.Descriptor instead.
 func (*GetSettingsRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{20}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{40}
 }
 
 // GetSettingsResponse returns the pacing configuration.
@@ -1212,7 +2275,7 @@ type GetSettingsResponse struct {
 
 func (x *GetSettingsResponse) Reset() {
 	*x = GetSettingsResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[21]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1224,7 +2287,7 @@ func (x *GetSettingsResponse) String() string {
 func (*GetSettingsResponse) ProtoMessage() {}
 
 func (x *GetSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[21]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1237,7 +2300,7 @@ func (x *GetSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSettingsResponse.ProtoReflect.Descriptor instead.
 func (*GetSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{21}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *GetSettingsResponse) GetSettings() *Settings {
@@ -1258,7 +2321,7 @@ type UpdateSettingsRequest struct {
 
 func (x *UpdateSettingsRequest) Reset() {
 	*x = UpdateSettingsRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[22]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1270,7 +2333,7 @@ func (x *UpdateSettingsRequest) String() string {
 func (*UpdateSettingsRequest) ProtoMessage() {}
 
 func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[22]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1283,7 +2346,7 @@ func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{22}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *UpdateSettingsRequest) GetSettings() *Settings {
@@ -1304,7 +2367,7 @@ type UpdateSettingsResponse struct {
 
 func (x *UpdateSettingsResponse) Reset() {
 	*x = UpdateSettingsResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[23]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1316,7 +2379,7 @@ func (x *UpdateSettingsResponse) String() string {
 func (*UpdateSettingsResponse) ProtoMessage() {}
 
 func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[23]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1329,7 +2392,7 @@ func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{23}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *UpdateSettingsResponse) GetSettings() *Settings {
@@ -1354,7 +2417,7 @@ type ListMessagesRequest struct {
 
 func (x *ListMessagesRequest) Reset() {
 	*x = ListMessagesRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[24]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1366,7 +2429,7 @@ func (x *ListMessagesRequest) String() string {
 func (*ListMessagesRequest) ProtoMessage() {}
 
 func (x *ListMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[24]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1379,7 +2442,7 @@ func (x *ListMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMessagesRequest.ProtoReflect.Descriptor instead.
 func (*ListMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{24}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *ListMessagesRequest) GetStatus() MessageStatus {
@@ -1414,7 +2477,7 @@ type ListMessagesResponse struct {
 
 func (x *ListMessagesResponse) Reset() {
 	*x = ListMessagesResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[25]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1426,7 +2489,7 @@ func (x *ListMessagesResponse) String() string {
 func (*ListMessagesResponse) ProtoMessage() {}
 
 func (x *ListMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[25]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1439,7 +2502,7 @@ func (x *ListMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMessagesResponse.ProtoReflect.Descriptor instead.
 func (*ListMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{25}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ListMessagesResponse) GetMessages() []*Message {
@@ -1462,7 +2525,7 @@ type OutgoingMessage struct {
 
 func (x *OutgoingMessage) Reset() {
 	*x = OutgoingMessage{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[26]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1474,7 +2537,7 @@ func (x *OutgoingMessage) String() string {
 func (*OutgoingMessage) ProtoMessage() {}
 
 func (x *OutgoingMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[26]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1487,7 +2550,7 @@ func (x *OutgoingMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OutgoingMessage.ProtoReflect.Descriptor instead.
 func (*OutgoingMessage) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{26}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *OutgoingMessage) GetPhoneNumber() string {
@@ -1517,7 +2580,7 @@ type SendMessagesRequest struct {
 
 func (x *SendMessagesRequest) Reset() {
 	*x = SendMessagesRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[27]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1529,7 +2592,7 @@ func (x *SendMessagesRequest) String() string {
 func (*SendMessagesRequest) ProtoMessage() {}
 
 func (x *SendMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[27]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1542,7 +2605,7 @@ func (x *SendMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessagesRequest.ProtoReflect.Descriptor instead.
 func (*SendMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{27}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *SendMessagesRequest) GetMessages() []*OutgoingMessage {
@@ -1572,7 +2635,7 @@ type SendMessagesResponse struct {
 
 func (x *SendMessagesResponse) Reset() {
 	*x = SendMessagesResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[28]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1584,7 +2647,7 @@ func (x *SendMessagesResponse) String() string {
 func (*SendMessagesResponse) ProtoMessage() {}
 
 func (x *SendMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[28]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1597,7 +2660,7 @@ func (x *SendMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessagesResponse.ProtoReflect.Descriptor instead.
 func (*SendMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{28}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *SendMessagesResponse) GetBatchId() string {
@@ -1623,7 +2686,7 @@ type StreamJobsRequest struct {
 
 func (x *StreamJobsRequest) Reset() {
 	*x = StreamJobsRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[29]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1635,7 +2698,7 @@ func (x *StreamJobsRequest) String() string {
 func (*StreamJobsRequest) ProtoMessage() {}
 
 func (x *StreamJobsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[29]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1648,7 +2711,7 @@ func (x *StreamJobsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamJobsRequest.ProtoReflect.Descriptor instead.
 func (*StreamJobsRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{29}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{49}
 }
 
 // Job is a single SMS for the device to send. The device paces consecutive
@@ -1676,7 +2739,7 @@ type Job struct {
 
 func (x *Job) Reset() {
 	*x = Job{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[30]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1688,7 +2751,7 @@ func (x *Job) String() string {
 func (*Job) ProtoMessage() {}
 
 func (x *Job) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[30]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1701,7 +2764,7 @@ func (x *Job) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Job.ProtoReflect.Descriptor instead.
 func (*Job) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{30}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *Job) GetMessageId() string {
@@ -1763,7 +2826,7 @@ type ReportDeliveryRequest struct {
 
 func (x *ReportDeliveryRequest) Reset() {
 	*x = ReportDeliveryRequest{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[31]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1775,7 +2838,7 @@ func (x *ReportDeliveryRequest) String() string {
 func (*ReportDeliveryRequest) ProtoMessage() {}
 
 func (x *ReportDeliveryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[31]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1788,7 +2851,7 @@ func (x *ReportDeliveryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportDeliveryRequest.ProtoReflect.Descriptor instead.
 func (*ReportDeliveryRequest) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{31}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *ReportDeliveryRequest) GetMessageId() string {
@@ -1828,7 +2891,7 @@ type ReportDeliveryResponse struct {
 
 func (x *ReportDeliveryResponse) Reset() {
 	*x = ReportDeliveryResponse{}
-	mi := &file_porukator_v1_porukator_proto_msgTypes[32]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1840,7 +2903,7 @@ func (x *ReportDeliveryResponse) String() string {
 func (*ReportDeliveryResponse) ProtoMessage() {}
 
 func (x *ReportDeliveryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_porukator_v1_porukator_proto_msgTypes[32]
+	mi := &file_porukator_v1_porukator_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1853,7 +2916,7 @@ func (x *ReportDeliveryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportDeliveryResponse.ProtoReflect.Descriptor instead.
 func (*ReportDeliveryResponse) Descriptor() ([]byte, []int) {
-	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{32}
+	return file_porukator_v1_porukator_proto_rawDescGZIP(), []int{52}
 }
 
 var File_porukator_v1_porukator_proto protoreflect.FileDescriptor
@@ -1873,7 +2936,7 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"\rdispatched_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\fdispatchedAt\x123\n" +
 	"\asent_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\x06sentAt\x12\x19\n" +
 	"\bbatch_id\x18\n" +
-	" \x01(\tR\abatchId\"\xbd\x01\n" +
+	" \x01(\tR\abatchId\"\x83\x02\n" +
 	"\x06Client\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
@@ -1881,7 +2944,26 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"\flast_seen_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"lastSeenAt\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xa7\x01\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"created_by\x18\x06 \x01(\tR\tcreatedBy\x12%\n" +
+	"\x0eowner_username\x18\a \x01(\tR\rownerUsername\"\xb1\x01\n" +
+	"\x04User\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12&\n" +
+	"\x04role\x18\x03 \x01(\x0e2\x12.porukator.v1.RoleR\x04role\x12\x1a\n" +
+	"\bdisabled\x18\x04 \x01(\bR\bdisabled\x129\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xe1\x01\n" +
+	"\aSession\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1a\n" +
+	"\busername\x18\x03 \x01(\tR\busername\x129\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12<\n" +
+	"\flast_used_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"lastUsedAt\x12\x18\n" +
+	"\acurrent\x18\x06 \x01(\bR\acurrent\"\xa7\x01\n" +
 	"\bApiToken\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x129\n" +
@@ -1891,11 +2973,46 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"lastUsedAt\"B\n" +
 	"\bSettings\x12\x19\n" +
 	"\bdelay_ms\x18\x01 \x01(\x05R\adelayMs\x12\x1b\n" +
-	"\tjitter_ms\x18\x02 \x01(\x05R\bjitterMs\"*\n" +
+	"\tjitter_ms\x18\x02 \x01(\x05R\bjitterMs\"F\n" +
 	"\fLoginRequest\x12\x1a\n" +
-	"\bpassword\x18\x01 \x01(\tR\bpassword\"\x1f\n" +
-	"\rLoginResponse\x12\x0e\n" +
-	"\x02ok\x18\x01 \x01(\bR\x02ok\")\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"M\n" +
+	"\rLoginResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12&\n" +
+	"\x04user\x18\x02 \x01(\v2\x12.porukator.v1.UserR\x04user\"\x0f\n" +
+	"\rLogoutRequest\"\x10\n" +
+	"\x0eLogoutResponse\"\x17\n" +
+	"\x15GetCurrentUserRequest\"@\n" +
+	"\x16GetCurrentUserResponse\x12&\n" +
+	"\x04user\x18\x01 \x01(\v2\x12.porukator.v1.UserR\x04user\"s\n" +
+	"\x11CreateUserRequest\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\x12&\n" +
+	"\x04role\x18\x03 \x01(\x0e2\x12.porukator.v1.RoleR\x04role\"<\n" +
+	"\x12CreateUserResponse\x12&\n" +
+	"\x04user\x18\x01 \x01(\v2\x12.porukator.v1.UserR\x04user\"\x12\n" +
+	"\x10ListUsersRequest\"=\n" +
+	"\x11ListUsersResponse\x12(\n" +
+	"\x05users\x18\x01 \x03(\v2\x12.porukator.v1.UserR\x05users\"L\n" +
+	"\x12SetUserRoleRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12&\n" +
+	"\x04role\x18\x02 \x01(\x0e2\x12.porukator.v1.RoleR\x04role\"=\n" +
+	"\x13SetUserRoleResponse\x12&\n" +
+	"\x04user\x18\x01 \x01(\v2\x12.porukator.v1.UserR\x04user\"D\n" +
+	"\x16SetUserDisabledRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
+	"\bdisabled\x18\x02 \x01(\bR\bdisabled\"A\n" +
+	"\x17SetUserDisabledResponse\x12&\n" +
+	"\x04user\x18\x01 \x01(\v2\x12.porukator.v1.UserR\x04user\"#\n" +
+	"\x11DeleteUserRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x14\n" +
+	"\x12DeleteUserResponse\"\x15\n" +
+	"\x13ListSessionsRequest\"I\n" +
+	"\x14ListSessionsResponse\x121\n" +
+	"\bsessions\x18\x01 \x03(\v2\x15.porukator.v1.SessionR\bsessions\"&\n" +
+	"\x14RevokeSessionRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x17\n" +
+	"\x15RevokeSessionResponse\")\n" +
 	"\x13CreateClientRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"{\n" +
 	"\x14CreateClientResponse\x12,\n" +
@@ -1969,9 +3086,16 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"\x16MESSAGE_STATUS_PENDING\x10\x01\x12\x1d\n" +
 	"\x19MESSAGE_STATUS_DISPATCHED\x10\x02\x12\x17\n" +
 	"\x13MESSAGE_STATUS_SENT\x10\x03\x12\x19\n" +
-	"\x15MESSAGE_STATUS_FAILED\x10\x042\xc5\a\n" +
+	"\x15MESSAGE_STATUS_FAILED\x10\x04*>\n" +
+	"\x04Role\x12\x14\n" +
+	"\x10ROLE_UNSPECIFIED\x10\x00\x12\x0e\n" +
+	"\n" +
+	"ROLE_ADMIN\x10\x01\x12\x10\n" +
+	"\fROLE_MANAGER\x10\x022\xbc\r\n" +
 	"\fAdminService\x12@\n" +
-	"\x05Login\x12\x1a.porukator.v1.LoginRequest\x1a\x1b.porukator.v1.LoginResponse\x12U\n" +
+	"\x05Login\x12\x1a.porukator.v1.LoginRequest\x1a\x1b.porukator.v1.LoginResponse\x12C\n" +
+	"\x06Logout\x12\x1b.porukator.v1.LogoutRequest\x1a\x1c.porukator.v1.LogoutResponse\x12[\n" +
+	"\x0eGetCurrentUser\x12#.porukator.v1.GetCurrentUserRequest\x1a$.porukator.v1.GetCurrentUserResponse\x12U\n" +
 	"\fCreateClient\x12!.porukator.v1.CreateClientRequest\x1a\".porukator.v1.CreateClientResponse\x12R\n" +
 	"\vListClients\x12 .porukator.v1.ListClientsRequest\x1a!.porukator.v1.ListClientsResponse\x12U\n" +
 	"\fRenameClient\x12!.porukator.v1.RenameClientRequest\x1a\".porukator.v1.RenameClientResponse\x12U\n" +
@@ -1981,7 +3105,16 @@ const file_porukator_v1_porukator_proto_rawDesc = "" +
 	"\x0eRevokeApiToken\x12#.porukator.v1.RevokeApiTokenRequest\x1a$.porukator.v1.RevokeApiTokenResponse\x12R\n" +
 	"\vGetSettings\x12 .porukator.v1.GetSettingsRequest\x1a!.porukator.v1.GetSettingsResponse\x12[\n" +
 	"\x0eUpdateSettings\x12#.porukator.v1.UpdateSettingsRequest\x1a$.porukator.v1.UpdateSettingsResponse\x12U\n" +
-	"\fListMessages\x12!.porukator.v1.ListMessagesRequest\x1a\".porukator.v1.ListMessagesResponse2\xbc\x01\n" +
+	"\fListMessages\x12!.porukator.v1.ListMessagesRequest\x1a\".porukator.v1.ListMessagesResponse\x12O\n" +
+	"\n" +
+	"CreateUser\x12\x1f.porukator.v1.CreateUserRequest\x1a .porukator.v1.CreateUserResponse\x12L\n" +
+	"\tListUsers\x12\x1e.porukator.v1.ListUsersRequest\x1a\x1f.porukator.v1.ListUsersResponse\x12R\n" +
+	"\vSetUserRole\x12 .porukator.v1.SetUserRoleRequest\x1a!.porukator.v1.SetUserRoleResponse\x12^\n" +
+	"\x0fSetUserDisabled\x12$.porukator.v1.SetUserDisabledRequest\x1a%.porukator.v1.SetUserDisabledResponse\x12O\n" +
+	"\n" +
+	"DeleteUser\x12\x1f.porukator.v1.DeleteUserRequest\x1a .porukator.v1.DeleteUserResponse\x12U\n" +
+	"\fListSessions\x12!.porukator.v1.ListSessionsRequest\x1a\".porukator.v1.ListSessionsResponse\x12X\n" +
+	"\rRevokeSession\x12\".porukator.v1.RevokeSessionRequest\x1a#.porukator.v1.RevokeSessionResponse2\xbc\x01\n" +
 	"\x0fProducerService\x12R\n" +
 	"\vListClients\x12 .porukator.v1.ListClientsRequest\x1a!.porukator.v1.ListClientsResponse\x12U\n" +
 	"\fSendMessages\x12!.porukator.v1.SendMessagesRequest\x1a\".porukator.v1.SendMessagesResponse2\xb0\x01\n" +
@@ -2002,101 +3135,153 @@ func file_porukator_v1_porukator_proto_rawDescGZIP() []byte {
 	return file_porukator_v1_porukator_proto_rawDescData
 }
 
-var file_porukator_v1_porukator_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_porukator_v1_porukator_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
+var file_porukator_v1_porukator_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_porukator_v1_porukator_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
 var file_porukator_v1_porukator_proto_goTypes = []any{
-	(MessageStatus)(0),             // 0: porukator.v1.MessageStatus
-	(*Message)(nil),                // 1: porukator.v1.Message
-	(*Client)(nil),                 // 2: porukator.v1.Client
-	(*ApiToken)(nil),               // 3: porukator.v1.ApiToken
-	(*Settings)(nil),               // 4: porukator.v1.Settings
-	(*LoginRequest)(nil),           // 5: porukator.v1.LoginRequest
-	(*LoginResponse)(nil),          // 6: porukator.v1.LoginResponse
-	(*CreateClientRequest)(nil),    // 7: porukator.v1.CreateClientRequest
-	(*CreateClientResponse)(nil),   // 8: porukator.v1.CreateClientResponse
-	(*ListClientsRequest)(nil),     // 9: porukator.v1.ListClientsRequest
-	(*ListClientsResponse)(nil),    // 10: porukator.v1.ListClientsResponse
-	(*RenameClientRequest)(nil),    // 11: porukator.v1.RenameClientRequest
-	(*RenameClientResponse)(nil),   // 12: porukator.v1.RenameClientResponse
-	(*RevokeClientRequest)(nil),    // 13: porukator.v1.RevokeClientRequest
-	(*RevokeClientResponse)(nil),   // 14: porukator.v1.RevokeClientResponse
-	(*CreateApiTokenRequest)(nil),  // 15: porukator.v1.CreateApiTokenRequest
-	(*CreateApiTokenResponse)(nil), // 16: porukator.v1.CreateApiTokenResponse
-	(*ListApiTokensRequest)(nil),   // 17: porukator.v1.ListApiTokensRequest
-	(*ListApiTokensResponse)(nil),  // 18: porukator.v1.ListApiTokensResponse
-	(*RevokeApiTokenRequest)(nil),  // 19: porukator.v1.RevokeApiTokenRequest
-	(*RevokeApiTokenResponse)(nil), // 20: porukator.v1.RevokeApiTokenResponse
-	(*GetSettingsRequest)(nil),     // 21: porukator.v1.GetSettingsRequest
-	(*GetSettingsResponse)(nil),    // 22: porukator.v1.GetSettingsResponse
-	(*UpdateSettingsRequest)(nil),  // 23: porukator.v1.UpdateSettingsRequest
-	(*UpdateSettingsResponse)(nil), // 24: porukator.v1.UpdateSettingsResponse
-	(*ListMessagesRequest)(nil),    // 25: porukator.v1.ListMessagesRequest
-	(*ListMessagesResponse)(nil),   // 26: porukator.v1.ListMessagesResponse
-	(*OutgoingMessage)(nil),        // 27: porukator.v1.OutgoingMessage
-	(*SendMessagesRequest)(nil),    // 28: porukator.v1.SendMessagesRequest
-	(*SendMessagesResponse)(nil),   // 29: porukator.v1.SendMessagesResponse
-	(*StreamJobsRequest)(nil),      // 30: porukator.v1.StreamJobsRequest
-	(*Job)(nil),                    // 31: porukator.v1.Job
-	(*ReportDeliveryRequest)(nil),  // 32: porukator.v1.ReportDeliveryRequest
-	(*ReportDeliveryResponse)(nil), // 33: porukator.v1.ReportDeliveryResponse
-	(*timestamppb.Timestamp)(nil),  // 34: google.protobuf.Timestamp
+	(MessageStatus)(0),              // 0: porukator.v1.MessageStatus
+	(Role)(0),                       // 1: porukator.v1.Role
+	(*Message)(nil),                 // 2: porukator.v1.Message
+	(*Client)(nil),                  // 3: porukator.v1.Client
+	(*User)(nil),                    // 4: porukator.v1.User
+	(*Session)(nil),                 // 5: porukator.v1.Session
+	(*ApiToken)(nil),                // 6: porukator.v1.ApiToken
+	(*Settings)(nil),                // 7: porukator.v1.Settings
+	(*LoginRequest)(nil),            // 8: porukator.v1.LoginRequest
+	(*LoginResponse)(nil),           // 9: porukator.v1.LoginResponse
+	(*LogoutRequest)(nil),           // 10: porukator.v1.LogoutRequest
+	(*LogoutResponse)(nil),          // 11: porukator.v1.LogoutResponse
+	(*GetCurrentUserRequest)(nil),   // 12: porukator.v1.GetCurrentUserRequest
+	(*GetCurrentUserResponse)(nil),  // 13: porukator.v1.GetCurrentUserResponse
+	(*CreateUserRequest)(nil),       // 14: porukator.v1.CreateUserRequest
+	(*CreateUserResponse)(nil),      // 15: porukator.v1.CreateUserResponse
+	(*ListUsersRequest)(nil),        // 16: porukator.v1.ListUsersRequest
+	(*ListUsersResponse)(nil),       // 17: porukator.v1.ListUsersResponse
+	(*SetUserRoleRequest)(nil),      // 18: porukator.v1.SetUserRoleRequest
+	(*SetUserRoleResponse)(nil),     // 19: porukator.v1.SetUserRoleResponse
+	(*SetUserDisabledRequest)(nil),  // 20: porukator.v1.SetUserDisabledRequest
+	(*SetUserDisabledResponse)(nil), // 21: porukator.v1.SetUserDisabledResponse
+	(*DeleteUserRequest)(nil),       // 22: porukator.v1.DeleteUserRequest
+	(*DeleteUserResponse)(nil),      // 23: porukator.v1.DeleteUserResponse
+	(*ListSessionsRequest)(nil),     // 24: porukator.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),    // 25: porukator.v1.ListSessionsResponse
+	(*RevokeSessionRequest)(nil),    // 26: porukator.v1.RevokeSessionRequest
+	(*RevokeSessionResponse)(nil),   // 27: porukator.v1.RevokeSessionResponse
+	(*CreateClientRequest)(nil),     // 28: porukator.v1.CreateClientRequest
+	(*CreateClientResponse)(nil),    // 29: porukator.v1.CreateClientResponse
+	(*ListClientsRequest)(nil),      // 30: porukator.v1.ListClientsRequest
+	(*ListClientsResponse)(nil),     // 31: porukator.v1.ListClientsResponse
+	(*RenameClientRequest)(nil),     // 32: porukator.v1.RenameClientRequest
+	(*RenameClientResponse)(nil),    // 33: porukator.v1.RenameClientResponse
+	(*RevokeClientRequest)(nil),     // 34: porukator.v1.RevokeClientRequest
+	(*RevokeClientResponse)(nil),    // 35: porukator.v1.RevokeClientResponse
+	(*CreateApiTokenRequest)(nil),   // 36: porukator.v1.CreateApiTokenRequest
+	(*CreateApiTokenResponse)(nil),  // 37: porukator.v1.CreateApiTokenResponse
+	(*ListApiTokensRequest)(nil),    // 38: porukator.v1.ListApiTokensRequest
+	(*ListApiTokensResponse)(nil),   // 39: porukator.v1.ListApiTokensResponse
+	(*RevokeApiTokenRequest)(nil),   // 40: porukator.v1.RevokeApiTokenRequest
+	(*RevokeApiTokenResponse)(nil),  // 41: porukator.v1.RevokeApiTokenResponse
+	(*GetSettingsRequest)(nil),      // 42: porukator.v1.GetSettingsRequest
+	(*GetSettingsResponse)(nil),     // 43: porukator.v1.GetSettingsResponse
+	(*UpdateSettingsRequest)(nil),   // 44: porukator.v1.UpdateSettingsRequest
+	(*UpdateSettingsResponse)(nil),  // 45: porukator.v1.UpdateSettingsResponse
+	(*ListMessagesRequest)(nil),     // 46: porukator.v1.ListMessagesRequest
+	(*ListMessagesResponse)(nil),    // 47: porukator.v1.ListMessagesResponse
+	(*OutgoingMessage)(nil),         // 48: porukator.v1.OutgoingMessage
+	(*SendMessagesRequest)(nil),     // 49: porukator.v1.SendMessagesRequest
+	(*SendMessagesResponse)(nil),    // 50: porukator.v1.SendMessagesResponse
+	(*StreamJobsRequest)(nil),       // 51: porukator.v1.StreamJobsRequest
+	(*Job)(nil),                     // 52: porukator.v1.Job
+	(*ReportDeliveryRequest)(nil),   // 53: porukator.v1.ReportDeliveryRequest
+	(*ReportDeliveryResponse)(nil),  // 54: porukator.v1.ReportDeliveryResponse
+	(*timestamppb.Timestamp)(nil),   // 55: google.protobuf.Timestamp
 }
 var file_porukator_v1_porukator_proto_depIdxs = []int32{
 	0,  // 0: porukator.v1.Message.status:type_name -> porukator.v1.MessageStatus
-	34, // 1: porukator.v1.Message.received_at:type_name -> google.protobuf.Timestamp
-	34, // 2: porukator.v1.Message.dispatched_at:type_name -> google.protobuf.Timestamp
-	34, // 3: porukator.v1.Message.sent_at:type_name -> google.protobuf.Timestamp
-	34, // 4: porukator.v1.Client.last_seen_at:type_name -> google.protobuf.Timestamp
-	34, // 5: porukator.v1.Client.created_at:type_name -> google.protobuf.Timestamp
-	34, // 6: porukator.v1.ApiToken.created_at:type_name -> google.protobuf.Timestamp
-	34, // 7: porukator.v1.ApiToken.last_used_at:type_name -> google.protobuf.Timestamp
-	2,  // 8: porukator.v1.CreateClientResponse.client:type_name -> porukator.v1.Client
-	2,  // 9: porukator.v1.ListClientsResponse.clients:type_name -> porukator.v1.Client
-	2,  // 10: porukator.v1.RenameClientResponse.client:type_name -> porukator.v1.Client
-	3,  // 11: porukator.v1.CreateApiTokenResponse.token:type_name -> porukator.v1.ApiToken
-	3,  // 12: porukator.v1.ListApiTokensResponse.tokens:type_name -> porukator.v1.ApiToken
-	4,  // 13: porukator.v1.GetSettingsResponse.settings:type_name -> porukator.v1.Settings
-	4,  // 14: porukator.v1.UpdateSettingsRequest.settings:type_name -> porukator.v1.Settings
-	4,  // 15: porukator.v1.UpdateSettingsResponse.settings:type_name -> porukator.v1.Settings
-	0,  // 16: porukator.v1.ListMessagesRequest.status:type_name -> porukator.v1.MessageStatus
-	1,  // 17: porukator.v1.ListMessagesResponse.messages:type_name -> porukator.v1.Message
-	27, // 18: porukator.v1.SendMessagesRequest.messages:type_name -> porukator.v1.OutgoingMessage
-	34, // 19: porukator.v1.ReportDeliveryRequest.sent_at:type_name -> google.protobuf.Timestamp
-	5,  // 20: porukator.v1.AdminService.Login:input_type -> porukator.v1.LoginRequest
-	7,  // 21: porukator.v1.AdminService.CreateClient:input_type -> porukator.v1.CreateClientRequest
-	9,  // 22: porukator.v1.AdminService.ListClients:input_type -> porukator.v1.ListClientsRequest
-	11, // 23: porukator.v1.AdminService.RenameClient:input_type -> porukator.v1.RenameClientRequest
-	13, // 24: porukator.v1.AdminService.RevokeClient:input_type -> porukator.v1.RevokeClientRequest
-	15, // 25: porukator.v1.AdminService.CreateApiToken:input_type -> porukator.v1.CreateApiTokenRequest
-	17, // 26: porukator.v1.AdminService.ListApiTokens:input_type -> porukator.v1.ListApiTokensRequest
-	19, // 27: porukator.v1.AdminService.RevokeApiToken:input_type -> porukator.v1.RevokeApiTokenRequest
-	21, // 28: porukator.v1.AdminService.GetSettings:input_type -> porukator.v1.GetSettingsRequest
-	23, // 29: porukator.v1.AdminService.UpdateSettings:input_type -> porukator.v1.UpdateSettingsRequest
-	25, // 30: porukator.v1.AdminService.ListMessages:input_type -> porukator.v1.ListMessagesRequest
-	9,  // 31: porukator.v1.ProducerService.ListClients:input_type -> porukator.v1.ListClientsRequest
-	28, // 32: porukator.v1.ProducerService.SendMessages:input_type -> porukator.v1.SendMessagesRequest
-	30, // 33: porukator.v1.ClientService.StreamJobs:input_type -> porukator.v1.StreamJobsRequest
-	32, // 34: porukator.v1.ClientService.ReportDelivery:input_type -> porukator.v1.ReportDeliveryRequest
-	6,  // 35: porukator.v1.AdminService.Login:output_type -> porukator.v1.LoginResponse
-	8,  // 36: porukator.v1.AdminService.CreateClient:output_type -> porukator.v1.CreateClientResponse
-	10, // 37: porukator.v1.AdminService.ListClients:output_type -> porukator.v1.ListClientsResponse
-	12, // 38: porukator.v1.AdminService.RenameClient:output_type -> porukator.v1.RenameClientResponse
-	14, // 39: porukator.v1.AdminService.RevokeClient:output_type -> porukator.v1.RevokeClientResponse
-	16, // 40: porukator.v1.AdminService.CreateApiToken:output_type -> porukator.v1.CreateApiTokenResponse
-	18, // 41: porukator.v1.AdminService.ListApiTokens:output_type -> porukator.v1.ListApiTokensResponse
-	20, // 42: porukator.v1.AdminService.RevokeApiToken:output_type -> porukator.v1.RevokeApiTokenResponse
-	22, // 43: porukator.v1.AdminService.GetSettings:output_type -> porukator.v1.GetSettingsResponse
-	24, // 44: porukator.v1.AdminService.UpdateSettings:output_type -> porukator.v1.UpdateSettingsResponse
-	26, // 45: porukator.v1.AdminService.ListMessages:output_type -> porukator.v1.ListMessagesResponse
-	10, // 46: porukator.v1.ProducerService.ListClients:output_type -> porukator.v1.ListClientsResponse
-	29, // 47: porukator.v1.ProducerService.SendMessages:output_type -> porukator.v1.SendMessagesResponse
-	31, // 48: porukator.v1.ClientService.StreamJobs:output_type -> porukator.v1.Job
-	33, // 49: porukator.v1.ClientService.ReportDelivery:output_type -> porukator.v1.ReportDeliveryResponse
-	35, // [35:50] is the sub-list for method output_type
-	20, // [20:35] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	55, // 1: porukator.v1.Message.received_at:type_name -> google.protobuf.Timestamp
+	55, // 2: porukator.v1.Message.dispatched_at:type_name -> google.protobuf.Timestamp
+	55, // 3: porukator.v1.Message.sent_at:type_name -> google.protobuf.Timestamp
+	55, // 4: porukator.v1.Client.last_seen_at:type_name -> google.protobuf.Timestamp
+	55, // 5: porukator.v1.Client.created_at:type_name -> google.protobuf.Timestamp
+	1,  // 6: porukator.v1.User.role:type_name -> porukator.v1.Role
+	55, // 7: porukator.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	55, // 8: porukator.v1.Session.created_at:type_name -> google.protobuf.Timestamp
+	55, // 9: porukator.v1.Session.last_used_at:type_name -> google.protobuf.Timestamp
+	55, // 10: porukator.v1.ApiToken.created_at:type_name -> google.protobuf.Timestamp
+	55, // 11: porukator.v1.ApiToken.last_used_at:type_name -> google.protobuf.Timestamp
+	4,  // 12: porukator.v1.LoginResponse.user:type_name -> porukator.v1.User
+	4,  // 13: porukator.v1.GetCurrentUserResponse.user:type_name -> porukator.v1.User
+	1,  // 14: porukator.v1.CreateUserRequest.role:type_name -> porukator.v1.Role
+	4,  // 15: porukator.v1.CreateUserResponse.user:type_name -> porukator.v1.User
+	4,  // 16: porukator.v1.ListUsersResponse.users:type_name -> porukator.v1.User
+	1,  // 17: porukator.v1.SetUserRoleRequest.role:type_name -> porukator.v1.Role
+	4,  // 18: porukator.v1.SetUserRoleResponse.user:type_name -> porukator.v1.User
+	4,  // 19: porukator.v1.SetUserDisabledResponse.user:type_name -> porukator.v1.User
+	5,  // 20: porukator.v1.ListSessionsResponse.sessions:type_name -> porukator.v1.Session
+	3,  // 21: porukator.v1.CreateClientResponse.client:type_name -> porukator.v1.Client
+	3,  // 22: porukator.v1.ListClientsResponse.clients:type_name -> porukator.v1.Client
+	3,  // 23: porukator.v1.RenameClientResponse.client:type_name -> porukator.v1.Client
+	6,  // 24: porukator.v1.CreateApiTokenResponse.token:type_name -> porukator.v1.ApiToken
+	6,  // 25: porukator.v1.ListApiTokensResponse.tokens:type_name -> porukator.v1.ApiToken
+	7,  // 26: porukator.v1.GetSettingsResponse.settings:type_name -> porukator.v1.Settings
+	7,  // 27: porukator.v1.UpdateSettingsRequest.settings:type_name -> porukator.v1.Settings
+	7,  // 28: porukator.v1.UpdateSettingsResponse.settings:type_name -> porukator.v1.Settings
+	0,  // 29: porukator.v1.ListMessagesRequest.status:type_name -> porukator.v1.MessageStatus
+	2,  // 30: porukator.v1.ListMessagesResponse.messages:type_name -> porukator.v1.Message
+	48, // 31: porukator.v1.SendMessagesRequest.messages:type_name -> porukator.v1.OutgoingMessage
+	55, // 32: porukator.v1.ReportDeliveryRequest.sent_at:type_name -> google.protobuf.Timestamp
+	8,  // 33: porukator.v1.AdminService.Login:input_type -> porukator.v1.LoginRequest
+	10, // 34: porukator.v1.AdminService.Logout:input_type -> porukator.v1.LogoutRequest
+	12, // 35: porukator.v1.AdminService.GetCurrentUser:input_type -> porukator.v1.GetCurrentUserRequest
+	28, // 36: porukator.v1.AdminService.CreateClient:input_type -> porukator.v1.CreateClientRequest
+	30, // 37: porukator.v1.AdminService.ListClients:input_type -> porukator.v1.ListClientsRequest
+	32, // 38: porukator.v1.AdminService.RenameClient:input_type -> porukator.v1.RenameClientRequest
+	34, // 39: porukator.v1.AdminService.RevokeClient:input_type -> porukator.v1.RevokeClientRequest
+	36, // 40: porukator.v1.AdminService.CreateApiToken:input_type -> porukator.v1.CreateApiTokenRequest
+	38, // 41: porukator.v1.AdminService.ListApiTokens:input_type -> porukator.v1.ListApiTokensRequest
+	40, // 42: porukator.v1.AdminService.RevokeApiToken:input_type -> porukator.v1.RevokeApiTokenRequest
+	42, // 43: porukator.v1.AdminService.GetSettings:input_type -> porukator.v1.GetSettingsRequest
+	44, // 44: porukator.v1.AdminService.UpdateSettings:input_type -> porukator.v1.UpdateSettingsRequest
+	46, // 45: porukator.v1.AdminService.ListMessages:input_type -> porukator.v1.ListMessagesRequest
+	14, // 46: porukator.v1.AdminService.CreateUser:input_type -> porukator.v1.CreateUserRequest
+	16, // 47: porukator.v1.AdminService.ListUsers:input_type -> porukator.v1.ListUsersRequest
+	18, // 48: porukator.v1.AdminService.SetUserRole:input_type -> porukator.v1.SetUserRoleRequest
+	20, // 49: porukator.v1.AdminService.SetUserDisabled:input_type -> porukator.v1.SetUserDisabledRequest
+	22, // 50: porukator.v1.AdminService.DeleteUser:input_type -> porukator.v1.DeleteUserRequest
+	24, // 51: porukator.v1.AdminService.ListSessions:input_type -> porukator.v1.ListSessionsRequest
+	26, // 52: porukator.v1.AdminService.RevokeSession:input_type -> porukator.v1.RevokeSessionRequest
+	30, // 53: porukator.v1.ProducerService.ListClients:input_type -> porukator.v1.ListClientsRequest
+	49, // 54: porukator.v1.ProducerService.SendMessages:input_type -> porukator.v1.SendMessagesRequest
+	51, // 55: porukator.v1.ClientService.StreamJobs:input_type -> porukator.v1.StreamJobsRequest
+	53, // 56: porukator.v1.ClientService.ReportDelivery:input_type -> porukator.v1.ReportDeliveryRequest
+	9,  // 57: porukator.v1.AdminService.Login:output_type -> porukator.v1.LoginResponse
+	11, // 58: porukator.v1.AdminService.Logout:output_type -> porukator.v1.LogoutResponse
+	13, // 59: porukator.v1.AdminService.GetCurrentUser:output_type -> porukator.v1.GetCurrentUserResponse
+	29, // 60: porukator.v1.AdminService.CreateClient:output_type -> porukator.v1.CreateClientResponse
+	31, // 61: porukator.v1.AdminService.ListClients:output_type -> porukator.v1.ListClientsResponse
+	33, // 62: porukator.v1.AdminService.RenameClient:output_type -> porukator.v1.RenameClientResponse
+	35, // 63: porukator.v1.AdminService.RevokeClient:output_type -> porukator.v1.RevokeClientResponse
+	37, // 64: porukator.v1.AdminService.CreateApiToken:output_type -> porukator.v1.CreateApiTokenResponse
+	39, // 65: porukator.v1.AdminService.ListApiTokens:output_type -> porukator.v1.ListApiTokensResponse
+	41, // 66: porukator.v1.AdminService.RevokeApiToken:output_type -> porukator.v1.RevokeApiTokenResponse
+	43, // 67: porukator.v1.AdminService.GetSettings:output_type -> porukator.v1.GetSettingsResponse
+	45, // 68: porukator.v1.AdminService.UpdateSettings:output_type -> porukator.v1.UpdateSettingsResponse
+	47, // 69: porukator.v1.AdminService.ListMessages:output_type -> porukator.v1.ListMessagesResponse
+	15, // 70: porukator.v1.AdminService.CreateUser:output_type -> porukator.v1.CreateUserResponse
+	17, // 71: porukator.v1.AdminService.ListUsers:output_type -> porukator.v1.ListUsersResponse
+	19, // 72: porukator.v1.AdminService.SetUserRole:output_type -> porukator.v1.SetUserRoleResponse
+	21, // 73: porukator.v1.AdminService.SetUserDisabled:output_type -> porukator.v1.SetUserDisabledResponse
+	23, // 74: porukator.v1.AdminService.DeleteUser:output_type -> porukator.v1.DeleteUserResponse
+	25, // 75: porukator.v1.AdminService.ListSessions:output_type -> porukator.v1.ListSessionsResponse
+	27, // 76: porukator.v1.AdminService.RevokeSession:output_type -> porukator.v1.RevokeSessionResponse
+	31, // 77: porukator.v1.ProducerService.ListClients:output_type -> porukator.v1.ListClientsResponse
+	50, // 78: porukator.v1.ProducerService.SendMessages:output_type -> porukator.v1.SendMessagesResponse
+	52, // 79: porukator.v1.ClientService.StreamJobs:output_type -> porukator.v1.Job
+	54, // 80: porukator.v1.ClientService.ReportDelivery:output_type -> porukator.v1.ReportDeliveryResponse
+	57, // [57:81] is the sub-list for method output_type
+	33, // [33:57] is the sub-list for method input_type
+	33, // [33:33] is the sub-list for extension type_name
+	33, // [33:33] is the sub-list for extension extendee
+	0,  // [0:33] is the sub-list for field type_name
 }
 
 func init() { file_porukator_v1_porukator_proto_init() }
@@ -2109,8 +3294,8 @@ func file_porukator_v1_porukator_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_porukator_v1_porukator_proto_rawDesc), len(file_porukator_v1_porukator_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   33,
+			NumEnums:      2,
+			NumMessages:   53,
 			NumExtensions: 0,
 			NumServices:   3,
 		},

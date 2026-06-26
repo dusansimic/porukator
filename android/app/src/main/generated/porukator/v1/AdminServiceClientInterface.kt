@@ -8,63 +8,112 @@ import com.connectrpc.Headers
 import com.connectrpc.ResponseMessage
 
 /**
- *  AdminService is the management API behind the web UI. All RPCs require the
- *  master password as a bearer token.
+ *  AdminService is the management API behind the web UI. Except for Login, every
+ *  RPC requires a session token (from Login) as a bearer token. Admin-only RPCs
+ *  reject manager sessions with PermissionDenied; device RPCs are scoped to the
+ *  caller's own devices for managers.
  */
 public interface AdminServiceClientInterface {
   /**
-   *  Login validates the master password. Returns ok=true when it matches.
+   *  Login authenticates a username + password and returns a session token.
    */
   public suspend fun login(request: Porukator.LoginRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.LoginResponse>
 
   /**
-   *  CreateClient registers a device and returns its one-time access token plus
-   *  the connection host, for display/QR. The token is never retrievable again.
+   *  Logout revokes the caller's current session.
+   */
+  public suspend fun logout(request: Porukator.LogoutRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.LogoutResponse>
+
+  /**
+   *  GetCurrentUser returns the authenticated user (whoami).
+   */
+  public suspend fun getCurrentUser(request: Porukator.GetCurrentUserRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.GetCurrentUserResponse>
+
+  /**
+   *  CreateClient registers a device owned by the caller and returns its
+   *  one-time access token plus the connection host, for display/QR.
    */
   public suspend fun createClient(request: Porukator.CreateClientRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.CreateClientResponse>
 
   /**
-   *  ListClients returns all devices with live online state.
+   *  ListClients returns devices: all for admins, own only for managers.
    */
   public suspend fun listClients(request: Porukator.ListClientsRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.ListClientsResponse>
 
   /**
-   *  RenameClient changes a device's display name.
+   *  RenameClient changes a device's display name (managers: own devices only).
    */
   public suspend fun renameClient(request: Porukator.RenameClientRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.RenameClientResponse>
 
   /**
-   *  RevokeClient deletes a device and its access token.
+   *  RevokeClient deletes a device (managers: own devices only).
    */
   public suspend fun revokeClient(request: Porukator.RevokeClientRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.RevokeClientResponse>
 
   /**
-   *  CreateApiToken issues a producer token, returned once in plaintext.
+   *  CreateApiToken issues a producer token, returned once in plaintext. Admin only.
    */
   public suspend fun createApiToken(request: Porukator.CreateApiTokenRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.CreateApiTokenResponse>
 
   /**
-   *  ListApiTokens lists producer tokens (without secrets).
+   *  ListApiTokens lists producer tokens (without secrets). Admin only.
    */
   public suspend fun listApiTokens(request: Porukator.ListApiTokensRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.ListApiTokensResponse>
 
   /**
-   *  RevokeApiToken deletes a producer token.
+   *  RevokeApiToken deletes a producer token. Admin only.
    */
   public suspend fun revokeApiToken(request: Porukator.RevokeApiTokenRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.RevokeApiTokenResponse>
 
   /**
-   *  GetSettings returns the current pacing configuration.
+   *  GetSettings returns the current pacing configuration. Admin only.
    */
   public suspend fun getSettings(request: Porukator.GetSettingsRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.GetSettingsResponse>
 
   /**
-   *  UpdateSettings replaces the pacing configuration.
+   *  UpdateSettings replaces the pacing configuration. Admin only.
    */
   public suspend fun updateSettings(request: Porukator.UpdateSettingsRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.UpdateSettingsResponse>
 
   /**
-   *  ListMessages returns recent messages, newest first, with optional filters.
+   *  ListMessages returns recent messages: all for admins, own-device only for
+   *  managers.
    */
   public suspend fun listMessages(request: Porukator.ListMessagesRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.ListMessagesResponse>
+
+  /**
+   *  CreateUser creates a web-UI account. Admin only.
+   */
+  public suspend fun createUser(request: Porukator.CreateUserRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.CreateUserResponse>
+
+  /**
+   *  ListUsers returns all accounts. Admin only.
+   */
+  public suspend fun listUsers(request: Porukator.ListUsersRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.ListUsersResponse>
+
+  /**
+   *  SetUserRole changes an account's role. Admin only.
+   */
+  public suspend fun setUserRole(request: Porukator.SetUserRoleRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.SetUserRoleResponse>
+
+  /**
+   *  SetUserDisabled enables/disables an account; disabling revokes its sessions.
+   *  Admin only.
+   */
+  public suspend fun setUserDisabled(request: Porukator.SetUserDisabledRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.SetUserDisabledResponse>
+
+  /**
+   *  DeleteUser removes an account and its sessions. Admin only.
+   */
+  public suspend fun deleteUser(request: Porukator.DeleteUserRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.DeleteUserResponse>
+
+  /**
+   *  ListSessions returns active sessions across all users. Admin only.
+   */
+  public suspend fun listSessions(request: Porukator.ListSessionsRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.ListSessionsResponse>
+
+  /**
+   *  RevokeSession deletes one session by id. Admin only.
+   */
+  public suspend fun revokeSession(request: Porukator.RevokeSessionRequest, headers: Headers = emptyMap()): ResponseMessage<Porukator.RevokeSessionResponse>
 }

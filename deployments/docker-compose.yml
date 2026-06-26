@@ -34,7 +34,6 @@ services:
       PORUKATOR_HTTP_ADDR: ":8080"
       PORUKATOR_HTTP_PUBLIC_HOST: "http://localhost:8080"
       PORUKATOR_POSTGRES_URL: "postgres://porukator:porukator@postgres:5432/porukator?sslmode=disable"
-      PORUKATOR_AUTH_MASTER_PASSWORD: "change-me"
       PORUKATOR_LOGGING_LEVEL: "info"
       PORUKATOR_LOGGING_FORMAT: "json"
       PORUKATOR_APP_ENV: "production"

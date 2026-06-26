@@ -14,20 +14,35 @@ file.
 
 ```
 proto/porukator/v1/porukator.proto   ── one contract, three services
-  ├─ AdminService     (master-password auth)  ← web UI
+  ├─ AdminService     (user session auth)      ← web UI
   ├─ ProducerService  (API-token auth)         ← your upstream services
   └─ ClientService    (client-token auth)       ← Android app
 ```
 
 - **Three auth surfaces**, enforced by one Connect interceptor keyed on the
   procedure path (`internal/auth`):
-  - **Master password** (Viper config `auth.master_password`) gates AdminService
-    and the web UI. `Login` is exempt and validates the password itself.
+  - **User accounts + sessions** gate AdminService and the web UI. `Login`
+    (username + password) is exempt and mints an opaque **session token** stored
+    sha256-hashed in `sessions`; the browser sends it as `Authorization: Bearer`.
+    Passwords are **argon2id**-hashed (`internal/auth/password.go`). The
+    interceptor resolves the session → user, rejects disabled/expired, and
+    injects the user into the context.
+  - **Two roles**: **admin** (everything) and **manager** (only their own client
+    devices + those devices' messages). A coarse role gate in the interceptor
+    rejects manager calls to admin-only procedures with `PermissionDenied`;
+    per-device ownership is enforced in the handlers.
+  - Admin-only: API tokens, settings, user management (create / set-role /
+    disable / delete) and session management (list / revoke). Disabling a user
+    deletes all their sessions; admins may act on themselves (no last-admin
+    guard). Bootstrap the first admin with `porukator create-user --admin`.
   - **API tokens** (created in the UI, sha256-hashed at rest) gate
     ProducerService.
   - **Client access tokens** (created per device, sha256-hashed) gate
     ClientService; the device identity is derived from the token, never sent in
     the request.
+- **Device ownership**: `clients.created_by` records the creating user; managers
+  see/manage only their own devices, admins see all. ProducerService listing is
+  unscoped (producers are external API-token callers).
 - **Pacing**: the service stores global `delay_ms` + `jitter_ms` (the `settings`
   table) and ships them with every `Job`. The **client paces its own sends** —
   it waits `delay_ms + random(0, jitter_ms)` between SMS — and **reports each
@@ -83,24 +98,28 @@ just dev   # deps + codegen + Postgres (waited healthy) + backend + web UI, unde
 ```
 Requires [`mprocs`](https://github.com/pvolok/mprocs). It starts Postgres
 (published on host port **55432** to avoid clashing with other local Postgres),
-then runs the backend (master password `dev-pass`) and the web UI as mprocs
-panes plus an infra log tail. **The backend listens on `:8080`, so that port must
-be free.** Quit with `q` (or Ctrl-C) — `just dev` then stops the docker compose
-stack automatically. `mprocs.yaml` defines the panes; press `r` on the `server`
-pane to rebuild + restart after Go changes.
+then runs the backend and the web UI as mprocs panes plus an infra log tail.
+**The backend listens on `:8080`, so that port must be free.** Bootstrap a login
+once with `just create-user admin dev-pass true` (username password is-admin),
+then sign in. Quit with `q` (or Ctrl-C) — `just dev` then stops the docker
+compose stack automatically. `mprocs.yaml` defines the panes; press `r` on the
+`server` pane to rebuild + restart after Go changes.
 
 ### Service
 ```bash
-cp config/config.example.yaml config/config.yaml   # set auth.master_password
+cp config/config.example.yaml config/config.yaml
 just proto      # buf lint + generate Go (gen/go)
 just sqlc-gen   # regenerate repository from queries + migrations
 just build && just run
 just test       # go test -race ./...
 just docker-up  # postgres + service via docker compose
+
+# Bootstrap the first admin (CLI subcommand; runs migrations, then inserts):
+./porukator create-user --username admin --password <pw> --admin
 ```
 Config is `config/config.yaml` plus `PORUKATOR_*` env overrides
-(`PORUKATOR_AUTH_MASTER_PASSWORD`, `PORUKATOR_POSTGRES_URL`,
-`PORUKATOR_HTTP_ADDR`, `PORUKATOR_HTTP_PUBLIC_HOST`). Migrations run on boot.
+(`PORUKATOR_POSTGRES_URL`, `PORUKATOR_HTTP_ADDR`, `PORUKATOR_HTTP_PUBLIC_HOST`).
+Migrations run on boot. Web-UI access is via user accounts (no master password).
 
 ### Test CLI (`porukatorctl`)
 
@@ -169,7 +188,8 @@ attribution** to commits.
 ## End-to-end smoke test
 
 With the service up (`just docker-up` or `just run`):
-1. `AdminService.Login` with the master password.
+1. `porukator create-user --username admin --password pw --admin`, then
+   `AdminService.Login` with those credentials → session token.
 2. `CreateClient` → access token; `CreateApiToken` → producer secret.
 3. Open `ClientService.StreamJobs` with the client token → `ListClients` shows it
    online.

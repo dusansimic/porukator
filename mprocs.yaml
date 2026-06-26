@@ -10,9 +10,9 @@
 procs:
   server:
     # Local backend with hot env overrides pointing Postgres at the published
-    # localhost:55432. Master password is "dev-pass". Press `r` in mprocs to
-    # rebuild + restart after Go changes.
-    shell: "PORUKATOR_POSTGRES_URL='postgres://porukator:porukator@localhost:55432/porukator?sslmode=disable' PORUKATOR_AUTH_MASTER_PASSWORD='dev-pass' PORUKATOR_LOGGING_FORMAT='development' just run"
+    # localhost:55432. Bootstrap a login once with `just create-user` (see the
+    # justfile). Press `r` in mprocs to rebuild + restart after Go changes.
+    shell: "PORUKATOR_POSTGRES_URL='postgres://porukator:porukator@localhost:55432/porukator?sslmode=disable' PORUKATOR_LOGGING_FORMAT='development' just run"
   ui:
     shell: "pnpm --dir webui dev"
   infra-logs:

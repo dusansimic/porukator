@@ -2,12 +2,12 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 import type { Interceptor } from "@connectrpc/connect";
 import { useAuthStore } from "@/stores/auth";
 
-// Attach the master password as a bearer token on every request. The Login RPC
-// is exempt server-side, so an unset password still lets the login call through.
+// Attach the session token as a bearer token on every request. The Login RPC is
+// exempt server-side, so an unset token still lets the login call through.
 const authInterceptor: Interceptor = (next) => async (req) => {
-  const pw = useAuthStore.getState().password;
-  if (pw) {
-    req.header.set("Authorization", `Bearer ${pw}`);
+  const token = useAuthStore.getState().token;
+  if (token) {
+    req.header.set("Authorization", `Bearer ${token}`);
   }
   return next(req);
 };

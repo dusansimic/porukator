@@ -55,6 +55,48 @@ func (ns NullMessageStatus) Value() (driver.Value, error) {
 	return string(ns.MessageStatus), nil
 }
 
+type UserRole string
+
+const (
+	UserRoleAdmin   UserRole = "admin"
+	UserRoleManager UserRole = "manager"
+)
+
+func (e *UserRole) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = UserRole(s)
+	case string:
+		*e = UserRole(s)
+	default:
+		return fmt.Errorf("unsupported scan type for UserRole: %T", src)
+	}
+	return nil
+}
+
+type NullUserRole struct {
+	UserRole UserRole
+	Valid    bool // Valid is true if UserRole is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullUserRole) Scan(value interface{}) error {
+	if value == nil {
+		ns.UserRole, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.UserRole.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullUserRole) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.UserRole), nil
+}
+
 type ApiToken struct {
 	ID         pgtype.UUID
 	Name       string
@@ -69,6 +111,7 @@ type Client struct {
 	AccessTokenHash string
 	CreatedAt       pgtype.Timestamptz
 	LastSeenAt      pgtype.Timestamptz
+	CreatedBy       pgtype.UUID
 }
 
 type Message struct {
@@ -84,8 +127,26 @@ type Message struct {
 	SentAt       pgtype.Timestamptz
 }
 
+type Session struct {
+	ID         pgtype.UUID
+	UserID     pgtype.UUID
+	TokenHash  string
+	CreatedAt  pgtype.Timestamptz
+	LastUsedAt pgtype.Timestamptz
+	ExpiresAt  pgtype.Timestamptz
+}
+
 type Setting struct {
 	ID       int32
 	DelayMs  int32
 	JitterMs int32
+}
+
+type User struct {
+	ID           pgtype.UUID
+	Username     string
+	PasswordHash string
+	Role         UserRole
+	Disabled     bool
+	CreatedAt    pgtype.Timestamptz
 }

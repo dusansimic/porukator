@@ -92,6 +92,59 @@ func (q *Queries) ListMessages(ctx context.Context, arg ListMessagesParams) ([]M
 	return items, nil
 }
 
+const listMessagesForOwner = `-- name: ListMessagesForOwner :many
+SELECT messages.id, messages.batch_id, messages.phone_number, messages.content, messages.client_id, messages.status, messages.error, messages.received_at, messages.dispatched_at, messages.sent_at FROM messages
+JOIN clients ON clients.id = messages.client_id
+WHERE clients.created_by = $1
+  AND ($2::message_status IS NULL OR messages.status = $2)
+  AND ($3::uuid IS NULL OR messages.client_id = $3)
+ORDER BY messages.received_at DESC
+LIMIT $4
+`
+
+type ListMessagesForOwnerParams struct {
+	Owner    pgtype.UUID
+	Status   NullMessageStatus
+	ClientID pgtype.UUID
+	Lim      int32
+}
+
+func (q *Queries) ListMessagesForOwner(ctx context.Context, arg ListMessagesForOwnerParams) ([]Message, error) {
+	rows, err := q.db.Query(ctx, listMessagesForOwner,
+		arg.Owner,
+		arg.Status,
+		arg.ClientID,
+		arg.Lim,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Message
+	for rows.Next() {
+		var i Message
+		if err := rows.Scan(
+			&i.ID,
+			&i.BatchID,
+			&i.PhoneNumber,
+			&i.Content,
+			&i.ClientID,
+			&i.Status,
+			&i.Error,
+			&i.ReceivedAt,
+			&i.DispatchedAt,
+			&i.SentAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listPendingForClient = `-- name: ListPendingForClient :many
 SELECT id, batch_id, phone_number, content, client_id, status, error, received_at, dispatched_at, sent_at FROM messages
 WHERE client_id = $1 AND status = 'pending'

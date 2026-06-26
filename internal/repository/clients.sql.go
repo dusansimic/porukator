@@ -12,18 +12,19 @@ import (
 )
 
 const createClient = `-- name: CreateClient :one
-INSERT INTO clients (name, access_token_hash)
-VALUES ($1, $2)
-RETURNING id, name, access_token_hash, created_at, last_seen_at
+INSERT INTO clients (name, access_token_hash, created_by)
+VALUES ($1, $2, $3)
+RETURNING id, name, access_token_hash, created_at, last_seen_at, created_by
 `
 
 type CreateClientParams struct {
 	Name            string
 	AccessTokenHash string
+	CreatedBy       pgtype.UUID
 }
 
 func (q *Queries) CreateClient(ctx context.Context, arg CreateClientParams) (Client, error) {
-	row := q.db.QueryRow(ctx, createClient, arg.Name, arg.AccessTokenHash)
+	row := q.db.QueryRow(ctx, createClient, arg.Name, arg.AccessTokenHash, arg.CreatedBy)
 	var i Client
 	err := row.Scan(
 		&i.ID,
@@ -31,6 +32,7 @@ func (q *Queries) CreateClient(ctx context.Context, arg CreateClientParams) (Cli
 		&i.AccessTokenHash,
 		&i.CreatedAt,
 		&i.LastSeenAt,
+		&i.CreatedBy,
 	)
 	return i, err
 }
@@ -45,7 +47,7 @@ func (q *Queries) DeleteClient(ctx context.Context, id pgtype.UUID) error {
 }
 
 const getClient = `-- name: GetClient :one
-SELECT id, name, access_token_hash, created_at, last_seen_at FROM clients WHERE id = $1
+SELECT id, name, access_token_hash, created_at, last_seen_at, created_by FROM clients WHERE id = $1
 `
 
 func (q *Queries) GetClient(ctx context.Context, id pgtype.UUID) (Client, error) {
@@ -57,12 +59,13 @@ func (q *Queries) GetClient(ctx context.Context, id pgtype.UUID) (Client, error)
 		&i.AccessTokenHash,
 		&i.CreatedAt,
 		&i.LastSeenAt,
+		&i.CreatedBy,
 	)
 	return i, err
 }
 
 const getClientByTokenHash = `-- name: GetClientByTokenHash :one
-SELECT id, name, access_token_hash, created_at, last_seen_at FROM clients WHERE access_token_hash = $1
+SELECT id, name, access_token_hash, created_at, last_seen_at, created_by FROM clients WHERE access_token_hash = $1
 `
 
 func (q *Queries) GetClientByTokenHash(ctx context.Context, accessTokenHash string) (Client, error) {
@@ -74,12 +77,13 @@ func (q *Queries) GetClientByTokenHash(ctx context.Context, accessTokenHash stri
 		&i.AccessTokenHash,
 		&i.CreatedAt,
 		&i.LastSeenAt,
+		&i.CreatedBy,
 	)
 	return i, err
 }
 
 const listClients = `-- name: ListClients :many
-SELECT id, name, access_token_hash, created_at, last_seen_at FROM clients ORDER BY created_at
+SELECT id, name, access_token_hash, created_at, last_seen_at, created_by FROM clients ORDER BY created_at
 `
 
 func (q *Queries) ListClients(ctx context.Context) ([]Client, error) {
@@ -97,6 +101,98 @@ func (q *Queries) ListClients(ctx context.Context) ([]Client, error) {
 			&i.AccessTokenHash,
 			&i.CreatedAt,
 			&i.LastSeenAt,
+			&i.CreatedBy,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listClientsForOwner = `-- name: ListClientsForOwner :many
+SELECT clients.id, clients.name, clients.access_token_hash, clients.created_at, clients.last_seen_at, clients.created_by, users.username AS owner_username
+FROM clients
+LEFT JOIN users ON users.id = clients.created_by
+WHERE clients.created_by = $1
+ORDER BY clients.created_at
+`
+
+type ListClientsForOwnerRow struct {
+	ID              pgtype.UUID
+	Name            string
+	AccessTokenHash string
+	CreatedAt       pgtype.Timestamptz
+	LastSeenAt      pgtype.Timestamptz
+	CreatedBy       pgtype.UUID
+	OwnerUsername   pgtype.Text
+}
+
+func (q *Queries) ListClientsForOwner(ctx context.Context, createdBy pgtype.UUID) ([]ListClientsForOwnerRow, error) {
+	rows, err := q.db.Query(ctx, listClientsForOwner, createdBy)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []ListClientsForOwnerRow
+	for rows.Next() {
+		var i ListClientsForOwnerRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.AccessTokenHash,
+			&i.CreatedAt,
+			&i.LastSeenAt,
+			&i.CreatedBy,
+			&i.OwnerUsername,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listClientsWithOwner = `-- name: ListClientsWithOwner :many
+SELECT clients.id, clients.name, clients.access_token_hash, clients.created_at, clients.last_seen_at, clients.created_by, users.username AS owner_username
+FROM clients
+LEFT JOIN users ON users.id = clients.created_by
+ORDER BY clients.created_at
+`
+
+type ListClientsWithOwnerRow struct {
+	ID              pgtype.UUID
+	Name            string
+	AccessTokenHash string
+	CreatedAt       pgtype.Timestamptz
+	LastSeenAt      pgtype.Timestamptz
+	CreatedBy       pgtype.UUID
+	OwnerUsername   pgtype.Text
+}
+
+func (q *Queries) ListClientsWithOwner(ctx context.Context) ([]ListClientsWithOwnerRow, error) {
+	rows, err := q.db.Query(ctx, listClientsWithOwner)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []ListClientsWithOwnerRow
+	for rows.Next() {
+		var i ListClientsWithOwnerRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.AccessTokenHash,
+			&i.CreatedAt,
+			&i.LastSeenAt,
+			&i.CreatedBy,
+			&i.OwnerUsername,
 		); err != nil {
 			return nil, err
 		}
@@ -109,7 +205,7 @@ func (q *Queries) ListClients(ctx context.Context) ([]Client, error) {
 }
 
 const renameClient = `-- name: RenameClient :one
-UPDATE clients SET name = $2 WHERE id = $1 RETURNING id, name, access_token_hash, created_at, last_seen_at
+UPDATE clients SET name = $2 WHERE id = $1 RETURNING id, name, access_token_hash, created_at, last_seen_at, created_by
 `
 
 type RenameClientParams struct {
@@ -126,6 +222,7 @@ func (q *Queries) RenameClient(ctx context.Context, arg RenameClientParams) (Cli
 		&i.AccessTokenHash,
 		&i.CreatedAt,
 		&i.LastSeenAt,
+		&i.CreatedBy,
 	)
 	return i, err
 }

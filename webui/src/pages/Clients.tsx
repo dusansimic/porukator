@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { QRCodeSVG } from "qrcode.react";
 import { Plus, Trash2, Pencil, Copy } from "lucide-react";
 import { AdminService, type Client } from "@/gen/porukator/v1/porukator_pb";
+import { useAuthStore, isAdmin } from "@/stores/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +23,7 @@ function qrPayload(host: string, token: string, name: string) {
 
 export function Clients() {
   const qc = useQueryClient();
+  const showOwner = isAdmin(useAuthStore((s) => s.user));
   const { data } = useQuery(AdminService.method.listClients, {}, { refetchInterval: 3000 });
   const create = useMutation(AdminService.method.createClient);
   const rename = useMutation(AdminService.method.renameClient);
@@ -95,6 +97,7 @@ export function Clients() {
           <TableRow>
             <TableHead>Status</TableHead>
             <TableHead>Name</TableHead>
+            {showOwner && <TableHead>Owner</TableHead>}
             <TableHead>Last seen</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -106,6 +109,9 @@ export function Clients() {
                 {c.online ? <Badge variant="success">online</Badge> : <Badge variant="secondary">offline</Badge>}
               </TableCell>
               <TableCell className="font-medium">{c.name}</TableCell>
+              {showOwner && (
+                <TableCell className="text-muted-foreground">{c.ownerUsername || "—"}</TableCell>
+              )}
               <TableCell className="text-muted-foreground">
                 {c.lastSeenAt ? new Date(Number(c.lastSeenAt.seconds) * 1000).toLocaleString() : "—"}
               </TableCell>
@@ -140,7 +146,7 @@ export function Clients() {
           ))}
           {data && data.clients.length === 0 && (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+              <TableCell colSpan={showOwner ? 5 : 4} className="text-center text-muted-foreground py-8">
                 No devices yet.
               </TableCell>
             </TableRow>

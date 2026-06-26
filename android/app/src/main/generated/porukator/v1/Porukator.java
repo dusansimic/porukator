@@ -170,6 +170,132 @@ public final class Porukator {
     // @@protoc_insertion_point(enum_scope:porukator.v1.MessageStatus)
   }
 
+  /**
+   * <pre>
+   * Role is a user's permission level.
+   * </pre>
+   *
+   * Protobuf enum {@code porukator.v1.Role}
+   */
+  public enum Role
+      implements com.google.protobuf.Internal.EnumLite {
+    /**
+     * <pre>
+     * Default, never persisted.
+     * </pre>
+     *
+     * <code>ROLE_UNSPECIFIED = 0;</code>
+     */
+    ROLE_UNSPECIFIED(0),
+    /**
+     * <pre>
+     * Full access to everything.
+     * </pre>
+     *
+     * <code>ROLE_ADMIN = 1;</code>
+     */
+    ROLE_ADMIN(1),
+    /**
+     * <pre>
+     * May manage only their own client devices and view those devices' messages.
+     * </pre>
+     *
+     * <code>ROLE_MANAGER = 2;</code>
+     */
+    ROLE_MANAGER(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <pre>
+     * Default, never persisted.
+     * </pre>
+     *
+     * <code>ROLE_UNSPECIFIED = 0;</code>
+     */
+    public static final int ROLE_UNSPECIFIED_VALUE = 0;
+    /**
+     * <pre>
+     * Full access to everything.
+     * </pre>
+     *
+     * <code>ROLE_ADMIN = 1;</code>
+     */
+    public static final int ROLE_ADMIN_VALUE = 1;
+    /**
+     * <pre>
+     * May manage only their own client devices and view those devices' messages.
+     * </pre>
+     *
+     * <code>ROLE_MANAGER = 2;</code>
+     */
+    public static final int ROLE_MANAGER_VALUE = 2;
+
+
+    @java.lang.Override
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The number of the enum to look for.
+     * @return The enum associated with the given number.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static Role valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static Role forNumber(int value) {
+      switch (value) {
+        case 0: return ROLE_UNSPECIFIED;
+        case 1: return ROLE_ADMIN;
+        case 2: return ROLE_MANAGER;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Role>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        Role> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Role>() {
+            @java.lang.Override
+            public Role findValueByNumber(int number) {
+              return Role.forNumber(number);
+            }
+          };
+
+    public static com.google.protobuf.Internal.EnumVerifier 
+        internalGetVerifier() {
+      return RoleVerifier.INSTANCE;
+    }
+
+    private static final class RoleVerifier implements 
+         com.google.protobuf.Internal.EnumVerifier { 
+            static final com.google.protobuf.Internal.EnumVerifier           INSTANCE = new RoleVerifier();
+            @java.lang.Override
+            public boolean isInRange(int number) {
+              return Role.forNumber(number) != null;
+            }
+          };
+
+    private final int value;
+
+    private Role(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:porukator.v1.Role)
+  }
+
   public interface MessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:porukator.v1.Message)
       com.google.protobuf.MessageLiteOrBuilder {
@@ -2024,6 +2150,46 @@ public final class Porukator {
      * @return The createdAt.
      */
     com.google.protobuf.Timestamp getCreatedAt();
+
+    /**
+     * <pre>
+     * UUID of the user who created the device; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 6 [json_name = "createdBy"];</code>
+     * @return The createdBy.
+     */
+    java.lang.String getCreatedBy();
+    /**
+     * <pre>
+     * UUID of the user who created the device; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 6 [json_name = "createdBy"];</code>
+     * @return The bytes for createdBy.
+     */
+    com.google.protobuf.ByteString
+        getCreatedByBytes();
+
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+     * @return The ownerUsername.
+     */
+    java.lang.String getOwnerUsername();
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+     * @return The bytes for ownerUsername.
+     */
+    com.google.protobuf.ByteString
+        getOwnerUsernameBytes();
   }
   /**
    * <pre>
@@ -2040,6 +2206,8 @@ public final class Porukator {
     private Client() {
       id_ = "";
       name_ = "";
+      createdBy_ = "";
+      ownerUsername_ = "";
     }
     private int bitField0_;
     public static final int ID_FIELD_NUMBER = 1;
@@ -2344,6 +2512,140 @@ public final class Porukator {
      */
     private void clearCreatedAt() {  createdAt_ = null;
       bitField0_ = (bitField0_ & ~0x00000002);
+    }
+
+    public static final int CREATED_BY_FIELD_NUMBER = 6;
+    private java.lang.String createdBy_;
+    /**
+     * <pre>
+     * UUID of the user who created the device; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 6 [json_name = "createdBy"];</code>
+     * @return The createdBy.
+     */
+    @java.lang.Override
+    public java.lang.String getCreatedBy() {
+      return createdBy_;
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the device; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 6 [json_name = "createdBy"];</code>
+     * @return The bytes for createdBy.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getCreatedByBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(createdBy_);
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the device; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 6 [json_name = "createdBy"];</code>
+     * @param value The createdBy to set.
+     */
+    private void setCreatedBy(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      createdBy_ = value;
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the device; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 6 [json_name = "createdBy"];</code>
+     */
+    private void clearCreatedBy() {
+
+      createdBy_ = getDefaultInstance().getCreatedBy();
+    }
+    /**
+     * <pre>
+     * UUID of the user who created the device; empty if the owner was removed.
+     * </pre>
+     *
+     * <code>string created_by = 6 [json_name = "createdBy"];</code>
+     * @param value The bytes for createdBy to set.
+     */
+    private void setCreatedByBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      createdBy_ = value.toStringUtf8();
+
+    }
+
+    public static final int OWNER_USERNAME_FIELD_NUMBER = 7;
+    private java.lang.String ownerUsername_;
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+     * @return The ownerUsername.
+     */
+    @java.lang.Override
+    public java.lang.String getOwnerUsername() {
+      return ownerUsername_;
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+     * @return The bytes for ownerUsername.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getOwnerUsernameBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(ownerUsername_);
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+     * @param value The ownerUsername to set.
+     */
+    private void setOwnerUsername(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      ownerUsername_ = value;
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+     */
+    private void clearOwnerUsername() {
+
+      ownerUsername_ = getDefaultInstance().getOwnerUsername();
+    }
+    /**
+     * <pre>
+     * Username of the owner, for display; empty when unowned.
+     * </pre>
+     *
+     * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+     * @param value The bytes for ownerUsername to set.
+     */
+    private void setOwnerUsernameBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      ownerUsername_ = value.toStringUtf8();
+
     }
 
     public static porukator.v1.Porukator.Client parseFrom(
@@ -2767,6 +3069,144 @@ public final class Porukator {
         return this;
       }
 
+      /**
+       * <pre>
+       * UUID of the user who created the device; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 6 [json_name = "createdBy"];</code>
+       * @return The createdBy.
+       */
+      @java.lang.Override
+      public java.lang.String getCreatedBy() {
+        return instance.getCreatedBy();
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the device; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 6 [json_name = "createdBy"];</code>
+       * @return The bytes for createdBy.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getCreatedByBytes() {
+        return instance.getCreatedByBytes();
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the device; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 6 [json_name = "createdBy"];</code>
+       * @param value The createdBy to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCreatedBy(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setCreatedBy(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the device; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 6 [json_name = "createdBy"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCreatedBy() {
+        copyOnWrite();
+        instance.clearCreatedBy();
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the user who created the device; empty if the owner was removed.
+       * </pre>
+       *
+       * <code>string created_by = 6 [json_name = "createdBy"];</code>
+       * @param value The bytes for createdBy to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCreatedByBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setCreatedByBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+       * @return The ownerUsername.
+       */
+      @java.lang.Override
+      public java.lang.String getOwnerUsername() {
+        return instance.getOwnerUsername();
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+       * @return The bytes for ownerUsername.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getOwnerUsernameBytes() {
+        return instance.getOwnerUsernameBytes();
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+       * @param value The ownerUsername to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOwnerUsername(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setOwnerUsername(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOwnerUsername() {
+        copyOnWrite();
+        instance.clearOwnerUsername();
+        return this;
+      }
+      /**
+       * <pre>
+       * Username of the owner, for display; empty when unowned.
+       * </pre>
+       *
+       * <code>string owner_username = 7 [json_name = "ownerUsername"];</code>
+       * @param value The bytes for ownerUsername to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOwnerUsernameBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setOwnerUsernameBytes(value);
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:porukator.v1.Client)
     }
     @java.lang.Override
@@ -2789,10 +3229,12 @@ public final class Porukator {
               "online_",
               "lastSeenAt_",
               "createdAt_",
+              "createdBy_",
+              "ownerUsername_",
             };
             java.lang.String info =
-                "\u0000\u0005\u0000\u0001\u0001\u0005\u0005\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
-                "\u0003\u0007\u0004\u1009\u0000\u0005\u1009\u0001";
+                "\u0000\u0007\u0000\u0001\u0001\u0007\u0007\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
+                "\u0003\u0007\u0004\u1009\u0000\u0005\u1009\u0001\u0006\u0208\u0007\u0208";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through
@@ -2843,6 +3285,1983 @@ public final class Porukator {
     private static volatile com.google.protobuf.Parser<Client> PARSER;
 
     public static com.google.protobuf.Parser<Client> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface UserOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.User)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 2 [json_name = "username"];</code>
+     * @return The username.
+     */
+    java.lang.String getUsername();
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 2 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    com.google.protobuf.ByteString
+        getUsernameBytes();
+
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The enum numeric value on the wire for role.
+     */
+    int getRoleValue();
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The role.
+     */
+    porukator.v1.Porukator.Role getRole();
+
+    /**
+     * <pre>
+     * True when the account is disabled (cannot log in; sessions revoked).
+     * </pre>
+     *
+     * <code>bool disabled = 4 [json_name = "disabled"];</code>
+     * @return The disabled.
+     */
+    boolean getDisabled();
+
+    /**
+     * <pre>
+     * When the account was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+     * @return Whether the createdAt field is set.
+     */
+    boolean hasCreatedAt();
+    /**
+     * <pre>
+     * When the account was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+     * @return The createdAt.
+     */
+    com.google.protobuf.Timestamp getCreatedAt();
+  }
+  /**
+   * <pre>
+   * User is a web-UI account.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.User}
+   */
+  public  static final class User extends
+      com.google.protobuf.GeneratedMessageLite<
+          User, User.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.User)
+      UserOrBuilder {
+    private User() {
+      id_ = "";
+      username_ = "";
+    }
+    private int bitField0_;
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.String id_;
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      return id_;
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(id_);
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The id to set.
+     */
+    private void setId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      id_ = value;
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     */
+    private void clearId() {
+
+      id_ = getDefaultInstance().getId();
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The bytes for id to set.
+     */
+    private void setIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      id_ = value.toStringUtf8();
+
+    }
+
+    public static final int USERNAME_FIELD_NUMBER = 2;
+    private java.lang.String username_;
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 2 [json_name = "username"];</code>
+     * @return The username.
+     */
+    @java.lang.Override
+    public java.lang.String getUsername() {
+      return username_;
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 2 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUsernameBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(username_);
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 2 [json_name = "username"];</code>
+     * @param value The username to set.
+     */
+    private void setUsername(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      username_ = value;
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 2 [json_name = "username"];</code>
+     */
+    private void clearUsername() {
+
+      username_ = getDefaultInstance().getUsername();
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 2 [json_name = "username"];</code>
+     * @param value The bytes for username to set.
+     */
+    private void setUsernameBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      username_ = value.toStringUtf8();
+
+    }
+
+    public static final int ROLE_FIELD_NUMBER = 3;
+    private int role_;
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The enum numeric value on the wire for role.
+     */
+    @java.lang.Override
+    public int getRoleValue() {
+      return role_;
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The role.
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.Role getRole() {
+      porukator.v1.Porukator.Role result = porukator.v1.Porukator.Role.forNumber(role_);
+      return result == null ? porukator.v1.Porukator.Role.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @param value The enum numeric value on the wire for role to set.
+     */
+    private void setRoleValue(int value) {
+        role_ = value;
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @param value The role to set.
+     */
+    private void setRole(porukator.v1.Porukator.Role value) {
+      role_ = value.getNumber();
+
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     */
+    private void clearRole() {
+
+      role_ = 0;
+    }
+
+    public static final int DISABLED_FIELD_NUMBER = 4;
+    private boolean disabled_;
+    /**
+     * <pre>
+     * True when the account is disabled (cannot log in; sessions revoked).
+     * </pre>
+     *
+     * <code>bool disabled = 4 [json_name = "disabled"];</code>
+     * @return The disabled.
+     */
+    @java.lang.Override
+    public boolean getDisabled() {
+      return disabled_;
+    }
+    /**
+     * <pre>
+     * True when the account is disabled (cannot log in; sessions revoked).
+     * </pre>
+     *
+     * <code>bool disabled = 4 [json_name = "disabled"];</code>
+     * @param value The disabled to set.
+     */
+    private void setDisabled(boolean value) {
+      
+      disabled_ = value;
+    }
+    /**
+     * <pre>
+     * True when the account is disabled (cannot log in; sessions revoked).
+     * </pre>
+     *
+     * <code>bool disabled = 4 [json_name = "disabled"];</code>
+     */
+    private void clearDisabled() {
+
+      disabled_ = false;
+    }
+
+    public static final int CREATED_AT_FIELD_NUMBER = 5;
+    private com.google.protobuf.Timestamp createdAt_;
+    /**
+     * <pre>
+     * When the account was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+     */
+    @java.lang.Override
+    public boolean hasCreatedAt() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * When the account was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getCreatedAt() {
+      return createdAt_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : createdAt_;
+    }
+    /**
+     * <pre>
+     * When the account was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+     */
+    private void setCreatedAt(com.google.protobuf.Timestamp value) {
+      value.getClass();
+  createdAt_ = value;
+      bitField0_ |= 0x00000001;
+      }
+    /**
+     * <pre>
+     * When the account was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeCreatedAt(com.google.protobuf.Timestamp value) {
+      value.getClass();
+  if (createdAt_ != null &&
+          createdAt_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+        createdAt_ =
+          com.google.protobuf.Timestamp.newBuilder(createdAt_).mergeFrom(value).buildPartial();
+      } else {
+        createdAt_ = value;
+      }
+      bitField0_ |= 0x00000001;
+    }
+    /**
+     * <pre>
+     * When the account was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+     */
+    private void clearCreatedAt() {  createdAt_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+    }
+
+    public static porukator.v1.Porukator.User parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.User parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.User parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.User parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.User parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.User parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.User parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.User parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.User parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.User parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.User parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.User parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.User prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * User is a web-UI account.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.User}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.User, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.User)
+        porukator.v1.Porukator.UserOrBuilder {
+      // Construct using porukator.v1.Porukator.User.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public java.lang.String getId() {
+        return instance.getId();
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The bytes for id.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        return instance.getIdBytes();
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        copyOnWrite();
+        instance.clearId();
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIdBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 2 [json_name = "username"];</code>
+       * @return The username.
+       */
+      @java.lang.Override
+      public java.lang.String getUsername() {
+        return instance.getUsername();
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 2 [json_name = "username"];</code>
+       * @return The bytes for username.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getUsernameBytes() {
+        return instance.getUsernameBytes();
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 2 [json_name = "username"];</code>
+       * @param value The username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsername(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setUsername(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 2 [json_name = "username"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUsername() {
+        copyOnWrite();
+        instance.clearUsername();
+        return this;
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 2 [json_name = "username"];</code>
+       * @param value The bytes for username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsernameBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setUsernameBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @return The enum numeric value on the wire for role.
+       */
+      @java.lang.Override
+      public int getRoleValue() {
+        return instance.getRoleValue();
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @param value The role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRoleValue(int value) {
+        copyOnWrite();
+        instance.setRoleValue(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @return The role.
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.Role getRole() {
+        return instance.getRole();
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @param value The enum numeric value on the wire for role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRole(porukator.v1.Porukator.Role value) {
+        copyOnWrite();
+        instance.setRole(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRole() {
+        copyOnWrite();
+        instance.clearRole();
+        return this;
+      }
+
+      /**
+       * <pre>
+       * True when the account is disabled (cannot log in; sessions revoked).
+       * </pre>
+       *
+       * <code>bool disabled = 4 [json_name = "disabled"];</code>
+       * @return The disabled.
+       */
+      @java.lang.Override
+      public boolean getDisabled() {
+        return instance.getDisabled();
+      }
+      /**
+       * <pre>
+       * True when the account is disabled (cannot log in; sessions revoked).
+       * </pre>
+       *
+       * <code>bool disabled = 4 [json_name = "disabled"];</code>
+       * @param value The disabled to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDisabled(boolean value) {
+        copyOnWrite();
+        instance.setDisabled(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * True when the account is disabled (cannot log in; sessions revoked).
+       * </pre>
+       *
+       * <code>bool disabled = 4 [json_name = "disabled"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDisabled() {
+        copyOnWrite();
+        instance.clearDisabled();
+        return this;
+      }
+
+      /**
+       * <pre>
+       * When the account was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+       */
+      @java.lang.Override
+      public boolean hasCreatedAt() {
+        return instance.hasCreatedAt();
+      }
+      /**
+       * <pre>
+       * When the account was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+       */
+      @java.lang.Override
+      public com.google.protobuf.Timestamp getCreatedAt() {
+        return instance.getCreatedAt();
+      }
+      /**
+       * <pre>
+       * When the account was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+       */
+      public Builder setCreatedAt(com.google.protobuf.Timestamp value) {
+        copyOnWrite();
+        instance.setCreatedAt(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * When the account was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+       */
+      public Builder setCreatedAt(
+          com.google.protobuf.Timestamp.Builder builderForValue) {
+        copyOnWrite();
+        instance.setCreatedAt(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * When the account was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+       */
+      public Builder mergeCreatedAt(com.google.protobuf.Timestamp value) {
+        copyOnWrite();
+        instance.mergeCreatedAt(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * When the account was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];</code>
+       */
+      public Builder clearCreatedAt() {  copyOnWrite();
+        instance.clearCreatedAt();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.User)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.User();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "bitField0_",
+              "id_",
+              "username_",
+              "role_",
+              "disabled_",
+              "createdAt_",
+            };
+            java.lang.String info =
+                "\u0000\u0005\u0000\u0001\u0001\u0005\u0005\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
+                "\u0003\f\u0004\u0007\u0005\u1009\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.User> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.User.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.User>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.User)
+    private static final porukator.v1.Porukator.User DEFAULT_INSTANCE;
+    static {
+      User defaultInstance = new User();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        User.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.User getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<User> PARSER;
+
+    public static com.google.protobuf.Parser<User> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface SessionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.Session)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <pre>
+     * UUID of the owning user.
+     * </pre>
+     *
+     * <code>string user_id = 2 [json_name = "userId"];</code>
+     * @return The userId.
+     */
+    java.lang.String getUserId();
+    /**
+     * <pre>
+     * UUID of the owning user.
+     * </pre>
+     *
+     * <code>string user_id = 2 [json_name = "userId"];</code>
+     * @return The bytes for userId.
+     */
+    com.google.protobuf.ByteString
+        getUserIdBytes();
+
+    /**
+     * <pre>
+     * Username of the owning user, for display.
+     * </pre>
+     *
+     * <code>string username = 3 [json_name = "username"];</code>
+     * @return The username.
+     */
+    java.lang.String getUsername();
+    /**
+     * <pre>
+     * Username of the owning user, for display.
+     * </pre>
+     *
+     * <code>string username = 3 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    com.google.protobuf.ByteString
+        getUsernameBytes();
+
+    /**
+     * <pre>
+     * When the session was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+     * @return Whether the createdAt field is set.
+     */
+    boolean hasCreatedAt();
+    /**
+     * <pre>
+     * When the session was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+     * @return The createdAt.
+     */
+    com.google.protobuf.Timestamp getCreatedAt();
+
+    /**
+     * <pre>
+     * Last time the session authenticated a request.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+     * @return Whether the lastUsedAt field is set.
+     */
+    boolean hasLastUsedAt();
+    /**
+     * <pre>
+     * Last time the session authenticated a request.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+     * @return The lastUsedAt.
+     */
+    com.google.protobuf.Timestamp getLastUsedAt();
+
+    /**
+     * <pre>
+     * True if this is the session making the current request.
+     * </pre>
+     *
+     * <code>bool current = 6 [json_name = "current"];</code>
+     * @return The current.
+     */
+    boolean getCurrent();
+  }
+  /**
+   * <pre>
+   * Session is an active web-UI login.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.Session}
+   */
+  public  static final class Session extends
+      com.google.protobuf.GeneratedMessageLite<
+          Session, Session.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.Session)
+      SessionOrBuilder {
+    private Session() {
+      id_ = "";
+      userId_ = "";
+      username_ = "";
+    }
+    private int bitField0_;
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.String id_;
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      return id_;
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(id_);
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The id to set.
+     */
+    private void setId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      id_ = value;
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     */
+    private void clearId() {
+
+      id_ = getDefaultInstance().getId();
+    }
+    /**
+     * <pre>
+     * Server-generated UUID.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The bytes for id to set.
+     */
+    private void setIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      id_ = value.toStringUtf8();
+
+    }
+
+    public static final int USER_ID_FIELD_NUMBER = 2;
+    private java.lang.String userId_;
+    /**
+     * <pre>
+     * UUID of the owning user.
+     * </pre>
+     *
+     * <code>string user_id = 2 [json_name = "userId"];</code>
+     * @return The userId.
+     */
+    @java.lang.Override
+    public java.lang.String getUserId() {
+      return userId_;
+    }
+    /**
+     * <pre>
+     * UUID of the owning user.
+     * </pre>
+     *
+     * <code>string user_id = 2 [json_name = "userId"];</code>
+     * @return The bytes for userId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUserIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(userId_);
+    }
+    /**
+     * <pre>
+     * UUID of the owning user.
+     * </pre>
+     *
+     * <code>string user_id = 2 [json_name = "userId"];</code>
+     * @param value The userId to set.
+     */
+    private void setUserId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      userId_ = value;
+    }
+    /**
+     * <pre>
+     * UUID of the owning user.
+     * </pre>
+     *
+     * <code>string user_id = 2 [json_name = "userId"];</code>
+     */
+    private void clearUserId() {
+
+      userId_ = getDefaultInstance().getUserId();
+    }
+    /**
+     * <pre>
+     * UUID of the owning user.
+     * </pre>
+     *
+     * <code>string user_id = 2 [json_name = "userId"];</code>
+     * @param value The bytes for userId to set.
+     */
+    private void setUserIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      userId_ = value.toStringUtf8();
+
+    }
+
+    public static final int USERNAME_FIELD_NUMBER = 3;
+    private java.lang.String username_;
+    /**
+     * <pre>
+     * Username of the owning user, for display.
+     * </pre>
+     *
+     * <code>string username = 3 [json_name = "username"];</code>
+     * @return The username.
+     */
+    @java.lang.Override
+    public java.lang.String getUsername() {
+      return username_;
+    }
+    /**
+     * <pre>
+     * Username of the owning user, for display.
+     * </pre>
+     *
+     * <code>string username = 3 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUsernameBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(username_);
+    }
+    /**
+     * <pre>
+     * Username of the owning user, for display.
+     * </pre>
+     *
+     * <code>string username = 3 [json_name = "username"];</code>
+     * @param value The username to set.
+     */
+    private void setUsername(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      username_ = value;
+    }
+    /**
+     * <pre>
+     * Username of the owning user, for display.
+     * </pre>
+     *
+     * <code>string username = 3 [json_name = "username"];</code>
+     */
+    private void clearUsername() {
+
+      username_ = getDefaultInstance().getUsername();
+    }
+    /**
+     * <pre>
+     * Username of the owning user, for display.
+     * </pre>
+     *
+     * <code>string username = 3 [json_name = "username"];</code>
+     * @param value The bytes for username to set.
+     */
+    private void setUsernameBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      username_ = value.toStringUtf8();
+
+    }
+
+    public static final int CREATED_AT_FIELD_NUMBER = 4;
+    private com.google.protobuf.Timestamp createdAt_;
+    /**
+     * <pre>
+     * When the session was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+     */
+    @java.lang.Override
+    public boolean hasCreatedAt() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * When the session was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getCreatedAt() {
+      return createdAt_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : createdAt_;
+    }
+    /**
+     * <pre>
+     * When the session was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+     */
+    private void setCreatedAt(com.google.protobuf.Timestamp value) {
+      value.getClass();
+  createdAt_ = value;
+      bitField0_ |= 0x00000001;
+      }
+    /**
+     * <pre>
+     * When the session was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeCreatedAt(com.google.protobuf.Timestamp value) {
+      value.getClass();
+  if (createdAt_ != null &&
+          createdAt_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+        createdAt_ =
+          com.google.protobuf.Timestamp.newBuilder(createdAt_).mergeFrom(value).buildPartial();
+      } else {
+        createdAt_ = value;
+      }
+      bitField0_ |= 0x00000001;
+    }
+    /**
+     * <pre>
+     * When the session was created.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+     */
+    private void clearCreatedAt() {  createdAt_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+    }
+
+    public static final int LAST_USED_AT_FIELD_NUMBER = 5;
+    private com.google.protobuf.Timestamp lastUsedAt_;
+    /**
+     * <pre>
+     * Last time the session authenticated a request.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+     */
+    @java.lang.Override
+    public boolean hasLastUsedAt() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Last time the session authenticated a request.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.Timestamp getLastUsedAt() {
+      return lastUsedAt_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : lastUsedAt_;
+    }
+    /**
+     * <pre>
+     * Last time the session authenticated a request.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+     */
+    private void setLastUsedAt(com.google.protobuf.Timestamp value) {
+      value.getClass();
+  lastUsedAt_ = value;
+      bitField0_ |= 0x00000002;
+      }
+    /**
+     * <pre>
+     * Last time the session authenticated a request.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeLastUsedAt(com.google.protobuf.Timestamp value) {
+      value.getClass();
+  if (lastUsedAt_ != null &&
+          lastUsedAt_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
+        lastUsedAt_ =
+          com.google.protobuf.Timestamp.newBuilder(lastUsedAt_).mergeFrom(value).buildPartial();
+      } else {
+        lastUsedAt_ = value;
+      }
+      bitField0_ |= 0x00000002;
+    }
+    /**
+     * <pre>
+     * Last time the session authenticated a request.
+     * </pre>
+     *
+     * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+     */
+    private void clearLastUsedAt() {  lastUsedAt_ = null;
+      bitField0_ = (bitField0_ & ~0x00000002);
+    }
+
+    public static final int CURRENT_FIELD_NUMBER = 6;
+    private boolean current_;
+    /**
+     * <pre>
+     * True if this is the session making the current request.
+     * </pre>
+     *
+     * <code>bool current = 6 [json_name = "current"];</code>
+     * @return The current.
+     */
+    @java.lang.Override
+    public boolean getCurrent() {
+      return current_;
+    }
+    /**
+     * <pre>
+     * True if this is the session making the current request.
+     * </pre>
+     *
+     * <code>bool current = 6 [json_name = "current"];</code>
+     * @param value The current to set.
+     */
+    private void setCurrent(boolean value) {
+      
+      current_ = value;
+    }
+    /**
+     * <pre>
+     * True if this is the session making the current request.
+     * </pre>
+     *
+     * <code>bool current = 6 [json_name = "current"];</code>
+     */
+    private void clearCurrent() {
+
+      current_ = false;
+    }
+
+    public static porukator.v1.Porukator.Session parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.Session parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.Session parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.Session parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.Session prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * Session is an active web-UI login.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.Session}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.Session, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.Session)
+        porukator.v1.Porukator.SessionOrBuilder {
+      // Construct using porukator.v1.Porukator.Session.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public java.lang.String getId() {
+        return instance.getId();
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The bytes for id.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        return instance.getIdBytes();
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        copyOnWrite();
+        instance.clearId();
+        return this;
+      }
+      /**
+       * <pre>
+       * Server-generated UUID.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIdBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * UUID of the owning user.
+       * </pre>
+       *
+       * <code>string user_id = 2 [json_name = "userId"];</code>
+       * @return The userId.
+       */
+      @java.lang.Override
+      public java.lang.String getUserId() {
+        return instance.getUserId();
+      }
+      /**
+       * <pre>
+       * UUID of the owning user.
+       * </pre>
+       *
+       * <code>string user_id = 2 [json_name = "userId"];</code>
+       * @return The bytes for userId.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getUserIdBytes() {
+        return instance.getUserIdBytes();
+      }
+      /**
+       * <pre>
+       * UUID of the owning user.
+       * </pre>
+       *
+       * <code>string user_id = 2 [json_name = "userId"];</code>
+       * @param value The userId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setUserId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the owning user.
+       * </pre>
+       *
+       * <code>string user_id = 2 [json_name = "userId"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUserId() {
+        copyOnWrite();
+        instance.clearUserId();
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the owning user.
+       * </pre>
+       *
+       * <code>string user_id = 2 [json_name = "userId"];</code>
+       * @param value The bytes for userId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setUserIdBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Username of the owning user, for display.
+       * </pre>
+       *
+       * <code>string username = 3 [json_name = "username"];</code>
+       * @return The username.
+       */
+      @java.lang.Override
+      public java.lang.String getUsername() {
+        return instance.getUsername();
+      }
+      /**
+       * <pre>
+       * Username of the owning user, for display.
+       * </pre>
+       *
+       * <code>string username = 3 [json_name = "username"];</code>
+       * @return The bytes for username.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getUsernameBytes() {
+        return instance.getUsernameBytes();
+      }
+      /**
+       * <pre>
+       * Username of the owning user, for display.
+       * </pre>
+       *
+       * <code>string username = 3 [json_name = "username"];</code>
+       * @param value The username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsername(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setUsername(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Username of the owning user, for display.
+       * </pre>
+       *
+       * <code>string username = 3 [json_name = "username"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUsername() {
+        copyOnWrite();
+        instance.clearUsername();
+        return this;
+      }
+      /**
+       * <pre>
+       * Username of the owning user, for display.
+       * </pre>
+       *
+       * <code>string username = 3 [json_name = "username"];</code>
+       * @param value The bytes for username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsernameBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setUsernameBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * When the session was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+       */
+      @java.lang.Override
+      public boolean hasCreatedAt() {
+        return instance.hasCreatedAt();
+      }
+      /**
+       * <pre>
+       * When the session was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+       */
+      @java.lang.Override
+      public com.google.protobuf.Timestamp getCreatedAt() {
+        return instance.getCreatedAt();
+      }
+      /**
+       * <pre>
+       * When the session was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+       */
+      public Builder setCreatedAt(com.google.protobuf.Timestamp value) {
+        copyOnWrite();
+        instance.setCreatedAt(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * When the session was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+       */
+      public Builder setCreatedAt(
+          com.google.protobuf.Timestamp.Builder builderForValue) {
+        copyOnWrite();
+        instance.setCreatedAt(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * When the session was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+       */
+      public Builder mergeCreatedAt(com.google.protobuf.Timestamp value) {
+        copyOnWrite();
+        instance.mergeCreatedAt(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * When the session was created.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp created_at = 4 [json_name = "createdAt"];</code>
+       */
+      public Builder clearCreatedAt() {  copyOnWrite();
+        instance.clearCreatedAt();
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Last time the session authenticated a request.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+       */
+      @java.lang.Override
+      public boolean hasLastUsedAt() {
+        return instance.hasLastUsedAt();
+      }
+      /**
+       * <pre>
+       * Last time the session authenticated a request.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+       */
+      @java.lang.Override
+      public com.google.protobuf.Timestamp getLastUsedAt() {
+        return instance.getLastUsedAt();
+      }
+      /**
+       * <pre>
+       * Last time the session authenticated a request.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+       */
+      public Builder setLastUsedAt(com.google.protobuf.Timestamp value) {
+        copyOnWrite();
+        instance.setLastUsedAt(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * Last time the session authenticated a request.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+       */
+      public Builder setLastUsedAt(
+          com.google.protobuf.Timestamp.Builder builderForValue) {
+        copyOnWrite();
+        instance.setLastUsedAt(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * Last time the session authenticated a request.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+       */
+      public Builder mergeLastUsedAt(com.google.protobuf.Timestamp value) {
+        copyOnWrite();
+        instance.mergeLastUsedAt(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Last time the session authenticated a request.
+       * </pre>
+       *
+       * <code>.google.protobuf.Timestamp last_used_at = 5 [json_name = "lastUsedAt"];</code>
+       */
+      public Builder clearLastUsedAt() {  copyOnWrite();
+        instance.clearLastUsedAt();
+        return this;
+      }
+
+      /**
+       * <pre>
+       * True if this is the session making the current request.
+       * </pre>
+       *
+       * <code>bool current = 6 [json_name = "current"];</code>
+       * @return The current.
+       */
+      @java.lang.Override
+      public boolean getCurrent() {
+        return instance.getCurrent();
+      }
+      /**
+       * <pre>
+       * True if this is the session making the current request.
+       * </pre>
+       *
+       * <code>bool current = 6 [json_name = "current"];</code>
+       * @param value The current to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCurrent(boolean value) {
+        copyOnWrite();
+        instance.setCurrent(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * True if this is the session making the current request.
+       * </pre>
+       *
+       * <code>bool current = 6 [json_name = "current"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCurrent() {
+        copyOnWrite();
+        instance.clearCurrent();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.Session)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.Session();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "bitField0_",
+              "id_",
+              "userId_",
+              "username_",
+              "createdAt_",
+              "lastUsedAt_",
+              "current_",
+            };
+            java.lang.String info =
+                "\u0000\u0006\u0000\u0001\u0001\u0006\u0006\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
+                "\u0003\u0208\u0004\u1009\u0000\u0005\u1009\u0001\u0006\u0007";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.Session> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.Session.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.Session>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.Session)
+    private static final porukator.v1.Porukator.Session DEFAULT_INSTANCE;
+    static {
+      Session defaultInstance = new Session();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        Session.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.Session getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<Session> PARSER;
+
+    public static com.google.protobuf.Parser<Session> parser() {
       return DEFAULT_INSTANCE.getParserForType();
     }
   }
@@ -4049,19 +6468,39 @@ public final class Porukator {
 
     /**
      * <pre>
-     * The master password configured at service start.
+     * Account login name.
      * </pre>
      *
-     * <code>string password = 1 [json_name = "password"];</code>
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The username.
+     */
+    java.lang.String getUsername();
+    /**
+     * <pre>
+     * Account login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    com.google.protobuf.ByteString
+        getUsernameBytes();
+
+    /**
+     * <pre>
+     * Account password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
      * @return The password.
      */
     java.lang.String getPassword();
     /**
      * <pre>
-     * The master password configured at service start.
+     * Account password.
      * </pre>
      *
-     * <code>string password = 1 [json_name = "password"];</code>
+     * <code>string password = 2 [json_name = "password"];</code>
      * @return The bytes for password.
      */
     com.google.protobuf.ByteString
@@ -4069,7 +6508,7 @@ public final class Porukator {
   }
   /**
    * <pre>
-   * LoginRequest carries the master password.
+   * LoginRequest carries the account credentials.
    * </pre>
    *
    * Protobuf type {@code porukator.v1.LoginRequest}
@@ -4080,16 +6519,84 @@ public final class Porukator {
       // @@protoc_insertion_point(message_implements:porukator.v1.LoginRequest)
       LoginRequestOrBuilder {
     private LoginRequest() {
+      username_ = "";
       password_ = "";
     }
-    public static final int PASSWORD_FIELD_NUMBER = 1;
+    public static final int USERNAME_FIELD_NUMBER = 1;
+    private java.lang.String username_;
+    /**
+     * <pre>
+     * Account login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The username.
+     */
+    @java.lang.Override
+    public java.lang.String getUsername() {
+      return username_;
+    }
+    /**
+     * <pre>
+     * Account login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUsernameBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(username_);
+    }
+    /**
+     * <pre>
+     * Account login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @param value The username to set.
+     */
+    private void setUsername(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      username_ = value;
+    }
+    /**
+     * <pre>
+     * Account login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     */
+    private void clearUsername() {
+
+      username_ = getDefaultInstance().getUsername();
+    }
+    /**
+     * <pre>
+     * Account login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @param value The bytes for username to set.
+     */
+    private void setUsernameBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      username_ = value.toStringUtf8();
+
+    }
+
+    public static final int PASSWORD_FIELD_NUMBER = 2;
     private java.lang.String password_;
     /**
      * <pre>
-     * The master password configured at service start.
+     * Account password.
      * </pre>
      *
-     * <code>string password = 1 [json_name = "password"];</code>
+     * <code>string password = 2 [json_name = "password"];</code>
      * @return The password.
      */
     @java.lang.Override
@@ -4098,10 +6605,10 @@ public final class Porukator {
     }
     /**
      * <pre>
-     * The master password configured at service start.
+     * Account password.
      * </pre>
      *
-     * <code>string password = 1 [json_name = "password"];</code>
+     * <code>string password = 2 [json_name = "password"];</code>
      * @return The bytes for password.
      */
     @java.lang.Override
@@ -4111,10 +6618,10 @@ public final class Porukator {
     }
     /**
      * <pre>
-     * The master password configured at service start.
+     * Account password.
      * </pre>
      *
-     * <code>string password = 1 [json_name = "password"];</code>
+     * <code>string password = 2 [json_name = "password"];</code>
      * @param value The password to set.
      */
     private void setPassword(
@@ -4125,10 +6632,10 @@ public final class Porukator {
     }
     /**
      * <pre>
-     * The master password configured at service start.
+     * Account password.
      * </pre>
      *
-     * <code>string password = 1 [json_name = "password"];</code>
+     * <code>string password = 2 [json_name = "password"];</code>
      */
     private void clearPassword() {
 
@@ -4136,10 +6643,10 @@ public final class Porukator {
     }
     /**
      * <pre>
-     * The master password configured at service start.
+     * Account password.
      * </pre>
      *
-     * <code>string password = 1 [json_name = "password"];</code>
+     * <code>string password = 2 [json_name = "password"];</code>
      * @param value The bytes for password to set.
      */
     private void setPasswordBytes(
@@ -4234,7 +6741,7 @@ public final class Porukator {
 
     /**
      * <pre>
-     * LoginRequest carries the master password.
+     * LoginRequest carries the account credentials.
      * </pre>
      *
      * Protobuf type {@code porukator.v1.LoginRequest}
@@ -4252,10 +6759,79 @@ public final class Porukator {
 
       /**
        * <pre>
-       * The master password configured at service start.
+       * Account login name.
        * </pre>
        *
-       * <code>string password = 1 [json_name = "password"];</code>
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @return The username.
+       */
+      @java.lang.Override
+      public java.lang.String getUsername() {
+        return instance.getUsername();
+      }
+      /**
+       * <pre>
+       * Account login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @return The bytes for username.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getUsernameBytes() {
+        return instance.getUsernameBytes();
+      }
+      /**
+       * <pre>
+       * Account login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @param value The username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsername(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setUsername(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Account login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUsername() {
+        copyOnWrite();
+        instance.clearUsername();
+        return this;
+      }
+      /**
+       * <pre>
+       * Account login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @param value The bytes for username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsernameBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setUsernameBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Account password.
+       * </pre>
+       *
+       * <code>string password = 2 [json_name = "password"];</code>
        * @return The password.
        */
       @java.lang.Override
@@ -4264,10 +6840,10 @@ public final class Porukator {
       }
       /**
        * <pre>
-       * The master password configured at service start.
+       * Account password.
        * </pre>
        *
-       * <code>string password = 1 [json_name = "password"];</code>
+       * <code>string password = 2 [json_name = "password"];</code>
        * @return The bytes for password.
        */
       @java.lang.Override
@@ -4277,10 +6853,10 @@ public final class Porukator {
       }
       /**
        * <pre>
-       * The master password configured at service start.
+       * Account password.
        * </pre>
        *
-       * <code>string password = 1 [json_name = "password"];</code>
+       * <code>string password = 2 [json_name = "password"];</code>
        * @param value The password to set.
        * @return This builder for chaining.
        */
@@ -4292,10 +6868,10 @@ public final class Porukator {
       }
       /**
        * <pre>
-       * The master password configured at service start.
+       * Account password.
        * </pre>
        *
-       * <code>string password = 1 [json_name = "password"];</code>
+       * <code>string password = 2 [json_name = "password"];</code>
        * @return This builder for chaining.
        */
       public Builder clearPassword() {
@@ -4305,10 +6881,10 @@ public final class Porukator {
       }
       /**
        * <pre>
-       * The master password configured at service start.
+       * Account password.
        * </pre>
        *
-       * <code>string password = 1 [json_name = "password"];</code>
+       * <code>string password = 2 [json_name = "password"];</code>
        * @param value The bytes for password to set.
        * @return This builder for chaining.
        */
@@ -4335,10 +6911,12 @@ public final class Porukator {
         }
         case BUILD_MESSAGE_INFO: {
             java.lang.Object[] objects = new java.lang.Object[] {
+              "username_",
               "password_",
             };
             java.lang.String info =
-                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u0208";
+                "\u0000\u0002\u0000\u0000\u0001\u0002\u0002\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
+                "";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through
@@ -4399,17 +6977,46 @@ public final class Porukator {
 
     /**
      * <pre>
-     * True when the password is valid.
+     * Opaque session bearer token; send it as Authorization on later requests.
      * </pre>
      *
-     * <code>bool ok = 1 [json_name = "ok"];</code>
-     * @return The ok.
+     * <code>string token = 1 [json_name = "token"];</code>
+     * @return The token.
      */
-    boolean getOk();
+    java.lang.String getToken();
+    /**
+     * <pre>
+     * Opaque session bearer token; send it as Authorization on later requests.
+     * </pre>
+     *
+     * <code>string token = 1 [json_name = "token"];</code>
+     * @return The bytes for token.
+     */
+    com.google.protobuf.ByteString
+        getTokenBytes();
+
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+     * @return Whether the user field is set.
+     */
+    boolean hasUser();
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+     * @return The user.
+     */
+    porukator.v1.Porukator.User getUser();
   }
   /**
    * <pre>
-   * LoginResponse reports whether the password matched.
+   * LoginResponse returns the session token and the authenticated user.
    * </pre>
    *
    * Protobuf type {@code porukator.v1.LoginResponse}
@@ -4420,43 +7027,140 @@ public final class Porukator {
       // @@protoc_insertion_point(message_implements:porukator.v1.LoginResponse)
       LoginResponseOrBuilder {
     private LoginResponse() {
+      token_ = "";
     }
-    public static final int OK_FIELD_NUMBER = 1;
-    private boolean ok_;
+    private int bitField0_;
+    public static final int TOKEN_FIELD_NUMBER = 1;
+    private java.lang.String token_;
     /**
      * <pre>
-     * True when the password is valid.
+     * Opaque session bearer token; send it as Authorization on later requests.
      * </pre>
      *
-     * <code>bool ok = 1 [json_name = "ok"];</code>
-     * @return The ok.
+     * <code>string token = 1 [json_name = "token"];</code>
+     * @return The token.
      */
     @java.lang.Override
-    public boolean getOk() {
-      return ok_;
+    public java.lang.String getToken() {
+      return token_;
     }
     /**
      * <pre>
-     * True when the password is valid.
+     * Opaque session bearer token; send it as Authorization on later requests.
      * </pre>
      *
-     * <code>bool ok = 1 [json_name = "ok"];</code>
-     * @param value The ok to set.
+     * <code>string token = 1 [json_name = "token"];</code>
+     * @return The bytes for token.
      */
-    private void setOk(boolean value) {
-      
-      ok_ = value;
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTokenBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(token_);
     }
     /**
      * <pre>
-     * True when the password is valid.
+     * Opaque session bearer token; send it as Authorization on later requests.
      * </pre>
      *
-     * <code>bool ok = 1 [json_name = "ok"];</code>
+     * <code>string token = 1 [json_name = "token"];</code>
+     * @param value The token to set.
      */
-    private void clearOk() {
+    private void setToken(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      token_ = value;
+    }
+    /**
+     * <pre>
+     * Opaque session bearer token; send it as Authorization on later requests.
+     * </pre>
+     *
+     * <code>string token = 1 [json_name = "token"];</code>
+     */
+    private void clearToken() {
 
-      ok_ = false;
+      token_ = getDefaultInstance().getToken();
+    }
+    /**
+     * <pre>
+     * Opaque session bearer token; send it as Authorization on later requests.
+     * </pre>
+     *
+     * <code>string token = 1 [json_name = "token"];</code>
+     * @param value The bytes for token to set.
+     */
+    private void setTokenBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      token_ = value.toStringUtf8();
+
+    }
+
+    public static final int USER_FIELD_NUMBER = 2;
+    private porukator.v1.Porukator.User user_;
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.User getUser() {
+      return user_ == null ? porukator.v1.Porukator.User.getDefaultInstance() : user_;
+    }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+     */
+    private void setUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  user_ = value;
+      bitField0_ |= 0x00000001;
+      }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  if (user_ != null &&
+          user_ != porukator.v1.Porukator.User.getDefaultInstance()) {
+        user_ =
+          porukator.v1.Porukator.User.newBuilder(user_).mergeFrom(value).buildPartial();
+      } else {
+        user_ = value;
+      }
+      bitField0_ |= 0x00000001;
+    }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+     */
+    private void clearUser() {  user_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
     }
 
     public static porukator.v1.Porukator.LoginResponse parseFrom(
@@ -4544,7 +7248,7 @@ public final class Porukator {
 
     /**
      * <pre>
-     * LoginResponse reports whether the password matched.
+     * LoginResponse returns the session token and the authenticated user.
      * </pre>
      *
      * Protobuf type {@code porukator.v1.LoginResponse}
@@ -4562,41 +7266,141 @@ public final class Porukator {
 
       /**
        * <pre>
-       * True when the password is valid.
+       * Opaque session bearer token; send it as Authorization on later requests.
        * </pre>
        *
-       * <code>bool ok = 1 [json_name = "ok"];</code>
-       * @return The ok.
+       * <code>string token = 1 [json_name = "token"];</code>
+       * @return The token.
        */
       @java.lang.Override
-      public boolean getOk() {
-        return instance.getOk();
+      public java.lang.String getToken() {
+        return instance.getToken();
       }
       /**
        * <pre>
-       * True when the password is valid.
+       * Opaque session bearer token; send it as Authorization on later requests.
        * </pre>
        *
-       * <code>bool ok = 1 [json_name = "ok"];</code>
-       * @param value The ok to set.
+       * <code>string token = 1 [json_name = "token"];</code>
+       * @return The bytes for token.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getTokenBytes() {
+        return instance.getTokenBytes();
+      }
+      /**
+       * <pre>
+       * Opaque session bearer token; send it as Authorization on later requests.
+       * </pre>
+       *
+       * <code>string token = 1 [json_name = "token"];</code>
+       * @param value The token to set.
        * @return This builder for chaining.
        */
-      public Builder setOk(boolean value) {
+      public Builder setToken(
+          java.lang.String value) {
         copyOnWrite();
-        instance.setOk(value);
+        instance.setToken(value);
         return this;
       }
       /**
        * <pre>
-       * True when the password is valid.
+       * Opaque session bearer token; send it as Authorization on later requests.
        * </pre>
        *
-       * <code>bool ok = 1 [json_name = "ok"];</code>
+       * <code>string token = 1 [json_name = "token"];</code>
        * @return This builder for chaining.
        */
-      public Builder clearOk() {
+      public Builder clearToken() {
         copyOnWrite();
-        instance.clearOk();
+        instance.clearToken();
+        return this;
+      }
+      /**
+       * <pre>
+       * Opaque session bearer token; send it as Authorization on later requests.
+       * </pre>
+       *
+       * <code>string token = 1 [json_name = "token"];</code>
+       * @param value The bytes for token to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTokenBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setTokenBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public boolean hasUser() {
+        return instance.hasUser();
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.User getUser() {
+        return instance.getUser();
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+       */
+      public Builder setUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.setUser(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+       */
+      public Builder setUser(
+          porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.setUser(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+       */
+      public Builder mergeUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.mergeUser(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 2 [json_name = "user"];</code>
+       */
+      public Builder clearUser() {  copyOnWrite();
+        instance.clearUser();
         return this;
       }
 
@@ -4616,10 +7420,13 @@ public final class Porukator {
         }
         case BUILD_MESSAGE_INFO: {
             java.lang.Object[] objects = new java.lang.Object[] {
-              "ok_",
+              "bitField0_",
+              "token_",
+              "user_",
             };
             java.lang.String info =
-                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u0007";
+                "\u0000\u0002\u0000\u0001\u0001\u0002\u0002\u0000\u0000\u0000\u0001\u0208\u0002\u1009" +
+                "\u0000";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through
@@ -4670,6 +7477,6054 @@ public final class Porukator {
     private static volatile com.google.protobuf.Parser<LoginResponse> PARSER;
 
     public static com.google.protobuf.Parser<LoginResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface LogoutRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.LogoutRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+  }
+  /**
+   * <pre>
+   * LogoutRequest is empty; the session comes from the bearer token.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.LogoutRequest}
+   */
+  public  static final class LogoutRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          LogoutRequest, LogoutRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.LogoutRequest)
+      LogoutRequestOrBuilder {
+    private LogoutRequest() {
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.LogoutRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.LogoutRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.LogoutRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.LogoutRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * LogoutRequest is empty; the session comes from the bearer token.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.LogoutRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.LogoutRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.LogoutRequest)
+        porukator.v1.Porukator.LogoutRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.LogoutRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.LogoutRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.LogoutRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = null;java.lang.String info =
+                "\u0000\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.LogoutRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.LogoutRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.LogoutRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.LogoutRequest)
+    private static final porukator.v1.Porukator.LogoutRequest DEFAULT_INSTANCE;
+    static {
+      LogoutRequest defaultInstance = new LogoutRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        LogoutRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.LogoutRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<LogoutRequest> PARSER;
+
+    public static com.google.protobuf.Parser<LogoutRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface LogoutResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.LogoutResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+  }
+  /**
+   * <pre>
+   * LogoutResponse is empty.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.LogoutResponse}
+   */
+  public  static final class LogoutResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          LogoutResponse, LogoutResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.LogoutResponse)
+      LogoutResponseOrBuilder {
+    private LogoutResponse() {
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.LogoutResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.LogoutResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.LogoutResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.LogoutResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * LogoutResponse is empty.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.LogoutResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.LogoutResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.LogoutResponse)
+        porukator.v1.Porukator.LogoutResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.LogoutResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.LogoutResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.LogoutResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = null;java.lang.String info =
+                "\u0000\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.LogoutResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.LogoutResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.LogoutResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.LogoutResponse)
+    private static final porukator.v1.Porukator.LogoutResponse DEFAULT_INSTANCE;
+    static {
+      LogoutResponse defaultInstance = new LogoutResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        LogoutResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.LogoutResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<LogoutResponse> PARSER;
+
+    public static com.google.protobuf.Parser<LogoutResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface GetCurrentUserRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.GetCurrentUserRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+  }
+  /**
+   * <pre>
+   * GetCurrentUserRequest is empty.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.GetCurrentUserRequest}
+   */
+  public  static final class GetCurrentUserRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          GetCurrentUserRequest, GetCurrentUserRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.GetCurrentUserRequest)
+      GetCurrentUserRequestOrBuilder {
+    private GetCurrentUserRequest() {
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.GetCurrentUserRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * GetCurrentUserRequest is empty.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.GetCurrentUserRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.GetCurrentUserRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.GetCurrentUserRequest)
+        porukator.v1.Porukator.GetCurrentUserRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.GetCurrentUserRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.GetCurrentUserRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.GetCurrentUserRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = null;java.lang.String info =
+                "\u0000\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.GetCurrentUserRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.GetCurrentUserRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.GetCurrentUserRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.GetCurrentUserRequest)
+    private static final porukator.v1.Porukator.GetCurrentUserRequest DEFAULT_INSTANCE;
+    static {
+      GetCurrentUserRequest defaultInstance = new GetCurrentUserRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        GetCurrentUserRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.GetCurrentUserRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<GetCurrentUserRequest> PARSER;
+
+    public static com.google.protobuf.Parser<GetCurrentUserRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface GetCurrentUserResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.GetCurrentUserResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return Whether the user field is set.
+     */
+    boolean hasUser();
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return The user.
+     */
+    porukator.v1.Porukator.User getUser();
+  }
+  /**
+   * <pre>
+   * GetCurrentUserResponse returns the authenticated user.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.GetCurrentUserResponse}
+   */
+  public  static final class GetCurrentUserResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          GetCurrentUserResponse, GetCurrentUserResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.GetCurrentUserResponse)
+      GetCurrentUserResponseOrBuilder {
+    private GetCurrentUserResponse() {
+    }
+    private int bitField0_;
+    public static final int USER_FIELD_NUMBER = 1;
+    private porukator.v1.Porukator.User user_;
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.User getUser() {
+      return user_ == null ? porukator.v1.Porukator.User.getDefaultInstance() : user_;
+    }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void setUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  user_ = value;
+      bitField0_ |= 0x00000001;
+      }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  if (user_ != null &&
+          user_ != porukator.v1.Porukator.User.getDefaultInstance()) {
+        user_ =
+          porukator.v1.Porukator.User.newBuilder(user_).mergeFrom(value).buildPartial();
+      } else {
+        user_ = value;
+      }
+      bitField0_ |= 0x00000001;
+    }
+    /**
+     * <pre>
+     * The authenticated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void clearUser() {  user_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+    }
+
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.GetCurrentUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.GetCurrentUserResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * GetCurrentUserResponse returns the authenticated user.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.GetCurrentUserResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.GetCurrentUserResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.GetCurrentUserResponse)
+        porukator.v1.Porukator.GetCurrentUserResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.GetCurrentUserResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public boolean hasUser() {
+        return instance.hasUser();
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.User getUser() {
+        return instance.getUser();
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.setUser(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(
+          porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.setUser(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder mergeUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.mergeUser(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * The authenticated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder clearUser() {  copyOnWrite();
+        instance.clearUser();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.GetCurrentUserResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.GetCurrentUserResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "bitField0_",
+              "user_",
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u1009\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.GetCurrentUserResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.GetCurrentUserResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.GetCurrentUserResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.GetCurrentUserResponse)
+    private static final porukator.v1.Porukator.GetCurrentUserResponse DEFAULT_INSTANCE;
+    static {
+      GetCurrentUserResponse defaultInstance = new GetCurrentUserResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        GetCurrentUserResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.GetCurrentUserResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<GetCurrentUserResponse> PARSER;
+
+    public static com.google.protobuf.Parser<GetCurrentUserResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface CreateUserRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.CreateUserRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The username.
+     */
+    java.lang.String getUsername();
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    com.google.protobuf.ByteString
+        getUsernameBytes();
+
+    /**
+     * <pre>
+     * Initial password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
+     * @return The password.
+     */
+    java.lang.String getPassword();
+    /**
+     * <pre>
+     * Initial password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
+     * @return The bytes for password.
+     */
+    com.google.protobuf.ByteString
+        getPasswordBytes();
+
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The enum numeric value on the wire for role.
+     */
+    int getRoleValue();
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The role.
+     */
+    porukator.v1.Porukator.Role getRole();
+  }
+  /**
+   * <pre>
+   * CreateUserRequest names a new account.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.CreateUserRequest}
+   */
+  public  static final class CreateUserRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          CreateUserRequest, CreateUserRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.CreateUserRequest)
+      CreateUserRequestOrBuilder {
+    private CreateUserRequest() {
+      username_ = "";
+      password_ = "";
+    }
+    public static final int USERNAME_FIELD_NUMBER = 1;
+    private java.lang.String username_;
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The username.
+     */
+    @java.lang.Override
+    public java.lang.String getUsername() {
+      return username_;
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @return The bytes for username.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getUsernameBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(username_);
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @param value The username to set.
+     */
+    private void setUsername(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      username_ = value;
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     */
+    private void clearUsername() {
+
+      username_ = getDefaultInstance().getUsername();
+    }
+    /**
+     * <pre>
+     * Unique login name.
+     * </pre>
+     *
+     * <code>string username = 1 [json_name = "username"];</code>
+     * @param value The bytes for username to set.
+     */
+    private void setUsernameBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      username_ = value.toStringUtf8();
+
+    }
+
+    public static final int PASSWORD_FIELD_NUMBER = 2;
+    private java.lang.String password_;
+    /**
+     * <pre>
+     * Initial password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
+     * @return The password.
+     */
+    @java.lang.Override
+    public java.lang.String getPassword() {
+      return password_;
+    }
+    /**
+     * <pre>
+     * Initial password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
+     * @return The bytes for password.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getPasswordBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(password_);
+    }
+    /**
+     * <pre>
+     * Initial password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
+     * @param value The password to set.
+     */
+    private void setPassword(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      password_ = value;
+    }
+    /**
+     * <pre>
+     * Initial password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
+     */
+    private void clearPassword() {
+
+      password_ = getDefaultInstance().getPassword();
+    }
+    /**
+     * <pre>
+     * Initial password.
+     * </pre>
+     *
+     * <code>string password = 2 [json_name = "password"];</code>
+     * @param value The bytes for password to set.
+     */
+    private void setPasswordBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      password_ = value.toStringUtf8();
+
+    }
+
+    public static final int ROLE_FIELD_NUMBER = 3;
+    private int role_;
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The enum numeric value on the wire for role.
+     */
+    @java.lang.Override
+    public int getRoleValue() {
+      return role_;
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @return The role.
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.Role getRole() {
+      porukator.v1.Porukator.Role result = porukator.v1.Porukator.Role.forNumber(role_);
+      return result == null ? porukator.v1.Porukator.Role.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @param value The enum numeric value on the wire for role to set.
+     */
+    private void setRoleValue(int value) {
+        role_ = value;
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     * @param value The role to set.
+     */
+    private void setRole(porukator.v1.Porukator.Role value) {
+      role_ = value.getNumber();
+
+    }
+    /**
+     * <pre>
+     * Permission level.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+     */
+    private void clearRole() {
+
+      role_ = 0;
+    }
+
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.CreateUserRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.CreateUserRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.CreateUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.CreateUserRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * CreateUserRequest names a new account.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.CreateUserRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.CreateUserRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.CreateUserRequest)
+        porukator.v1.Porukator.CreateUserRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.CreateUserRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @return The username.
+       */
+      @java.lang.Override
+      public java.lang.String getUsername() {
+        return instance.getUsername();
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @return The bytes for username.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getUsernameBytes() {
+        return instance.getUsernameBytes();
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @param value The username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsername(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setUsername(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUsername() {
+        copyOnWrite();
+        instance.clearUsername();
+        return this;
+      }
+      /**
+       * <pre>
+       * Unique login name.
+       * </pre>
+       *
+       * <code>string username = 1 [json_name = "username"];</code>
+       * @param value The bytes for username to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUsernameBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setUsernameBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Initial password.
+       * </pre>
+       *
+       * <code>string password = 2 [json_name = "password"];</code>
+       * @return The password.
+       */
+      @java.lang.Override
+      public java.lang.String getPassword() {
+        return instance.getPassword();
+      }
+      /**
+       * <pre>
+       * Initial password.
+       * </pre>
+       *
+       * <code>string password = 2 [json_name = "password"];</code>
+       * @return The bytes for password.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getPasswordBytes() {
+        return instance.getPasswordBytes();
+      }
+      /**
+       * <pre>
+       * Initial password.
+       * </pre>
+       *
+       * <code>string password = 2 [json_name = "password"];</code>
+       * @param value The password to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPassword(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setPassword(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Initial password.
+       * </pre>
+       *
+       * <code>string password = 2 [json_name = "password"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPassword() {
+        copyOnWrite();
+        instance.clearPassword();
+        return this;
+      }
+      /**
+       * <pre>
+       * Initial password.
+       * </pre>
+       *
+       * <code>string password = 2 [json_name = "password"];</code>
+       * @param value The bytes for password to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPasswordBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setPasswordBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @return The enum numeric value on the wire for role.
+       */
+      @java.lang.Override
+      public int getRoleValue() {
+        return instance.getRoleValue();
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @param value The role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRoleValue(int value) {
+        copyOnWrite();
+        instance.setRoleValue(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @return The role.
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.Role getRole() {
+        return instance.getRole();
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @param value The enum numeric value on the wire for role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRole(porukator.v1.Porukator.Role value) {
+        copyOnWrite();
+        instance.setRole(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * Permission level.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 3 [json_name = "role"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRole() {
+        copyOnWrite();
+        instance.clearRole();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.CreateUserRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.CreateUserRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "username_",
+              "password_",
+              "role_",
+            };
+            java.lang.String info =
+                "\u0000\u0003\u0000\u0000\u0001\u0003\u0003\u0000\u0000\u0000\u0001\u0208\u0002\u0208" +
+                "\u0003\f";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.CreateUserRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.CreateUserRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.CreateUserRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.CreateUserRequest)
+    private static final porukator.v1.Porukator.CreateUserRequest DEFAULT_INSTANCE;
+    static {
+      CreateUserRequest defaultInstance = new CreateUserRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        CreateUserRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.CreateUserRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<CreateUserRequest> PARSER;
+
+    public static com.google.protobuf.Parser<CreateUserRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface CreateUserResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.CreateUserResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * The created user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return Whether the user field is set.
+     */
+    boolean hasUser();
+    /**
+     * <pre>
+     * The created user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return The user.
+     */
+    porukator.v1.Porukator.User getUser();
+  }
+  /**
+   * <pre>
+   * CreateUserResponse returns the created account.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.CreateUserResponse}
+   */
+  public  static final class CreateUserResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          CreateUserResponse, CreateUserResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.CreateUserResponse)
+      CreateUserResponseOrBuilder {
+    private CreateUserResponse() {
+    }
+    private int bitField0_;
+    public static final int USER_FIELD_NUMBER = 1;
+    private porukator.v1.Porukator.User user_;
+    /**
+     * <pre>
+     * The created user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The created user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.User getUser() {
+      return user_ == null ? porukator.v1.Porukator.User.getDefaultInstance() : user_;
+    }
+    /**
+     * <pre>
+     * The created user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void setUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  user_ = value;
+      bitField0_ |= 0x00000001;
+      }
+    /**
+     * <pre>
+     * The created user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  if (user_ != null &&
+          user_ != porukator.v1.Porukator.User.getDefaultInstance()) {
+        user_ =
+          porukator.v1.Porukator.User.newBuilder(user_).mergeFrom(value).buildPartial();
+      } else {
+        user_ = value;
+      }
+      bitField0_ |= 0x00000001;
+    }
+    /**
+     * <pre>
+     * The created user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void clearUser() {  user_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+    }
+
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.CreateUserResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.CreateUserResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.CreateUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.CreateUserResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * CreateUserResponse returns the created account.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.CreateUserResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.CreateUserResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.CreateUserResponse)
+        porukator.v1.Porukator.CreateUserResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.CreateUserResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * The created user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public boolean hasUser() {
+        return instance.hasUser();
+      }
+      /**
+       * <pre>
+       * The created user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.User getUser() {
+        return instance.getUser();
+      }
+      /**
+       * <pre>
+       * The created user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.setUser(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * The created user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(
+          porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.setUser(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * The created user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder mergeUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.mergeUser(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * The created user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder clearUser() {  copyOnWrite();
+        instance.clearUser();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.CreateUserResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.CreateUserResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "bitField0_",
+              "user_",
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u1009\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.CreateUserResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.CreateUserResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.CreateUserResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.CreateUserResponse)
+    private static final porukator.v1.Porukator.CreateUserResponse DEFAULT_INSTANCE;
+    static {
+      CreateUserResponse defaultInstance = new CreateUserResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        CreateUserResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.CreateUserResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<CreateUserResponse> PARSER;
+
+    public static com.google.protobuf.Parser<CreateUserResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface ListUsersRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.ListUsersRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+  }
+  /**
+   * <pre>
+   * ListUsersRequest is empty.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.ListUsersRequest}
+   */
+  public  static final class ListUsersRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          ListUsersRequest, ListUsersRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.ListUsersRequest)
+      ListUsersRequestOrBuilder {
+    private ListUsersRequest() {
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.ListUsersRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.ListUsersRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListUsersRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.ListUsersRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * ListUsersRequest is empty.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.ListUsersRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.ListUsersRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.ListUsersRequest)
+        porukator.v1.Porukator.ListUsersRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.ListUsersRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.ListUsersRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.ListUsersRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = null;java.lang.String info =
+                "\u0000\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.ListUsersRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.ListUsersRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.ListUsersRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.ListUsersRequest)
+    private static final porukator.v1.Porukator.ListUsersRequest DEFAULT_INSTANCE;
+    static {
+      ListUsersRequest defaultInstance = new ListUsersRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        ListUsersRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.ListUsersRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<ListUsersRequest> PARSER;
+
+    public static com.google.protobuf.Parser<ListUsersRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface ListUsersResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.ListUsersResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    java.util.List<porukator.v1.Porukator.User> 
+        getUsersList();
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    porukator.v1.Porukator.User getUsers(int index);
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    int getUsersCount();
+  }
+  /**
+   * <pre>
+   * ListUsersResponse returns all accounts.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.ListUsersResponse}
+   */
+  public  static final class ListUsersResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          ListUsersResponse, ListUsersResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.ListUsersResponse)
+      ListUsersResponseOrBuilder {
+    private ListUsersResponse() {
+      users_ = emptyProtobufList();
+    }
+    public static final int USERS_FIELD_NUMBER = 1;
+    private com.google.protobuf.Internal.ProtobufList<porukator.v1.Porukator.User> users_;
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    @java.lang.Override
+    public java.util.List<porukator.v1.Porukator.User> getUsersList() {
+      return users_;
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    public java.util.List<? extends porukator.v1.Porukator.UserOrBuilder> 
+        getUsersOrBuilderList() {
+      return users_;
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    @java.lang.Override
+    public int getUsersCount() {
+      return users_.size();
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.User getUsers(int index) {
+      return users_.get(index);
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    public porukator.v1.Porukator.UserOrBuilder getUsersOrBuilder(
+        int index) {
+      return users_.get(index);
+    }
+    private void ensureUsersIsMutable() {
+      com.google.protobuf.Internal.ProtobufList<porukator.v1.Porukator.User> tmp = users_;
+      if (!tmp.isModifiable()) {
+        users_ =
+            com.google.protobuf.GeneratedMessageLite.mutableCopy(tmp);
+       }
+    }
+
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    private void setUsers(
+        int index, porukator.v1.Porukator.User value) {
+      value.getClass();
+  ensureUsersIsMutable();
+      users_.set(index, value);
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    private void addUsers(porukator.v1.Porukator.User value) {
+      value.getClass();
+  ensureUsersIsMutable();
+      users_.add(value);
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    private void addUsers(
+        int index, porukator.v1.Porukator.User value) {
+      value.getClass();
+  ensureUsersIsMutable();
+      users_.add(index, value);
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    private void addAllUsers(
+        java.lang.Iterable<? extends porukator.v1.Porukator.User> values) {
+      ensureUsersIsMutable();
+      com.google.protobuf.AbstractMessageLite.addAll(
+          values, users_);
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    private void clearUsers() {
+      users_ = emptyProtobufList();
+    }
+    /**
+     * <pre>
+     * All accounts.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+     */
+    private void removeUsers(int index) {
+      ensureUsersIsMutable();
+      users_.remove(index);
+    }
+
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.ListUsersResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.ListUsersResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListUsersResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.ListUsersResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * ListUsersResponse returns all accounts.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.ListUsersResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.ListUsersResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.ListUsersResponse)
+        porukator.v1.Porukator.ListUsersResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.ListUsersResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      @java.lang.Override
+      public java.util.List<porukator.v1.Porukator.User> getUsersList() {
+        return java.util.Collections.unmodifiableList(
+            instance.getUsersList());
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      @java.lang.Override
+      public int getUsersCount() {
+        return instance.getUsersCount();
+      }/**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.User getUsers(int index) {
+        return instance.getUsers(index);
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder setUsers(
+          int index, porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.setUsers(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder setUsers(
+          int index, porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.setUsers(index,
+            builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder addUsers(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.addUsers(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder addUsers(
+          int index, porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.addUsers(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder addUsers(
+          porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.addUsers(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder addUsers(
+          int index, porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.addUsers(index,
+            builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder addAllUsers(
+          java.lang.Iterable<? extends porukator.v1.Porukator.User> values) {
+        copyOnWrite();
+        instance.addAllUsers(values);
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder clearUsers() {
+        copyOnWrite();
+        instance.clearUsers();
+        return this;
+      }
+      /**
+       * <pre>
+       * All accounts.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.User users = 1 [json_name = "users"];</code>
+       */
+      public Builder removeUsers(int index) {
+        copyOnWrite();
+        instance.removeUsers(index);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.ListUsersResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.ListUsersResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "users_",
+              porukator.v1.Porukator.User.class,
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0001\u0000\u0001\u001b";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.ListUsersResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.ListUsersResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.ListUsersResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.ListUsersResponse)
+    private static final porukator.v1.Porukator.ListUsersResponse DEFAULT_INSTANCE;
+    static {
+      ListUsersResponse defaultInstance = new ListUsersResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        ListUsersResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.ListUsersResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<ListUsersResponse> PARSER;
+
+    public static com.google.protobuf.Parser<ListUsersResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface SetUserRoleRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.SetUserRoleRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <pre>
+     * New role.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+     * @return The enum numeric value on the wire for role.
+     */
+    int getRoleValue();
+    /**
+     * <pre>
+     * New role.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+     * @return The role.
+     */
+    porukator.v1.Porukator.Role getRole();
+  }
+  /**
+   * <pre>
+   * SetUserRoleRequest changes an account's role.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.SetUserRoleRequest}
+   */
+  public  static final class SetUserRoleRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          SetUserRoleRequest, SetUserRoleRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.SetUserRoleRequest)
+      SetUserRoleRequestOrBuilder {
+    private SetUserRoleRequest() {
+      id_ = "";
+    }
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.String id_;
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      return id_;
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(id_);
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The id to set.
+     */
+    private void setId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      id_ = value;
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     */
+    private void clearId() {
+
+      id_ = getDefaultInstance().getId();
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The bytes for id to set.
+     */
+    private void setIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      id_ = value.toStringUtf8();
+
+    }
+
+    public static final int ROLE_FIELD_NUMBER = 2;
+    private int role_;
+    /**
+     * <pre>
+     * New role.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+     * @return The enum numeric value on the wire for role.
+     */
+    @java.lang.Override
+    public int getRoleValue() {
+      return role_;
+    }
+    /**
+     * <pre>
+     * New role.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+     * @return The role.
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.Role getRole() {
+      porukator.v1.Porukator.Role result = porukator.v1.Porukator.Role.forNumber(role_);
+      return result == null ? porukator.v1.Porukator.Role.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * New role.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+     * @param value The enum numeric value on the wire for role to set.
+     */
+    private void setRoleValue(int value) {
+        role_ = value;
+    }
+    /**
+     * <pre>
+     * New role.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+     * @param value The role to set.
+     */
+    private void setRole(porukator.v1.Porukator.Role value) {
+      role_ = value.getNumber();
+
+    }
+    /**
+     * <pre>
+     * New role.
+     * </pre>
+     *
+     * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+     */
+    private void clearRole() {
+
+      role_ = 0;
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserRoleRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.SetUserRoleRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * SetUserRoleRequest changes an account's role.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.SetUserRoleRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.SetUserRoleRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.SetUserRoleRequest)
+        porukator.v1.Porukator.SetUserRoleRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.SetUserRoleRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public java.lang.String getId() {
+        return instance.getId();
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The bytes for id.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        return instance.getIdBytes();
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        copyOnWrite();
+        instance.clearId();
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIdBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * New role.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+       * @return The enum numeric value on the wire for role.
+       */
+      @java.lang.Override
+      public int getRoleValue() {
+        return instance.getRoleValue();
+      }
+      /**
+       * <pre>
+       * New role.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+       * @param value The role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRoleValue(int value) {
+        copyOnWrite();
+        instance.setRoleValue(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * New role.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+       * @return The role.
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.Role getRole() {
+        return instance.getRole();
+      }
+      /**
+       * <pre>
+       * New role.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+       * @param value The enum numeric value on the wire for role to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRole(porukator.v1.Porukator.Role value) {
+        copyOnWrite();
+        instance.setRole(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * New role.
+       * </pre>
+       *
+       * <code>.porukator.v1.Role role = 2 [json_name = "role"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRole() {
+        copyOnWrite();
+        instance.clearRole();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.SetUserRoleRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.SetUserRoleRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "id_",
+              "role_",
+            };
+            java.lang.String info =
+                "\u0000\u0002\u0000\u0000\u0001\u0002\u0002\u0000\u0000\u0000\u0001\u0208\u0002\f" +
+                "";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.SetUserRoleRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.SetUserRoleRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.SetUserRoleRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.SetUserRoleRequest)
+    private static final porukator.v1.Porukator.SetUserRoleRequest DEFAULT_INSTANCE;
+    static {
+      SetUserRoleRequest defaultInstance = new SetUserRoleRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        SetUserRoleRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<SetUserRoleRequest> PARSER;
+
+    public static com.google.protobuf.Parser<SetUserRoleRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface SetUserRoleResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.SetUserRoleResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return Whether the user field is set.
+     */
+    boolean hasUser();
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return The user.
+     */
+    porukator.v1.Porukator.User getUser();
+  }
+  /**
+   * <pre>
+   * SetUserRoleResponse returns the updated account.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.SetUserRoleResponse}
+   */
+  public  static final class SetUserRoleResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          SetUserRoleResponse, SetUserRoleResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.SetUserRoleResponse)
+      SetUserRoleResponseOrBuilder {
+    private SetUserRoleResponse() {
+    }
+    private int bitField0_;
+    public static final int USER_FIELD_NUMBER = 1;
+    private porukator.v1.Porukator.User user_;
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.User getUser() {
+      return user_ == null ? porukator.v1.Porukator.User.getDefaultInstance() : user_;
+    }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void setUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  user_ = value;
+      bitField0_ |= 0x00000001;
+      }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  if (user_ != null &&
+          user_ != porukator.v1.Porukator.User.getDefaultInstance()) {
+        user_ =
+          porukator.v1.Porukator.User.newBuilder(user_).mergeFrom(value).buildPartial();
+      } else {
+        user_ = value;
+      }
+      bitField0_ |= 0x00000001;
+    }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void clearUser() {  user_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserRoleResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.SetUserRoleResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * SetUserRoleResponse returns the updated account.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.SetUserRoleResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.SetUserRoleResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.SetUserRoleResponse)
+        porukator.v1.Porukator.SetUserRoleResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.SetUserRoleResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public boolean hasUser() {
+        return instance.hasUser();
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.User getUser() {
+        return instance.getUser();
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.setUser(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(
+          porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.setUser(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder mergeUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.mergeUser(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder clearUser() {  copyOnWrite();
+        instance.clearUser();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.SetUserRoleResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.SetUserRoleResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "bitField0_",
+              "user_",
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u1009\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.SetUserRoleResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.SetUserRoleResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.SetUserRoleResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.SetUserRoleResponse)
+    private static final porukator.v1.Porukator.SetUserRoleResponse DEFAULT_INSTANCE;
+    static {
+      SetUserRoleResponse defaultInstance = new SetUserRoleResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        SetUserRoleResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.SetUserRoleResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<SetUserRoleResponse> PARSER;
+
+    public static com.google.protobuf.Parser<SetUserRoleResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface SetUserDisabledRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.SetUserDisabledRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <pre>
+     * True to disable (and revoke sessions), false to enable.
+     * </pre>
+     *
+     * <code>bool disabled = 2 [json_name = "disabled"];</code>
+     * @return The disabled.
+     */
+    boolean getDisabled();
+  }
+  /**
+   * <pre>
+   * SetUserDisabledRequest enables or disables an account.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.SetUserDisabledRequest}
+   */
+  public  static final class SetUserDisabledRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          SetUserDisabledRequest, SetUserDisabledRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.SetUserDisabledRequest)
+      SetUserDisabledRequestOrBuilder {
+    private SetUserDisabledRequest() {
+      id_ = "";
+    }
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.String id_;
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      return id_;
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(id_);
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The id to set.
+     */
+    private void setId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      id_ = value;
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     */
+    private void clearId() {
+
+      id_ = getDefaultInstance().getId();
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The bytes for id to set.
+     */
+    private void setIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      id_ = value.toStringUtf8();
+
+    }
+
+    public static final int DISABLED_FIELD_NUMBER = 2;
+    private boolean disabled_;
+    /**
+     * <pre>
+     * True to disable (and revoke sessions), false to enable.
+     * </pre>
+     *
+     * <code>bool disabled = 2 [json_name = "disabled"];</code>
+     * @return The disabled.
+     */
+    @java.lang.Override
+    public boolean getDisabled() {
+      return disabled_;
+    }
+    /**
+     * <pre>
+     * True to disable (and revoke sessions), false to enable.
+     * </pre>
+     *
+     * <code>bool disabled = 2 [json_name = "disabled"];</code>
+     * @param value The disabled to set.
+     */
+    private void setDisabled(boolean value) {
+      
+      disabled_ = value;
+    }
+    /**
+     * <pre>
+     * True to disable (and revoke sessions), false to enable.
+     * </pre>
+     *
+     * <code>bool disabled = 2 [json_name = "disabled"];</code>
+     */
+    private void clearDisabled() {
+
+      disabled_ = false;
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.SetUserDisabledRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * SetUserDisabledRequest enables or disables an account.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.SetUserDisabledRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.SetUserDisabledRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.SetUserDisabledRequest)
+        porukator.v1.Porukator.SetUserDisabledRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.SetUserDisabledRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public java.lang.String getId() {
+        return instance.getId();
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The bytes for id.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        return instance.getIdBytes();
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        copyOnWrite();
+        instance.clearId();
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIdBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * True to disable (and revoke sessions), false to enable.
+       * </pre>
+       *
+       * <code>bool disabled = 2 [json_name = "disabled"];</code>
+       * @return The disabled.
+       */
+      @java.lang.Override
+      public boolean getDisabled() {
+        return instance.getDisabled();
+      }
+      /**
+       * <pre>
+       * True to disable (and revoke sessions), false to enable.
+       * </pre>
+       *
+       * <code>bool disabled = 2 [json_name = "disabled"];</code>
+       * @param value The disabled to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDisabled(boolean value) {
+        copyOnWrite();
+        instance.setDisabled(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * True to disable (and revoke sessions), false to enable.
+       * </pre>
+       *
+       * <code>bool disabled = 2 [json_name = "disabled"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDisabled() {
+        copyOnWrite();
+        instance.clearDisabled();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.SetUserDisabledRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.SetUserDisabledRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "id_",
+              "disabled_",
+            };
+            java.lang.String info =
+                "\u0000\u0002\u0000\u0000\u0001\u0002\u0002\u0000\u0000\u0000\u0001\u0208\u0002\u0007" +
+                "";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.SetUserDisabledRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.SetUserDisabledRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.SetUserDisabledRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.SetUserDisabledRequest)
+    private static final porukator.v1.Porukator.SetUserDisabledRequest DEFAULT_INSTANCE;
+    static {
+      SetUserDisabledRequest defaultInstance = new SetUserDisabledRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        SetUserDisabledRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<SetUserDisabledRequest> PARSER;
+
+    public static com.google.protobuf.Parser<SetUserDisabledRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface SetUserDisabledResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.SetUserDisabledResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return Whether the user field is set.
+     */
+    boolean hasUser();
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     * @return The user.
+     */
+    porukator.v1.Porukator.User getUser();
+  }
+  /**
+   * <pre>
+   * SetUserDisabledResponse returns the updated account.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.SetUserDisabledResponse}
+   */
+  public  static final class SetUserDisabledResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          SetUserDisabledResponse, SetUserDisabledResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.SetUserDisabledResponse)
+      SetUserDisabledResponseOrBuilder {
+    private SetUserDisabledResponse() {
+    }
+    private int bitField0_;
+    public static final int USER_FIELD_NUMBER = 1;
+    private porukator.v1.Porukator.User user_;
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public boolean hasUser() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.User getUser() {
+      return user_ == null ? porukator.v1.Porukator.User.getDefaultInstance() : user_;
+    }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void setUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  user_ = value;
+      bitField0_ |= 0x00000001;
+      }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    @java.lang.SuppressWarnings({"ReferenceEquality"})
+    private void mergeUser(porukator.v1.Porukator.User value) {
+      value.getClass();
+  if (user_ != null &&
+          user_ != porukator.v1.Porukator.User.getDefaultInstance()) {
+        user_ =
+          porukator.v1.Porukator.User.newBuilder(user_).mergeFrom(value).buildPartial();
+      } else {
+        user_ = value;
+      }
+      bitField0_ |= 0x00000001;
+    }
+    /**
+     * <pre>
+     * The updated user.
+     * </pre>
+     *
+     * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+     */
+    private void clearUser() {  user_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.SetUserDisabledResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.SetUserDisabledResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * SetUserDisabledResponse returns the updated account.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.SetUserDisabledResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.SetUserDisabledResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.SetUserDisabledResponse)
+        porukator.v1.Porukator.SetUserDisabledResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.SetUserDisabledResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public boolean hasUser() {
+        return instance.hasUser();
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.User getUser() {
+        return instance.getUser();
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.setUser(value);
+        return this;
+        }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder setUser(
+          porukator.v1.Porukator.User.Builder builderForValue) {
+        copyOnWrite();
+        instance.setUser(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder mergeUser(porukator.v1.Porukator.User value) {
+        copyOnWrite();
+        instance.mergeUser(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * The updated user.
+       * </pre>
+       *
+       * <code>.porukator.v1.User user = 1 [json_name = "user"];</code>
+       */
+      public Builder clearUser() {  copyOnWrite();
+        instance.clearUser();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.SetUserDisabledResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.SetUserDisabledResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "bitField0_",
+              "user_",
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u1009\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.SetUserDisabledResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.SetUserDisabledResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.SetUserDisabledResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.SetUserDisabledResponse)
+    private static final porukator.v1.Porukator.SetUserDisabledResponse DEFAULT_INSTANCE;
+    static {
+      SetUserDisabledResponse defaultInstance = new SetUserDisabledResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        SetUserDisabledResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.SetUserDisabledResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<SetUserDisabledResponse> PARSER;
+
+    public static com.google.protobuf.Parser<SetUserDisabledResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface DeleteUserRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.DeleteUserRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+  }
+  /**
+   * <pre>
+   * DeleteUserRequest identifies an account to remove.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.DeleteUserRequest}
+   */
+  public  static final class DeleteUserRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          DeleteUserRequest, DeleteUserRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.DeleteUserRequest)
+      DeleteUserRequestOrBuilder {
+    private DeleteUserRequest() {
+      id_ = "";
+    }
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.String id_;
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      return id_;
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(id_);
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The id to set.
+     */
+    private void setId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      id_ = value;
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     */
+    private void clearId() {
+
+      id_ = getDefaultInstance().getId();
+    }
+    /**
+     * <pre>
+     * UUID of the account.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The bytes for id to set.
+     */
+    private void setIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      id_ = value.toStringUtf8();
+
+    }
+
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.DeleteUserRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.DeleteUserRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.DeleteUserRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.DeleteUserRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * DeleteUserRequest identifies an account to remove.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.DeleteUserRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.DeleteUserRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.DeleteUserRequest)
+        porukator.v1.Porukator.DeleteUserRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.DeleteUserRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public java.lang.String getId() {
+        return instance.getId();
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The bytes for id.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        return instance.getIdBytes();
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        copyOnWrite();
+        instance.clearId();
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the account.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIdBytes(value);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.DeleteUserRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.DeleteUserRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "id_",
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u0208";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.DeleteUserRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.DeleteUserRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.DeleteUserRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.DeleteUserRequest)
+    private static final porukator.v1.Porukator.DeleteUserRequest DEFAULT_INSTANCE;
+    static {
+      DeleteUserRequest defaultInstance = new DeleteUserRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        DeleteUserRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.DeleteUserRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<DeleteUserRequest> PARSER;
+
+    public static com.google.protobuf.Parser<DeleteUserRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface DeleteUserResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.DeleteUserResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+  }
+  /**
+   * <pre>
+   * DeleteUserResponse is empty.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.DeleteUserResponse}
+   */
+  public  static final class DeleteUserResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          DeleteUserResponse, DeleteUserResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.DeleteUserResponse)
+      DeleteUserResponseOrBuilder {
+    private DeleteUserResponse() {
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.DeleteUserResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.DeleteUserResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.DeleteUserResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.DeleteUserResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * DeleteUserResponse is empty.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.DeleteUserResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.DeleteUserResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.DeleteUserResponse)
+        porukator.v1.Porukator.DeleteUserResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.DeleteUserResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.DeleteUserResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.DeleteUserResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = null;java.lang.String info =
+                "\u0000\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.DeleteUserResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.DeleteUserResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.DeleteUserResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.DeleteUserResponse)
+    private static final porukator.v1.Porukator.DeleteUserResponse DEFAULT_INSTANCE;
+    static {
+      DeleteUserResponse defaultInstance = new DeleteUserResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        DeleteUserResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.DeleteUserResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<DeleteUserResponse> PARSER;
+
+    public static com.google.protobuf.Parser<DeleteUserResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface ListSessionsRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.ListSessionsRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+  }
+  /**
+   * <pre>
+   * ListSessionsRequest is empty.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.ListSessionsRequest}
+   */
+  public  static final class ListSessionsRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          ListSessionsRequest, ListSessionsRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.ListSessionsRequest)
+      ListSessionsRequestOrBuilder {
+    private ListSessionsRequest() {
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.ListSessionsRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.ListSessionsRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListSessionsRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.ListSessionsRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * ListSessionsRequest is empty.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.ListSessionsRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.ListSessionsRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.ListSessionsRequest)
+        porukator.v1.Porukator.ListSessionsRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.ListSessionsRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.ListSessionsRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.ListSessionsRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = null;java.lang.String info =
+                "\u0000\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.ListSessionsRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.ListSessionsRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.ListSessionsRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.ListSessionsRequest)
+    private static final porukator.v1.Porukator.ListSessionsRequest DEFAULT_INSTANCE;
+    static {
+      ListSessionsRequest defaultInstance = new ListSessionsRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        ListSessionsRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.ListSessionsRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<ListSessionsRequest> PARSER;
+
+    public static com.google.protobuf.Parser<ListSessionsRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface ListSessionsResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.ListSessionsResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    java.util.List<porukator.v1.Porukator.Session> 
+        getSessionsList();
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    porukator.v1.Porukator.Session getSessions(int index);
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    int getSessionsCount();
+  }
+  /**
+   * <pre>
+   * ListSessionsResponse returns active sessions.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.ListSessionsResponse}
+   */
+  public  static final class ListSessionsResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          ListSessionsResponse, ListSessionsResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.ListSessionsResponse)
+      ListSessionsResponseOrBuilder {
+    private ListSessionsResponse() {
+      sessions_ = emptyProtobufList();
+    }
+    public static final int SESSIONS_FIELD_NUMBER = 1;
+    private com.google.protobuf.Internal.ProtobufList<porukator.v1.Porukator.Session> sessions_;
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    @java.lang.Override
+    public java.util.List<porukator.v1.Porukator.Session> getSessionsList() {
+      return sessions_;
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    public java.util.List<? extends porukator.v1.Porukator.SessionOrBuilder> 
+        getSessionsOrBuilderList() {
+      return sessions_;
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    @java.lang.Override
+    public int getSessionsCount() {
+      return sessions_.size();
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    @java.lang.Override
+    public porukator.v1.Porukator.Session getSessions(int index) {
+      return sessions_.get(index);
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    public porukator.v1.Porukator.SessionOrBuilder getSessionsOrBuilder(
+        int index) {
+      return sessions_.get(index);
+    }
+    private void ensureSessionsIsMutable() {
+      com.google.protobuf.Internal.ProtobufList<porukator.v1.Porukator.Session> tmp = sessions_;
+      if (!tmp.isModifiable()) {
+        sessions_ =
+            com.google.protobuf.GeneratedMessageLite.mutableCopy(tmp);
+       }
+    }
+
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    private void setSessions(
+        int index, porukator.v1.Porukator.Session value) {
+      value.getClass();
+  ensureSessionsIsMutable();
+      sessions_.set(index, value);
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    private void addSessions(porukator.v1.Porukator.Session value) {
+      value.getClass();
+  ensureSessionsIsMutable();
+      sessions_.add(value);
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    private void addSessions(
+        int index, porukator.v1.Porukator.Session value) {
+      value.getClass();
+  ensureSessionsIsMutable();
+      sessions_.add(index, value);
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    private void addAllSessions(
+        java.lang.Iterable<? extends porukator.v1.Porukator.Session> values) {
+      ensureSessionsIsMutable();
+      com.google.protobuf.AbstractMessageLite.addAll(
+          values, sessions_);
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    private void clearSessions() {
+      sessions_ = emptyProtobufList();
+    }
+    /**
+     * <pre>
+     * All active sessions.
+     * </pre>
+     *
+     * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+     */
+    private void removeSessions(int index) {
+      ensureSessionsIsMutable();
+      sessions_.remove(index);
+    }
+
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.ListSessionsResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.ListSessionsResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.ListSessionsResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.ListSessionsResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * ListSessionsResponse returns active sessions.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.ListSessionsResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.ListSessionsResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.ListSessionsResponse)
+        porukator.v1.Porukator.ListSessionsResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.ListSessionsResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      @java.lang.Override
+      public java.util.List<porukator.v1.Porukator.Session> getSessionsList() {
+        return java.util.Collections.unmodifiableList(
+            instance.getSessionsList());
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      @java.lang.Override
+      public int getSessionsCount() {
+        return instance.getSessionsCount();
+      }/**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      @java.lang.Override
+      public porukator.v1.Porukator.Session getSessions(int index) {
+        return instance.getSessions(index);
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder setSessions(
+          int index, porukator.v1.Porukator.Session value) {
+        copyOnWrite();
+        instance.setSessions(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder setSessions(
+          int index, porukator.v1.Porukator.Session.Builder builderForValue) {
+        copyOnWrite();
+        instance.setSessions(index,
+            builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder addSessions(porukator.v1.Porukator.Session value) {
+        copyOnWrite();
+        instance.addSessions(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder addSessions(
+          int index, porukator.v1.Porukator.Session value) {
+        copyOnWrite();
+        instance.addSessions(index, value);
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder addSessions(
+          porukator.v1.Porukator.Session.Builder builderForValue) {
+        copyOnWrite();
+        instance.addSessions(builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder addSessions(
+          int index, porukator.v1.Porukator.Session.Builder builderForValue) {
+        copyOnWrite();
+        instance.addSessions(index,
+            builderForValue.build());
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder addAllSessions(
+          java.lang.Iterable<? extends porukator.v1.Porukator.Session> values) {
+        copyOnWrite();
+        instance.addAllSessions(values);
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder clearSessions() {
+        copyOnWrite();
+        instance.clearSessions();
+        return this;
+      }
+      /**
+       * <pre>
+       * All active sessions.
+       * </pre>
+       *
+       * <code>repeated .porukator.v1.Session sessions = 1 [json_name = "sessions"];</code>
+       */
+      public Builder removeSessions(int index) {
+        copyOnWrite();
+        instance.removeSessions(index);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.ListSessionsResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.ListSessionsResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "sessions_",
+              porukator.v1.Porukator.Session.class,
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0001\u0000\u0001\u001b";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.ListSessionsResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.ListSessionsResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.ListSessionsResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.ListSessionsResponse)
+    private static final porukator.v1.Porukator.ListSessionsResponse DEFAULT_INSTANCE;
+    static {
+      ListSessionsResponse defaultInstance = new ListSessionsResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        ListSessionsResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.ListSessionsResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<ListSessionsResponse> PARSER;
+
+    public static com.google.protobuf.Parser<ListSessionsResponse> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface RevokeSessionRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.RevokeSessionRequest)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * UUID of the session.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <pre>
+     * UUID of the session.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+  }
+  /**
+   * <pre>
+   * RevokeSessionRequest identifies a session to delete.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.RevokeSessionRequest}
+   */
+  public  static final class RevokeSessionRequest extends
+      com.google.protobuf.GeneratedMessageLite<
+          RevokeSessionRequest, RevokeSessionRequest.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.RevokeSessionRequest)
+      RevokeSessionRequestOrBuilder {
+    private RevokeSessionRequest() {
+      id_ = "";
+    }
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.lang.String id_;
+    /**
+     * <pre>
+     * UUID of the session.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The id.
+     */
+    @java.lang.Override
+    public java.lang.String getId() {
+      return id_;
+    }
+    /**
+     * <pre>
+     * UUID of the session.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @return The bytes for id.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(id_);
+    }
+    /**
+     * <pre>
+     * UUID of the session.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The id to set.
+     */
+    private void setId(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      id_ = value;
+    }
+    /**
+     * <pre>
+     * UUID of the session.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     */
+    private void clearId() {
+
+      id_ = getDefaultInstance().getId();
+    }
+    /**
+     * <pre>
+     * UUID of the session.
+     * </pre>
+     *
+     * <code>string id = 1 [json_name = "id"];</code>
+     * @param value The bytes for id to set.
+     */
+    private void setIdBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      id_ = value.toStringUtf8();
+
+    }
+
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.RevokeSessionRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.RevokeSessionRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.RevokeSessionRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.RevokeSessionRequest prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * RevokeSessionRequest identifies a session to delete.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.RevokeSessionRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.RevokeSessionRequest, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.RevokeSessionRequest)
+        porukator.v1.Porukator.RevokeSessionRequestOrBuilder {
+      // Construct using porukator.v1.Porukator.RevokeSessionRequest.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * UUID of the session.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The id.
+       */
+      @java.lang.Override
+      public java.lang.String getId() {
+        return instance.getId();
+      }
+      /**
+       * <pre>
+       * UUID of the session.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return The bytes for id.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        return instance.getIdBytes();
+      }
+      /**
+       * <pre>
+       * UUID of the session.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setId(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the session.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        copyOnWrite();
+        instance.clearId();
+        return this;
+      }
+      /**
+       * <pre>
+       * UUID of the session.
+       * </pre>
+       *
+       * <code>string id = 1 [json_name = "id"];</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIdBytes(value);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.RevokeSessionRequest)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.RevokeSessionRequest();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = new java.lang.Object[] {
+              "id_",
+            };
+            java.lang.String info =
+                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u0208";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.RevokeSessionRequest> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.RevokeSessionRequest.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.RevokeSessionRequest>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.RevokeSessionRequest)
+    private static final porukator.v1.Porukator.RevokeSessionRequest DEFAULT_INSTANCE;
+    static {
+      RevokeSessionRequest defaultInstance = new RevokeSessionRequest();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        RevokeSessionRequest.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.RevokeSessionRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<RevokeSessionRequest> PARSER;
+
+    public static com.google.protobuf.Parser<RevokeSessionRequest> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface RevokeSessionResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:porukator.v1.RevokeSessionResponse)
+      com.google.protobuf.MessageLiteOrBuilder {
+  }
+  /**
+   * <pre>
+   * RevokeSessionResponse is empty.
+   * </pre>
+   *
+   * Protobuf type {@code porukator.v1.RevokeSessionResponse}
+   */
+  public  static final class RevokeSessionResponse extends
+      com.google.protobuf.GeneratedMessageLite<
+          RevokeSessionResponse, RevokeSessionResponse.Builder> implements
+      // @@protoc_insertion_point(message_implements:porukator.v1.RevokeSessionResponse)
+      RevokeSessionResponseOrBuilder {
+    private RevokeSessionResponse() {
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static porukator.v1.Porukator.RevokeSessionResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static porukator.v1.Porukator.RevokeSessionResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static porukator.v1.Porukator.RevokeSessionResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return (Builder) DEFAULT_INSTANCE.createBuilder();
+    }
+    public static Builder newBuilder(porukator.v1.Porukator.RevokeSessionResponse prototype) {
+      return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /**
+     * <pre>
+     * RevokeSessionResponse is empty.
+     * </pre>
+     *
+     * Protobuf type {@code porukator.v1.RevokeSessionResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          porukator.v1.Porukator.RevokeSessionResponse, Builder> implements
+        // @@protoc_insertion_point(builder_implements:porukator.v1.RevokeSessionResponse)
+        porukator.v1.Porukator.RevokeSessionResponseOrBuilder {
+      // Construct using porukator.v1.Porukator.RevokeSessionResponse.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:porukator.v1.RevokeSessionResponse)
+    }
+    @java.lang.Override
+    @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+    protected final java.lang.Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        java.lang.Object arg0, java.lang.Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new porukator.v1.Porukator.RevokeSessionResponse();
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case BUILD_MESSAGE_INFO: {
+            java.lang.Object[] objects = null;java.lang.String info =
+                "\u0000\u0000";
+            return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+        }
+        // fall through
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          com.google.protobuf.Parser<porukator.v1.Porukator.RevokeSessionResponse> parser = PARSER;
+          if (parser == null) {
+            synchronized (porukator.v1.Porukator.RevokeSessionResponse.class) {
+              parser = PARSER;
+              if (parser == null) {
+                parser =
+                    new DefaultInstanceBasedParser<porukator.v1.Porukator.RevokeSessionResponse>(
+                        DEFAULT_INSTANCE);
+                PARSER = parser;
+              }
+            }
+          }
+          return parser;
+      }
+      case GET_MEMOIZED_IS_INITIALIZED: {
+        return (byte) 1;
+      }
+      case SET_MEMOIZED_IS_INITIALIZED: {
+        return null;
+      }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:porukator.v1.RevokeSessionResponse)
+    private static final porukator.v1.Porukator.RevokeSessionResponse DEFAULT_INSTANCE;
+    static {
+      RevokeSessionResponse defaultInstance = new RevokeSessionResponse();
+      // New instances are implicitly immutable so no need to make
+      // immutable.
+      DEFAULT_INSTANCE = defaultInstance;
+      com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+        RevokeSessionResponse.class, defaultInstance);
+    }
+
+    public static porukator.v1.Porukator.RevokeSessionResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<RevokeSessionResponse> PARSER;
+
+    public static com.google.protobuf.Parser<RevokeSessionResponse> parser() {
       return DEFAULT_INSTANCE.getParserForType();
     }
   }

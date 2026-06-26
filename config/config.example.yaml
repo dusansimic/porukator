@@ -8,10 +8,9 @@ http:
 postgres:
   url: "postgres://porukator:porukator@postgres:5432/porukator?sslmode=disable"
 
-auth:
-  # Single master password that gates the admin API / web UI. REQUIRED.
-  # Override in production with PORUKATOR_AUTH_MASTER_PASSWORD.
-  master_password: "change-me"
+# Web-UI access is via user accounts (no master password). Bootstrap the first
+# admin once the service can reach Postgres:
+#   porukator create-user --username admin --password <pw> --admin
 
 logging:
   level: "info"

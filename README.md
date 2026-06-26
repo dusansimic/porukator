@@ -22,9 +22,11 @@ React web UI, and an Android app.
   and waiting for messages) and when each was last seen.
 - **Simple device onboarding** — add a device in the UI and pair it by typing
   the host + token into the app, or by scanning a generated QR code.
-- **Three clear access surfaces** — a single master password for the admin UI,
-  per-service API tokens for producers, and per-device access tokens for the
-  phones.
+- **User accounts with roles** — admins manage everything; managers manage only
+  their own devices and see those devices' messages. Argon2id-hashed passwords,
+  DB-backed sessions, admin-controlled disable/revoke/role changes.
+- **Three clear access surfaces** — user sessions for the admin UI, per-service
+  API tokens for producers, and per-device access tokens for the phones.
 - **Durable, auditable log** — every message is stored in Postgres with its
   phone number, content, status, and timestamps for when it was received and
   when it was sent.
@@ -44,7 +46,7 @@ flowchart TB
     sim(["SMS via SIM"])
 
     subgraph svc["Porukator service (Go)"]
-        admin["AdminService<br/>(master-password auth)"]
+        admin["AdminService<br/>(user session auth)"]
         producer["ProducerService<br/>(API-token auth)"]
         client["ClientService<br/>(client-token auth)"]
     end
@@ -79,9 +81,10 @@ flowchart TB
   It keeps an in-memory registry of connected devices (the source of the
   "online" flag) and persists everything else in Postgres.
 
-- **Web UI (`webui/`)** — a React single-page app. Access is gated by the single
-  master password set at service start. It manages devices (with online status
-  and QR pairing), API tokens, pacing settings, and shows the message log.
+- **Web UI (`webui/`)** — a React single-page app. Users sign in with an account
+  (the first admin is created with `porukator create-user --admin`). Admins
+  manage devices, API tokens, pacing settings, the message log, and user/session
+  administration; managers see only their own devices and those devices' messages.
 
 - **Android app (`android/`)** — a Kotlin app. It is paired with connection
   parameters (host + access token, typed or scanned from a QR code) and runs a

@@ -49,7 +49,8 @@ func zapStr(k, v string) zap.Field { return zap.String(k, v) }
 // newNullUUID returns a null pgtype.UUID (used as "no filter").
 func newNullUUID() pgtype.UUID { return pgtype.UUID{} }
 
-// clientToProto renders a stored client, overlaying live online state.
+// clientToProto renders a stored client, overlaying live online state. The
+// owner username is filled separately by callers that join the users table.
 func (h *Handler) clientToProto(c repository.Client) *porukatorv1.Client {
 	id := pgconv.UUIDString(c.ID)
 	return &porukatorv1.Client{
@@ -58,6 +59,59 @@ func (h *Handler) clientToProto(c repository.Client) *porukatorv1.Client {
 		Online:     h.registry.IsOnline(id),
 		LastSeenAt: pgconv.PbTime(c.LastSeenAt),
 		CreatedAt:  pgconv.PbTime(c.CreatedAt),
+		CreatedBy:  pgconv.UUIDString(c.CreatedBy),
+	}
+}
+
+// clientWithOwnerToProto renders a client list row that carries the joined
+// owner username.
+func (h *Handler) clientWithOwnerToProto(id pgtype.UUID, name string, lastSeen, createdAt pgtype.Timestamptz, createdBy pgtype.UUID, ownerUsername pgtype.Text) *porukatorv1.Client {
+	idStr := pgconv.UUIDString(id)
+	owner := ""
+	if ownerUsername.Valid {
+		owner = ownerUsername.String
+	}
+	return &porukatorv1.Client{
+		Id:            idStr,
+		Name:          name,
+		Online:        h.registry.IsOnline(idStr),
+		LastSeenAt:    pgconv.PbTime(lastSeen),
+		CreatedAt:     pgconv.PbTime(createdAt),
+		CreatedBy:     pgconv.UUIDString(createdBy),
+		OwnerUsername: owner,
+	}
+}
+
+func roleToProto(r repository.UserRole) porukatorv1.Role {
+	switch r {
+	case repository.UserRoleAdmin:
+		return porukatorv1.Role_ROLE_ADMIN
+	case repository.UserRoleManager:
+		return porukatorv1.Role_ROLE_MANAGER
+	default:
+		return porukatorv1.Role_ROLE_UNSPECIFIED
+	}
+}
+
+// roleFromProto maps a proto role to the DB enum; ok is false for UNSPECIFIED.
+func roleFromProto(r porukatorv1.Role) (repository.UserRole, bool) {
+	switch r {
+	case porukatorv1.Role_ROLE_ADMIN:
+		return repository.UserRoleAdmin, true
+	case porukatorv1.Role_ROLE_MANAGER:
+		return repository.UserRoleManager, true
+	default:
+		return "", false
+	}
+}
+
+func userToProto(u repository.User) *porukatorv1.User {
+	return &porukatorv1.User{
+		Id:        pgconv.UUIDString(u.ID),
+		Username:  u.Username,
+		Role:      roleToProto(u.Role),
+		Disabled:  u.Disabled,
+		CreatedAt: pgconv.PbTime(u.CreatedAt),
 	}
 }
 

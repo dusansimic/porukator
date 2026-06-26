@@ -9,7 +9,6 @@ import (
 type Config struct {
 	HTTP     HTTPConfig
 	Postgres PostgresConfig
-	Auth     AuthConfig
 	Logging  LoggingConfig
 	App      AppConfig
 }
@@ -25,11 +24,6 @@ type HTTPConfig struct {
 
 type PostgresConfig struct {
 	URL string `mapstructure:"url"`
-}
-
-// AuthConfig holds the single master password that gates the admin/web-UI API.
-type AuthConfig struct {
-	MasterPassword string `mapstructure:"master_password"`
 }
 
 type LoggingConfig struct {
@@ -57,7 +51,6 @@ func Load() (*Config, error) {
 	for _, k := range []string{
 		"http.addr", "http.public_host",
 		"postgres.url",
-		"auth.master_password",
 		"logging.level", "logging.format",
 		"app.env",
 	} {

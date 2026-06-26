@@ -20,6 +20,16 @@ import (
 )
 
 func main() {
+	// Subcommand dispatch: `porukator create-user ...` runs the CLI and exits;
+	// otherwise the server boots.
+	if len(os.Args) > 1 && os.Args[1] == "create-user" {
+		if err := runCreateUser(os.Args[2:]); err != nil {
+			fmt.Fprintln(os.Stderr, "error:", err)
+			os.Exit(1)
+		}
+		return
+	}
+
 	cfg, err := config.Load()
 	if err != nil {
 		panic(fmt.Sprintf("failed to load config: %v", err))
@@ -30,10 +40,6 @@ func main() {
 		panic(fmt.Sprintf("failed to initialize logger: %v", err))
 	}
 	defer log.Sync()
-
-	if cfg.Auth.MasterPassword == "" {
-		log.Fatal("auth.master_password must be set")
-	}
 
 	log.Info("starting porukator",
 		zap.String("env", cfg.App.Env),
@@ -55,7 +61,7 @@ func main() {
 
 	reg := registry.New()
 	handler := connectsrv.NewHandler(log, pool, reg, cfg)
-	interceptor := auth.NewInterceptor(pool, cfg.Auth.MasterPassword)
+	interceptor := auth.NewInterceptor(pool)
 	httpSrv := connectsrv.NewHTTPServer(cfg.HTTP.Addr, handler, interceptor)
 
 	var g run.Group

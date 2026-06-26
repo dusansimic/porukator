@@ -46,6 +46,11 @@ const (
 const (
 	// AdminServiceLoginProcedure is the fully-qualified name of the AdminService's Login RPC.
 	AdminServiceLoginProcedure = "/porukator.v1.AdminService/Login"
+	// AdminServiceLogoutProcedure is the fully-qualified name of the AdminService's Logout RPC.
+	AdminServiceLogoutProcedure = "/porukator.v1.AdminService/Logout"
+	// AdminServiceGetCurrentUserProcedure is the fully-qualified name of the AdminService's
+	// GetCurrentUser RPC.
+	AdminServiceGetCurrentUserProcedure = "/porukator.v1.AdminService/GetCurrentUser"
 	// AdminServiceCreateClientProcedure is the fully-qualified name of the AdminService's CreateClient
 	// RPC.
 	AdminServiceCreateClientProcedure = "/porukator.v1.AdminService/CreateClient"
@@ -76,6 +81,24 @@ const (
 	// AdminServiceListMessagesProcedure is the fully-qualified name of the AdminService's ListMessages
 	// RPC.
 	AdminServiceListMessagesProcedure = "/porukator.v1.AdminService/ListMessages"
+	// AdminServiceCreateUserProcedure is the fully-qualified name of the AdminService's CreateUser RPC.
+	AdminServiceCreateUserProcedure = "/porukator.v1.AdminService/CreateUser"
+	// AdminServiceListUsersProcedure is the fully-qualified name of the AdminService's ListUsers RPC.
+	AdminServiceListUsersProcedure = "/porukator.v1.AdminService/ListUsers"
+	// AdminServiceSetUserRoleProcedure is the fully-qualified name of the AdminService's SetUserRole
+	// RPC.
+	AdminServiceSetUserRoleProcedure = "/porukator.v1.AdminService/SetUserRole"
+	// AdminServiceSetUserDisabledProcedure is the fully-qualified name of the AdminService's
+	// SetUserDisabled RPC.
+	AdminServiceSetUserDisabledProcedure = "/porukator.v1.AdminService/SetUserDisabled"
+	// AdminServiceDeleteUserProcedure is the fully-qualified name of the AdminService's DeleteUser RPC.
+	AdminServiceDeleteUserProcedure = "/porukator.v1.AdminService/DeleteUser"
+	// AdminServiceListSessionsProcedure is the fully-qualified name of the AdminService's ListSessions
+	// RPC.
+	AdminServiceListSessionsProcedure = "/porukator.v1.AdminService/ListSessions"
+	// AdminServiceRevokeSessionProcedure is the fully-qualified name of the AdminService's
+	// RevokeSession RPC.
+	AdminServiceRevokeSessionProcedure = "/porukator.v1.AdminService/RevokeSession"
 	// ProducerServiceListClientsProcedure is the fully-qualified name of the ProducerService's
 	// ListClients RPC.
 	ProducerServiceListClientsProcedure = "/porukator.v1.ProducerService/ListClients"
@@ -92,29 +115,49 @@ const (
 
 // AdminServiceClient is a client for the porukator.v1.AdminService service.
 type AdminServiceClient interface {
-	// Login validates the master password. Returns ok=true when it matches.
+	// Login authenticates a username + password and returns a session token.
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
-	// CreateClient registers a device and returns its one-time access token plus
-	// the connection host, for display/QR. The token is never retrievable again.
+	// Logout revokes the caller's current session.
+	Logout(context.Context, *connect.Request[v1.LogoutRequest]) (*connect.Response[v1.LogoutResponse], error)
+	// GetCurrentUser returns the authenticated user (whoami).
+	GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error)
+	// CreateClient registers a device owned by the caller and returns its
+	// one-time access token plus the connection host, for display/QR.
 	CreateClient(context.Context, *connect.Request[v1.CreateClientRequest]) (*connect.Response[v1.CreateClientResponse], error)
-	// ListClients returns all devices with live online state.
+	// ListClients returns devices: all for admins, own only for managers.
 	ListClients(context.Context, *connect.Request[v1.ListClientsRequest]) (*connect.Response[v1.ListClientsResponse], error)
-	// RenameClient changes a device's display name.
+	// RenameClient changes a device's display name (managers: own devices only).
 	RenameClient(context.Context, *connect.Request[v1.RenameClientRequest]) (*connect.Response[v1.RenameClientResponse], error)
-	// RevokeClient deletes a device and its access token.
+	// RevokeClient deletes a device (managers: own devices only).
 	RevokeClient(context.Context, *connect.Request[v1.RevokeClientRequest]) (*connect.Response[v1.RevokeClientResponse], error)
-	// CreateApiToken issues a producer token, returned once in plaintext.
+	// CreateApiToken issues a producer token, returned once in plaintext. Admin only.
 	CreateApiToken(context.Context, *connect.Request[v1.CreateApiTokenRequest]) (*connect.Response[v1.CreateApiTokenResponse], error)
-	// ListApiTokens lists producer tokens (without secrets).
+	// ListApiTokens lists producer tokens (without secrets). Admin only.
 	ListApiTokens(context.Context, *connect.Request[v1.ListApiTokensRequest]) (*connect.Response[v1.ListApiTokensResponse], error)
-	// RevokeApiToken deletes a producer token.
+	// RevokeApiToken deletes a producer token. Admin only.
 	RevokeApiToken(context.Context, *connect.Request[v1.RevokeApiTokenRequest]) (*connect.Response[v1.RevokeApiTokenResponse], error)
-	// GetSettings returns the current pacing configuration.
+	// GetSettings returns the current pacing configuration. Admin only.
 	GetSettings(context.Context, *connect.Request[v1.GetSettingsRequest]) (*connect.Response[v1.GetSettingsResponse], error)
-	// UpdateSettings replaces the pacing configuration.
+	// UpdateSettings replaces the pacing configuration. Admin only.
 	UpdateSettings(context.Context, *connect.Request[v1.UpdateSettingsRequest]) (*connect.Response[v1.UpdateSettingsResponse], error)
-	// ListMessages returns recent messages, newest first, with optional filters.
+	// ListMessages returns recent messages: all for admins, own-device only for
+	// managers.
 	ListMessages(context.Context, *connect.Request[v1.ListMessagesRequest]) (*connect.Response[v1.ListMessagesResponse], error)
+	// CreateUser creates a web-UI account. Admin only.
+	CreateUser(context.Context, *connect.Request[v1.CreateUserRequest]) (*connect.Response[v1.CreateUserResponse], error)
+	// ListUsers returns all accounts. Admin only.
+	ListUsers(context.Context, *connect.Request[v1.ListUsersRequest]) (*connect.Response[v1.ListUsersResponse], error)
+	// SetUserRole changes an account's role. Admin only.
+	SetUserRole(context.Context, *connect.Request[v1.SetUserRoleRequest]) (*connect.Response[v1.SetUserRoleResponse], error)
+	// SetUserDisabled enables/disables an account; disabling revokes its sessions.
+	// Admin only.
+	SetUserDisabled(context.Context, *connect.Request[v1.SetUserDisabledRequest]) (*connect.Response[v1.SetUserDisabledResponse], error)
+	// DeleteUser removes an account and its sessions. Admin only.
+	DeleteUser(context.Context, *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error)
+	// ListSessions returns active sessions across all users. Admin only.
+	ListSessions(context.Context, *connect.Request[v1.ListSessionsRequest]) (*connect.Response[v1.ListSessionsResponse], error)
+	// RevokeSession deletes one session by id. Admin only.
+	RevokeSession(context.Context, *connect.Request[v1.RevokeSessionRequest]) (*connect.Response[v1.RevokeSessionResponse], error)
 }
 
 // NewAdminServiceClient constructs a client for the porukator.v1.AdminService service. By default,
@@ -132,6 +175,18 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			httpClient,
 			baseURL+AdminServiceLoginProcedure,
 			connect.WithSchema(adminServiceMethods.ByName("Login")),
+			connect.WithClientOptions(opts...),
+		),
+		logout: connect.NewClient[v1.LogoutRequest, v1.LogoutResponse](
+			httpClient,
+			baseURL+AdminServiceLogoutProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("Logout")),
+			connect.WithClientOptions(opts...),
+		),
+		getCurrentUser: connect.NewClient[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse](
+			httpClient,
+			baseURL+AdminServiceGetCurrentUserProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("GetCurrentUser")),
 			connect.WithClientOptions(opts...),
 		),
 		createClient: connect.NewClient[v1.CreateClientRequest, v1.CreateClientResponse](
@@ -194,27 +249,88 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceMethods.ByName("ListMessages")),
 			connect.WithClientOptions(opts...),
 		),
+		createUser: connect.NewClient[v1.CreateUserRequest, v1.CreateUserResponse](
+			httpClient,
+			baseURL+AdminServiceCreateUserProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("CreateUser")),
+			connect.WithClientOptions(opts...),
+		),
+		listUsers: connect.NewClient[v1.ListUsersRequest, v1.ListUsersResponse](
+			httpClient,
+			baseURL+AdminServiceListUsersProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("ListUsers")),
+			connect.WithClientOptions(opts...),
+		),
+		setUserRole: connect.NewClient[v1.SetUserRoleRequest, v1.SetUserRoleResponse](
+			httpClient,
+			baseURL+AdminServiceSetUserRoleProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("SetUserRole")),
+			connect.WithClientOptions(opts...),
+		),
+		setUserDisabled: connect.NewClient[v1.SetUserDisabledRequest, v1.SetUserDisabledResponse](
+			httpClient,
+			baseURL+AdminServiceSetUserDisabledProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("SetUserDisabled")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteUser: connect.NewClient[v1.DeleteUserRequest, v1.DeleteUserResponse](
+			httpClient,
+			baseURL+AdminServiceDeleteUserProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("DeleteUser")),
+			connect.WithClientOptions(opts...),
+		),
+		listSessions: connect.NewClient[v1.ListSessionsRequest, v1.ListSessionsResponse](
+			httpClient,
+			baseURL+AdminServiceListSessionsProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("ListSessions")),
+			connect.WithClientOptions(opts...),
+		),
+		revokeSession: connect.NewClient[v1.RevokeSessionRequest, v1.RevokeSessionResponse](
+			httpClient,
+			baseURL+AdminServiceRevokeSessionProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("RevokeSession")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // adminServiceClient implements AdminServiceClient.
 type adminServiceClient struct {
-	login          *connect.Client[v1.LoginRequest, v1.LoginResponse]
-	createClient   *connect.Client[v1.CreateClientRequest, v1.CreateClientResponse]
-	listClients    *connect.Client[v1.ListClientsRequest, v1.ListClientsResponse]
-	renameClient   *connect.Client[v1.RenameClientRequest, v1.RenameClientResponse]
-	revokeClient   *connect.Client[v1.RevokeClientRequest, v1.RevokeClientResponse]
-	createApiToken *connect.Client[v1.CreateApiTokenRequest, v1.CreateApiTokenResponse]
-	listApiTokens  *connect.Client[v1.ListApiTokensRequest, v1.ListApiTokensResponse]
-	revokeApiToken *connect.Client[v1.RevokeApiTokenRequest, v1.RevokeApiTokenResponse]
-	getSettings    *connect.Client[v1.GetSettingsRequest, v1.GetSettingsResponse]
-	updateSettings *connect.Client[v1.UpdateSettingsRequest, v1.UpdateSettingsResponse]
-	listMessages   *connect.Client[v1.ListMessagesRequest, v1.ListMessagesResponse]
+	login           *connect.Client[v1.LoginRequest, v1.LoginResponse]
+	logout          *connect.Client[v1.LogoutRequest, v1.LogoutResponse]
+	getCurrentUser  *connect.Client[v1.GetCurrentUserRequest, v1.GetCurrentUserResponse]
+	createClient    *connect.Client[v1.CreateClientRequest, v1.CreateClientResponse]
+	listClients     *connect.Client[v1.ListClientsRequest, v1.ListClientsResponse]
+	renameClient    *connect.Client[v1.RenameClientRequest, v1.RenameClientResponse]
+	revokeClient    *connect.Client[v1.RevokeClientRequest, v1.RevokeClientResponse]
+	createApiToken  *connect.Client[v1.CreateApiTokenRequest, v1.CreateApiTokenResponse]
+	listApiTokens   *connect.Client[v1.ListApiTokensRequest, v1.ListApiTokensResponse]
+	revokeApiToken  *connect.Client[v1.RevokeApiTokenRequest, v1.RevokeApiTokenResponse]
+	getSettings     *connect.Client[v1.GetSettingsRequest, v1.GetSettingsResponse]
+	updateSettings  *connect.Client[v1.UpdateSettingsRequest, v1.UpdateSettingsResponse]
+	listMessages    *connect.Client[v1.ListMessagesRequest, v1.ListMessagesResponse]
+	createUser      *connect.Client[v1.CreateUserRequest, v1.CreateUserResponse]
+	listUsers       *connect.Client[v1.ListUsersRequest, v1.ListUsersResponse]
+	setUserRole     *connect.Client[v1.SetUserRoleRequest, v1.SetUserRoleResponse]
+	setUserDisabled *connect.Client[v1.SetUserDisabledRequest, v1.SetUserDisabledResponse]
+	deleteUser      *connect.Client[v1.DeleteUserRequest, v1.DeleteUserResponse]
+	listSessions    *connect.Client[v1.ListSessionsRequest, v1.ListSessionsResponse]
+	revokeSession   *connect.Client[v1.RevokeSessionRequest, v1.RevokeSessionResponse]
 }
 
 // Login calls porukator.v1.AdminService.Login.
 func (c *adminServiceClient) Login(ctx context.Context, req *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error) {
 	return c.login.CallUnary(ctx, req)
+}
+
+// Logout calls porukator.v1.AdminService.Logout.
+func (c *adminServiceClient) Logout(ctx context.Context, req *connect.Request[v1.LogoutRequest]) (*connect.Response[v1.LogoutResponse], error) {
+	return c.logout.CallUnary(ctx, req)
+}
+
+// GetCurrentUser calls porukator.v1.AdminService.GetCurrentUser.
+func (c *adminServiceClient) GetCurrentUser(ctx context.Context, req *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error) {
+	return c.getCurrentUser.CallUnary(ctx, req)
 }
 
 // CreateClient calls porukator.v1.AdminService.CreateClient.
@@ -267,31 +383,86 @@ func (c *adminServiceClient) ListMessages(ctx context.Context, req *connect.Requ
 	return c.listMessages.CallUnary(ctx, req)
 }
 
+// CreateUser calls porukator.v1.AdminService.CreateUser.
+func (c *adminServiceClient) CreateUser(ctx context.Context, req *connect.Request[v1.CreateUserRequest]) (*connect.Response[v1.CreateUserResponse], error) {
+	return c.createUser.CallUnary(ctx, req)
+}
+
+// ListUsers calls porukator.v1.AdminService.ListUsers.
+func (c *adminServiceClient) ListUsers(ctx context.Context, req *connect.Request[v1.ListUsersRequest]) (*connect.Response[v1.ListUsersResponse], error) {
+	return c.listUsers.CallUnary(ctx, req)
+}
+
+// SetUserRole calls porukator.v1.AdminService.SetUserRole.
+func (c *adminServiceClient) SetUserRole(ctx context.Context, req *connect.Request[v1.SetUserRoleRequest]) (*connect.Response[v1.SetUserRoleResponse], error) {
+	return c.setUserRole.CallUnary(ctx, req)
+}
+
+// SetUserDisabled calls porukator.v1.AdminService.SetUserDisabled.
+func (c *adminServiceClient) SetUserDisabled(ctx context.Context, req *connect.Request[v1.SetUserDisabledRequest]) (*connect.Response[v1.SetUserDisabledResponse], error) {
+	return c.setUserDisabled.CallUnary(ctx, req)
+}
+
+// DeleteUser calls porukator.v1.AdminService.DeleteUser.
+func (c *adminServiceClient) DeleteUser(ctx context.Context, req *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error) {
+	return c.deleteUser.CallUnary(ctx, req)
+}
+
+// ListSessions calls porukator.v1.AdminService.ListSessions.
+func (c *adminServiceClient) ListSessions(ctx context.Context, req *connect.Request[v1.ListSessionsRequest]) (*connect.Response[v1.ListSessionsResponse], error) {
+	return c.listSessions.CallUnary(ctx, req)
+}
+
+// RevokeSession calls porukator.v1.AdminService.RevokeSession.
+func (c *adminServiceClient) RevokeSession(ctx context.Context, req *connect.Request[v1.RevokeSessionRequest]) (*connect.Response[v1.RevokeSessionResponse], error) {
+	return c.revokeSession.CallUnary(ctx, req)
+}
+
 // AdminServiceHandler is an implementation of the porukator.v1.AdminService service.
 type AdminServiceHandler interface {
-	// Login validates the master password. Returns ok=true when it matches.
+	// Login authenticates a username + password and returns a session token.
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
-	// CreateClient registers a device and returns its one-time access token plus
-	// the connection host, for display/QR. The token is never retrievable again.
+	// Logout revokes the caller's current session.
+	Logout(context.Context, *connect.Request[v1.LogoutRequest]) (*connect.Response[v1.LogoutResponse], error)
+	// GetCurrentUser returns the authenticated user (whoami).
+	GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error)
+	// CreateClient registers a device owned by the caller and returns its
+	// one-time access token plus the connection host, for display/QR.
 	CreateClient(context.Context, *connect.Request[v1.CreateClientRequest]) (*connect.Response[v1.CreateClientResponse], error)
-	// ListClients returns all devices with live online state.
+	// ListClients returns devices: all for admins, own only for managers.
 	ListClients(context.Context, *connect.Request[v1.ListClientsRequest]) (*connect.Response[v1.ListClientsResponse], error)
-	// RenameClient changes a device's display name.
+	// RenameClient changes a device's display name (managers: own devices only).
 	RenameClient(context.Context, *connect.Request[v1.RenameClientRequest]) (*connect.Response[v1.RenameClientResponse], error)
-	// RevokeClient deletes a device and its access token.
+	// RevokeClient deletes a device (managers: own devices only).
 	RevokeClient(context.Context, *connect.Request[v1.RevokeClientRequest]) (*connect.Response[v1.RevokeClientResponse], error)
-	// CreateApiToken issues a producer token, returned once in plaintext.
+	// CreateApiToken issues a producer token, returned once in plaintext. Admin only.
 	CreateApiToken(context.Context, *connect.Request[v1.CreateApiTokenRequest]) (*connect.Response[v1.CreateApiTokenResponse], error)
-	// ListApiTokens lists producer tokens (without secrets).
+	// ListApiTokens lists producer tokens (without secrets). Admin only.
 	ListApiTokens(context.Context, *connect.Request[v1.ListApiTokensRequest]) (*connect.Response[v1.ListApiTokensResponse], error)
-	// RevokeApiToken deletes a producer token.
+	// RevokeApiToken deletes a producer token. Admin only.
 	RevokeApiToken(context.Context, *connect.Request[v1.RevokeApiTokenRequest]) (*connect.Response[v1.RevokeApiTokenResponse], error)
-	// GetSettings returns the current pacing configuration.
+	// GetSettings returns the current pacing configuration. Admin only.
 	GetSettings(context.Context, *connect.Request[v1.GetSettingsRequest]) (*connect.Response[v1.GetSettingsResponse], error)
-	// UpdateSettings replaces the pacing configuration.
+	// UpdateSettings replaces the pacing configuration. Admin only.
 	UpdateSettings(context.Context, *connect.Request[v1.UpdateSettingsRequest]) (*connect.Response[v1.UpdateSettingsResponse], error)
-	// ListMessages returns recent messages, newest first, with optional filters.
+	// ListMessages returns recent messages: all for admins, own-device only for
+	// managers.
 	ListMessages(context.Context, *connect.Request[v1.ListMessagesRequest]) (*connect.Response[v1.ListMessagesResponse], error)
+	// CreateUser creates a web-UI account. Admin only.
+	CreateUser(context.Context, *connect.Request[v1.CreateUserRequest]) (*connect.Response[v1.CreateUserResponse], error)
+	// ListUsers returns all accounts. Admin only.
+	ListUsers(context.Context, *connect.Request[v1.ListUsersRequest]) (*connect.Response[v1.ListUsersResponse], error)
+	// SetUserRole changes an account's role. Admin only.
+	SetUserRole(context.Context, *connect.Request[v1.SetUserRoleRequest]) (*connect.Response[v1.SetUserRoleResponse], error)
+	// SetUserDisabled enables/disables an account; disabling revokes its sessions.
+	// Admin only.
+	SetUserDisabled(context.Context, *connect.Request[v1.SetUserDisabledRequest]) (*connect.Response[v1.SetUserDisabledResponse], error)
+	// DeleteUser removes an account and its sessions. Admin only.
+	DeleteUser(context.Context, *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error)
+	// ListSessions returns active sessions across all users. Admin only.
+	ListSessions(context.Context, *connect.Request[v1.ListSessionsRequest]) (*connect.Response[v1.ListSessionsResponse], error)
+	// RevokeSession deletes one session by id. Admin only.
+	RevokeSession(context.Context, *connect.Request[v1.RevokeSessionRequest]) (*connect.Response[v1.RevokeSessionResponse], error)
 }
 
 // NewAdminServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -305,6 +476,18 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		AdminServiceLoginProcedure,
 		svc.Login,
 		connect.WithSchema(adminServiceMethods.ByName("Login")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceLogoutHandler := connect.NewUnaryHandler(
+		AdminServiceLogoutProcedure,
+		svc.Logout,
+		connect.WithSchema(adminServiceMethods.ByName("Logout")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceGetCurrentUserHandler := connect.NewUnaryHandler(
+		AdminServiceGetCurrentUserProcedure,
+		svc.GetCurrentUser,
+		connect.WithSchema(adminServiceMethods.ByName("GetCurrentUser")),
 		connect.WithHandlerOptions(opts...),
 	)
 	adminServiceCreateClientHandler := connect.NewUnaryHandler(
@@ -367,10 +550,56 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceMethods.ByName("ListMessages")),
 		connect.WithHandlerOptions(opts...),
 	)
+	adminServiceCreateUserHandler := connect.NewUnaryHandler(
+		AdminServiceCreateUserProcedure,
+		svc.CreateUser,
+		connect.WithSchema(adminServiceMethods.ByName("CreateUser")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceListUsersHandler := connect.NewUnaryHandler(
+		AdminServiceListUsersProcedure,
+		svc.ListUsers,
+		connect.WithSchema(adminServiceMethods.ByName("ListUsers")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceSetUserRoleHandler := connect.NewUnaryHandler(
+		AdminServiceSetUserRoleProcedure,
+		svc.SetUserRole,
+		connect.WithSchema(adminServiceMethods.ByName("SetUserRole")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceSetUserDisabledHandler := connect.NewUnaryHandler(
+		AdminServiceSetUserDisabledProcedure,
+		svc.SetUserDisabled,
+		connect.WithSchema(adminServiceMethods.ByName("SetUserDisabled")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceDeleteUserHandler := connect.NewUnaryHandler(
+		AdminServiceDeleteUserProcedure,
+		svc.DeleteUser,
+		connect.WithSchema(adminServiceMethods.ByName("DeleteUser")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceListSessionsHandler := connect.NewUnaryHandler(
+		AdminServiceListSessionsProcedure,
+		svc.ListSessions,
+		connect.WithSchema(adminServiceMethods.ByName("ListSessions")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceRevokeSessionHandler := connect.NewUnaryHandler(
+		AdminServiceRevokeSessionProcedure,
+		svc.RevokeSession,
+		connect.WithSchema(adminServiceMethods.ByName("RevokeSession")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/porukator.v1.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AdminServiceLoginProcedure:
 			adminServiceLoginHandler.ServeHTTP(w, r)
+		case AdminServiceLogoutProcedure:
+			adminServiceLogoutHandler.ServeHTTP(w, r)
+		case AdminServiceGetCurrentUserProcedure:
+			adminServiceGetCurrentUserHandler.ServeHTTP(w, r)
 		case AdminServiceCreateClientProcedure:
 			adminServiceCreateClientHandler.ServeHTTP(w, r)
 		case AdminServiceListClientsProcedure:
@@ -391,6 +620,20 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceUpdateSettingsHandler.ServeHTTP(w, r)
 		case AdminServiceListMessagesProcedure:
 			adminServiceListMessagesHandler.ServeHTTP(w, r)
+		case AdminServiceCreateUserProcedure:
+			adminServiceCreateUserHandler.ServeHTTP(w, r)
+		case AdminServiceListUsersProcedure:
+			adminServiceListUsersHandler.ServeHTTP(w, r)
+		case AdminServiceSetUserRoleProcedure:
+			adminServiceSetUserRoleHandler.ServeHTTP(w, r)
+		case AdminServiceSetUserDisabledProcedure:
+			adminServiceSetUserDisabledHandler.ServeHTTP(w, r)
+		case AdminServiceDeleteUserProcedure:
+			adminServiceDeleteUserHandler.ServeHTTP(w, r)
+		case AdminServiceListSessionsProcedure:
+			adminServiceListSessionsHandler.ServeHTTP(w, r)
+		case AdminServiceRevokeSessionProcedure:
+			adminServiceRevokeSessionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -402,6 +645,14 @@ type UnimplementedAdminServiceHandler struct{}
 
 func (UnimplementedAdminServiceHandler) Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.Login is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) Logout(context.Context, *connect.Request[v1.LogoutRequest]) (*connect.Response[v1.LogoutResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.Logout is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) GetCurrentUser(context.Context, *connect.Request[v1.GetCurrentUserRequest]) (*connect.Response[v1.GetCurrentUserResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.GetCurrentUser is not implemented"))
 }
 
 func (UnimplementedAdminServiceHandler) CreateClient(context.Context, *connect.Request[v1.CreateClientRequest]) (*connect.Response[v1.CreateClientResponse], error) {
@@ -442,6 +693,34 @@ func (UnimplementedAdminServiceHandler) UpdateSettings(context.Context, *connect
 
 func (UnimplementedAdminServiceHandler) ListMessages(context.Context, *connect.Request[v1.ListMessagesRequest]) (*connect.Response[v1.ListMessagesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.ListMessages is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) CreateUser(context.Context, *connect.Request[v1.CreateUserRequest]) (*connect.Response[v1.CreateUserResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.CreateUser is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) ListUsers(context.Context, *connect.Request[v1.ListUsersRequest]) (*connect.Response[v1.ListUsersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.ListUsers is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) SetUserRole(context.Context, *connect.Request[v1.SetUserRoleRequest]) (*connect.Response[v1.SetUserRoleResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.SetUserRole is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) SetUserDisabled(context.Context, *connect.Request[v1.SetUserDisabledRequest]) (*connect.Response[v1.SetUserDisabledResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.SetUserDisabled is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) DeleteUser(context.Context, *connect.Request[v1.DeleteUserRequest]) (*connect.Response[v1.DeleteUserResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.DeleteUser is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) ListSessions(context.Context, *connect.Request[v1.ListSessionsRequest]) (*connect.Response[v1.ListSessionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.ListSessions is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) RevokeSession(context.Context, *connect.Request[v1.RevokeSessionRequest]) (*connect.Response[v1.RevokeSessionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("porukator.v1.AdminService.RevokeSession is not implemented"))
 }
 
 // ProducerServiceClient is a client for the porukator.v1.ProducerService service.

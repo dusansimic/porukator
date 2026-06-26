@@ -63,6 +63,50 @@ message Client {
   google.protobuf.Timestamp last_seen_at = 4;
   // When the client was created.
   google.protobuf.Timestamp created_at = 5;
+  // UUID of the user who created the device; empty if the owner was removed.
+  string created_by = 6;
+  // Username of the owner, for display; empty when unowned.
+  string owner_username = 7;
+}
+
+// Role is a user's permission level.
+enum Role {
+  // Default, never persisted.
+  ROLE_UNSPECIFIED = 0;
+  // Full access to everything.
+  ROLE_ADMIN = 1;
+  // May manage only their own client devices and view those devices' messages.
+  ROLE_MANAGER = 2;
+}
+
+// User is a web-UI account.
+message User {
+  // Server-generated UUID.
+  string id = 1;
+  // Unique login name.
+  string username = 2;
+  // Permission level.
+  Role role = 3;
+  // True when the account is disabled (cannot log in; sessions revoked).
+  bool disabled = 4;
+  // When the account was created.
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// Session is an active web-UI login.
+message Session {
+  // Server-generated UUID.
+  string id = 1;
+  // UUID of the owning user.
+  string user_id = 2;
+  // Username of the owning user, for display.
+  string username = 3;
+  // When the session was created.
+  google.protobuf.Timestamp created_at = 4;
+  // Last time the session authenticated a request.
+  google.protobuf.Timestamp last_used_at = 5;
+  // True if this is the session making the current request.
+  bool current = 6;
 }
 
 // ApiToken is a credential for an upstream producer service.
@@ -85,48 +129,162 @@ message Settings {
   int32 jitter_ms = 2;
 }
 
-// AdminService is the management API behind the web UI. All RPCs require the
-// master password as a bearer token.
+// AdminService is the management API behind the web UI. Except for Login, every
+// RPC requires a session token (from Login) as a bearer token. Admin-only RPCs
+// reject manager sessions with PermissionDenied; device RPCs are scoped to the
+// caller's own devices for managers.
 service AdminService {
-  // Login validates the master password. Returns ok=true when it matches.
+  // Login authenticates a username + password and returns a session token.
   rpc Login(LoginRequest) returns (LoginResponse);
+  // Logout revokes the caller's current session.
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+  // GetCurrentUser returns the authenticated user (whoami).
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse);
 
-  // CreateClient registers a device and returns its one-time access token plus
-  // the connection host, for display/QR. The token is never retrievable again.
+  // CreateClient registers a device owned by the caller and returns its
+  // one-time access token plus the connection host, for display/QR.
   rpc CreateClient(CreateClientRequest) returns (CreateClientResponse);
-  // ListClients returns all devices with live online state.
+  // ListClients returns devices: all for admins, own only for managers.
   rpc ListClients(ListClientsRequest) returns (ListClientsResponse);
-  // RenameClient changes a device's display name.
+  // RenameClient changes a device's display name (managers: own devices only).
   rpc RenameClient(RenameClientRequest) returns (RenameClientResponse);
-  // RevokeClient deletes a device and its access token.
+  // RevokeClient deletes a device (managers: own devices only).
   rpc RevokeClient(RevokeClientRequest) returns (RevokeClientResponse);
 
-  // CreateApiToken issues a producer token, returned once in plaintext.
+  // CreateApiToken issues a producer token, returned once in plaintext. Admin only.
   rpc CreateApiToken(CreateApiTokenRequest) returns (CreateApiTokenResponse);
-  // ListApiTokens lists producer tokens (without secrets).
+  // ListApiTokens lists producer tokens (without secrets). Admin only.
   rpc ListApiTokens(ListApiTokensRequest) returns (ListApiTokensResponse);
-  // RevokeApiToken deletes a producer token.
+  // RevokeApiToken deletes a producer token. Admin only.
   rpc RevokeApiToken(RevokeApiTokenRequest) returns (RevokeApiTokenResponse);
 
-  // GetSettings returns the current pacing configuration.
+  // GetSettings returns the current pacing configuration. Admin only.
   rpc GetSettings(GetSettingsRequest) returns (GetSettingsResponse);
-  // UpdateSettings replaces the pacing configuration.
+  // UpdateSettings replaces the pacing configuration. Admin only.
   rpc UpdateSettings(UpdateSettingsRequest) returns (UpdateSettingsResponse);
 
-  // ListMessages returns recent messages, newest first, with optional filters.
+  // ListMessages returns recent messages: all for admins, own-device only for
+  // managers.
   rpc ListMessages(ListMessagesRequest) returns (ListMessagesResponse);
+
+  // CreateUser creates a web-UI account. Admin only.
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  // ListUsers returns all accounts. Admin only.
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+  // SetUserRole changes an account's role. Admin only.
+  rpc SetUserRole(SetUserRoleRequest) returns (SetUserRoleResponse);
+  // SetUserDisabled enables/disables an account; disabling revokes its sessions.
+  // Admin only.
+  rpc SetUserDisabled(SetUserDisabledRequest) returns (SetUserDisabledResponse);
+  // DeleteUser removes an account and its sessions. Admin only.
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+
+  // ListSessions returns active sessions across all users. Admin only.
+  rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse);
+  // RevokeSession deletes one session by id. Admin only.
+  rpc RevokeSession(RevokeSessionRequest) returns (RevokeSessionResponse);
 }
 
-// LoginRequest carries the master password.
+// LoginRequest carries the account credentials.
 message LoginRequest {
-  // The master password configured at service start.
-  string password = 1;
+  // Account login name.
+  string username = 1;
+  // Account password.
+  string password = 2;
 }
-// LoginResponse reports whether the password matched.
+// LoginResponse returns the session token and the authenticated user.
 message LoginResponse {
-  // True when the password is valid.
-  bool ok = 1;
+  // Opaque session bearer token; send it as Authorization on later requests.
+  string token = 1;
+  // The authenticated user.
+  User user = 2;
 }
+
+// LogoutRequest is empty; the session comes from the bearer token.
+message LogoutRequest {}
+// LogoutResponse is empty.
+message LogoutResponse {}
+
+// GetCurrentUserRequest is empty.
+message GetCurrentUserRequest {}
+// GetCurrentUserResponse returns the authenticated user.
+message GetCurrentUserResponse {
+  // The authenticated user.
+  User user = 1;
+}
+
+// CreateUserRequest names a new account.
+message CreateUserRequest {
+  // Unique login name.
+  string username = 1;
+  // Initial password.
+  string password = 2;
+  // Permission level.
+  Role role = 3;
+}
+// CreateUserResponse returns the created account.
+message CreateUserResponse {
+  // The created user.
+  User user = 1;
+}
+
+// ListUsersRequest is empty.
+message ListUsersRequest {}
+// ListUsersResponse returns all accounts.
+message ListUsersResponse {
+  // All accounts.
+  repeated User users = 1;
+}
+
+// SetUserRoleRequest changes an account's role.
+message SetUserRoleRequest {
+  // UUID of the account.
+  string id = 1;
+  // New role.
+  Role role = 2;
+}
+// SetUserRoleResponse returns the updated account.
+message SetUserRoleResponse {
+  // The updated user.
+  User user = 1;
+}
+
+// SetUserDisabledRequest enables or disables an account.
+message SetUserDisabledRequest {
+  // UUID of the account.
+  string id = 1;
+  // True to disable (and revoke sessions), false to enable.
+  bool disabled = 2;
+}
+// SetUserDisabledResponse returns the updated account.
+message SetUserDisabledResponse {
+  // The updated user.
+  User user = 1;
+}
+
+// DeleteUserRequest identifies an account to remove.
+message DeleteUserRequest {
+  // UUID of the account.
+  string id = 1;
+}
+// DeleteUserResponse is empty.
+message DeleteUserResponse {}
+
+// ListSessionsRequest is empty.
+message ListSessionsRequest {}
+// ListSessionsResponse returns active sessions.
+message ListSessionsResponse {
+  // All active sessions.
+  repeated Session sessions = 1;
+}
+
+// RevokeSessionRequest identifies a session to delete.
+message RevokeSessionRequest {
+  // UUID of the session.
+  string id = 1;
+}
+// RevokeSessionResponse is empty.
+message RevokeSessionResponse {}
 
 // CreateClientRequest names a new device.
 message CreateClientRequest {

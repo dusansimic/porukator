@@ -1,6 +1,7 @@
-// Package auth provides token hashing/generation and a Connect interceptor that
+// Package auth provides token/password hashing and a Connect interceptor that
 // applies the right credential check per service:
-//   - AdminService/*    require the master password as a bearer token.
+//   - AdminService/*    require a session token (from Login); the session's user
+//     is injected into the context and admin-only procedures reject managers.
 //   - ProducerService/* require a valid API token.
 //   - ClientService/*   require a valid client access token; the client id is
 //     injected into the request context.
@@ -10,11 +11,11 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
-	"crypto/subtle"
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
 	"strings"
+	"time"
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5"
@@ -24,7 +25,8 @@ import (
 	"github.com/dusansimic/porukator/internal/repository"
 )
 
-// HashToken returns the hex sha256 of a token; only hashes are stored.
+// HashToken returns the hex sha256 of a token; only hashes are stored. Used for
+// high-entropy tokens (sessions, API tokens, client tokens) — not passwords.
 func HashToken(token string) string {
 	sum := sha256.Sum256([]byte(token))
 	return hex.EncodeToString(sum[:])
@@ -39,9 +41,23 @@ func GenerateToken() (string, error) {
 	return base64.RawURLEncoding.EncodeToString(b), nil
 }
 
+// AuthUser is the authenticated web-UI user attached to AdminService requests.
+type AuthUser struct {
+	ID        string
+	Username  string
+	Role      repository.UserRole
+	SessionID string
+}
+
+// IsAdmin reports whether the user has the admin role.
+func (u AuthUser) IsAdmin() bool { return u.Role == repository.UserRoleAdmin }
+
 type ctxKey int
 
-const clientIDKey ctxKey = iota
+const (
+	clientIDKey ctxKey = iota
+	userKey
+)
 
 // ClientIDFromContext returns the authenticated client id for ClientService
 // requests.
@@ -50,20 +66,44 @@ func ClientIDFromContext(ctx context.Context) (string, bool) {
 	return id, ok
 }
 
+// UserFromContext returns the authenticated user for AdminService requests.
+func UserFromContext(ctx context.Context) (AuthUser, bool) {
+	u, ok := ctx.Value(userKey).(AuthUser)
+	return u, ok
+}
+
 // Interceptor enforces per-service authentication.
 type Interceptor struct {
-	pool           *pgxpool.Pool
-	masterPassword string
+	pool *pgxpool.Pool
 }
 
-func NewInterceptor(pool *pgxpool.Pool, masterPassword string) *Interceptor {
-	return &Interceptor{pool: pool, masterPassword: masterPassword}
+func NewInterceptor(pool *pgxpool.Pool) *Interceptor {
+	return &Interceptor{pool: pool}
 }
 
-var errUnauthenticated = connect.NewError(connect.CodeUnauthenticated, errors.New("invalid or missing credentials"))
+var (
+	errUnauthenticated = connect.NewError(connect.CodeUnauthenticated, errors.New("invalid or missing credentials"))
+	errForbidden       = connect.NewError(connect.CodePermissionDenied, errors.New("admin role required"))
+)
 
-// loginProcedure is exempt from auth: it validates the password itself.
-const loginProcedure = "/porukator.v1.AdminService/Login"
+// adminPrefix is the procedure prefix for AdminService.
+const adminPrefix = "/porukator.v1.AdminService/"
+
+// loginProcedure is exempt from auth: it validates the credentials itself.
+const loginProcedure = adminPrefix + "Login"
+
+// managerAllowed is the set of AdminService procedures a manager may call. Any
+// other AdminService procedure requires the admin role. Ownership (manager may
+// only touch their own devices/messages) is enforced in the handlers.
+var managerAllowed = map[string]bool{
+	adminPrefix + "Logout":         true,
+	adminPrefix + "GetCurrentUser": true,
+	adminPrefix + "CreateClient":   true,
+	adminPrefix + "ListClients":    true,
+	adminPrefix + "RenameClient":   true,
+	adminPrefix + "RevokeClient":   true,
+	adminPrefix + "ListMessages":   true,
+}
 
 func bearer(h interface{ Get(string) string }) string {
 	v := h.Get("Authorization")
@@ -78,15 +118,38 @@ func bearer(h interface{ Get(string) string }) string {
 }
 
 // authenticate checks the credential for a procedure and returns a possibly
-// augmented context (with the client id for ClientService).
+// augmented context (with the user for AdminService, the client id for
+// ClientService).
 func (i *Interceptor) authenticate(ctx context.Context, procedure, token string) (context.Context, error) {
 	switch {
-	case strings.Contains(procedure, "AdminService"):
-		if token == "" || i.masterPassword == "" ||
-			subtle.ConstantTimeCompare([]byte(token), []byte(i.masterPassword)) != 1 {
+	case strings.HasPrefix(procedure, adminPrefix):
+		if token == "" {
 			return ctx, errUnauthenticated
 		}
-		return ctx, nil
+		q := repository.New(i.pool)
+		s, err := q.GetSessionByHash(ctx, HashToken(token))
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return ctx, errUnauthenticated
+			}
+			return ctx, connect.NewError(connect.CodeInternal, err)
+		}
+		if s.Disabled || !s.ExpiresAt.Valid || s.ExpiresAt.Time.Before(time.Now()) {
+			return ctx, errUnauthenticated
+		}
+		_ = q.TouchSession(ctx, s.ID)
+
+		user := AuthUser{
+			ID:        pgconv.UUIDString(s.UserID),
+			Username:  s.Username,
+			Role:      s.Role,
+			SessionID: pgconv.UUIDString(s.ID),
+		}
+		// Coarse role gate: managers may only call the allowed procedures.
+		if user.Role != repository.UserRoleAdmin && !managerAllowed[procedure] {
+			return ctx, errForbidden
+		}
+		return context.WithValue(ctx, userKey, user), nil
 
 	case strings.Contains(procedure, "ProducerService"):
 		if token == "" {

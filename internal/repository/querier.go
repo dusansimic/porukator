@@ -11,25 +11,44 @@ import (
 )
 
 type Querier interface {
+	CountUsers(ctx context.Context) (int64, error)
 	CreateApiToken(ctx context.Context, arg CreateApiTokenParams) (ApiToken, error)
 	CreateClient(ctx context.Context, arg CreateClientParams) (Client, error)
+	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	DeleteApiToken(ctx context.Context, id pgtype.UUID) error
 	DeleteClient(ctx context.Context, id pgtype.UUID) error
+	DeleteExpiredSessions(ctx context.Context) error
+	DeleteSession(ctx context.Context, id pgtype.UUID) error
+	DeleteSessionByHash(ctx context.Context, tokenHash string) error
+	DeleteSessionsByUser(ctx context.Context, userID pgtype.UUID) error
+	DeleteUser(ctx context.Context, id pgtype.UUID) error
 	GetApiTokenByHash(ctx context.Context, tokenHash string) (ApiToken, error)
 	GetClient(ctx context.Context, id pgtype.UUID) (Client, error)
 	GetClientByTokenHash(ctx context.Context, accessTokenHash string) (Client, error)
+	GetSessionByHash(ctx context.Context, tokenHash string) (GetSessionByHashRow, error)
 	GetSettings(ctx context.Context) (GetSettingsRow, error)
+	GetUser(ctx context.Context, id pgtype.UUID) (User, error)
+	GetUserByUsername(ctx context.Context, username string) (User, error)
 	InsertMessage(ctx context.Context, arg InsertMessageParams) (Message, error)
 	ListApiTokens(ctx context.Context) ([]ApiToken, error)
 	ListClients(ctx context.Context) ([]Client, error)
+	ListClientsForOwner(ctx context.Context, createdBy pgtype.UUID) ([]ListClientsForOwnerRow, error)
+	ListClientsWithOwner(ctx context.Context) ([]ListClientsWithOwnerRow, error)
 	ListMessages(ctx context.Context, arg ListMessagesParams) ([]Message, error)
+	ListMessagesForOwner(ctx context.Context, arg ListMessagesForOwnerParams) ([]Message, error)
 	ListPendingForClient(ctx context.Context, clientID pgtype.UUID) ([]Message, error)
+	ListSessions(ctx context.Context) ([]ListSessionsRow, error)
+	ListUsers(ctx context.Context) ([]User, error)
 	MarkDispatched(ctx context.Context, id pgtype.UUID) (int64, error)
 	MarkFailed(ctx context.Context, arg MarkFailedParams) (Message, error)
 	MarkSent(ctx context.Context, arg MarkSentParams) (Message, error)
 	RenameClient(ctx context.Context, arg RenameClientParams) (Client, error)
+	SetUserDisabled(ctx context.Context, arg SetUserDisabledParams) (User, error)
+	SetUserRole(ctx context.Context, arg SetUserRoleParams) (User, error)
 	TouchApiTokenLastUsed(ctx context.Context, id pgtype.UUID) error
 	TouchClientLastSeen(ctx context.Context, id pgtype.UUID) error
+	TouchSession(ctx context.Context, id pgtype.UUID) error
 	UpdateSettings(ctx context.Context, arg UpdateSettingsParams) (UpdateSettingsRow, error)
 }
 

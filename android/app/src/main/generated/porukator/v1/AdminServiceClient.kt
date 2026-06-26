@@ -11,14 +11,16 @@ import com.connectrpc.ResponseMessage
 import com.connectrpc.StreamType
 
 /**
- *  AdminService is the management API behind the web UI. All RPCs require the
- *  master password as a bearer token.
+ *  AdminService is the management API behind the web UI. Except for Login, every
+ *  RPC requires a session token (from Login) as a bearer token. Admin-only RPCs
+ *  reject manager sessions with PermissionDenied; device RPCs are scoped to the
+ *  caller's own devices for managers.
  */
 public class AdminServiceClient(
   private val client: ProtocolClientInterface,
 ) : AdminServiceClientInterface {
   /**
-   *  Login validates the master password. Returns ok=true when it matches.
+   *  Login authenticates a username + password and returns a session token.
    */
   override suspend fun login(request: Porukator.LoginRequest, headers: Headers): ResponseMessage<Porukator.LoginResponse> = client.unary(
     request,
@@ -33,8 +35,38 @@ public class AdminServiceClient(
 
 
   /**
-   *  CreateClient registers a device and returns its one-time access token plus
-   *  the connection host, for display/QR. The token is never retrievable again.
+   *  Logout revokes the caller's current session.
+   */
+  override suspend fun logout(request: Porukator.LogoutRequest, headers: Headers): ResponseMessage<Porukator.LogoutResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/Logout",
+      porukator.v1.Porukator.LogoutRequest::class,
+      porukator.v1.Porukator.LogoutResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  GetCurrentUser returns the authenticated user (whoami).
+   */
+  override suspend fun getCurrentUser(request: Porukator.GetCurrentUserRequest, headers: Headers): ResponseMessage<Porukator.GetCurrentUserResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/GetCurrentUser",
+      porukator.v1.Porukator.GetCurrentUserRequest::class,
+      porukator.v1.Porukator.GetCurrentUserResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  CreateClient registers a device owned by the caller and returns its
+   *  one-time access token plus the connection host, for display/QR.
    */
   override suspend fun createClient(request: Porukator.CreateClientRequest, headers: Headers): ResponseMessage<Porukator.CreateClientResponse> = client.unary(
     request,
@@ -49,7 +81,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  ListClients returns all devices with live online state.
+   *  ListClients returns devices: all for admins, own only for managers.
    */
   override suspend fun listClients(request: Porukator.ListClientsRequest, headers: Headers): ResponseMessage<Porukator.ListClientsResponse> = client.unary(
     request,
@@ -64,7 +96,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  RenameClient changes a device's display name.
+   *  RenameClient changes a device's display name (managers: own devices only).
    */
   override suspend fun renameClient(request: Porukator.RenameClientRequest, headers: Headers): ResponseMessage<Porukator.RenameClientResponse> = client.unary(
     request,
@@ -79,7 +111,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  RevokeClient deletes a device and its access token.
+   *  RevokeClient deletes a device (managers: own devices only).
    */
   override suspend fun revokeClient(request: Porukator.RevokeClientRequest, headers: Headers): ResponseMessage<Porukator.RevokeClientResponse> = client.unary(
     request,
@@ -94,7 +126,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  CreateApiToken issues a producer token, returned once in plaintext.
+   *  CreateApiToken issues a producer token, returned once in plaintext. Admin only.
    */
   override suspend fun createApiToken(request: Porukator.CreateApiTokenRequest, headers: Headers): ResponseMessage<Porukator.CreateApiTokenResponse> = client.unary(
     request,
@@ -109,7 +141,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  ListApiTokens lists producer tokens (without secrets).
+   *  ListApiTokens lists producer tokens (without secrets). Admin only.
    */
   override suspend fun listApiTokens(request: Porukator.ListApiTokensRequest, headers: Headers): ResponseMessage<Porukator.ListApiTokensResponse> = client.unary(
     request,
@@ -124,7 +156,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  RevokeApiToken deletes a producer token.
+   *  RevokeApiToken deletes a producer token. Admin only.
    */
   override suspend fun revokeApiToken(request: Porukator.RevokeApiTokenRequest, headers: Headers): ResponseMessage<Porukator.RevokeApiTokenResponse> = client.unary(
     request,
@@ -139,7 +171,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  GetSettings returns the current pacing configuration.
+   *  GetSettings returns the current pacing configuration. Admin only.
    */
   override suspend fun getSettings(request: Porukator.GetSettingsRequest, headers: Headers): ResponseMessage<Porukator.GetSettingsResponse> = client.unary(
     request,
@@ -154,7 +186,7 @@ public class AdminServiceClient(
 
 
   /**
-   *  UpdateSettings replaces the pacing configuration.
+   *  UpdateSettings replaces the pacing configuration. Admin only.
    */
   override suspend fun updateSettings(request: Porukator.UpdateSettingsRequest, headers: Headers): ResponseMessage<Porukator.UpdateSettingsResponse> = client.unary(
     request,
@@ -169,7 +201,8 @@ public class AdminServiceClient(
 
 
   /**
-   *  ListMessages returns recent messages, newest first, with optional filters.
+   *  ListMessages returns recent messages: all for admins, own-device only for
+   *  managers.
    */
   override suspend fun listMessages(request: Porukator.ListMessagesRequest, headers: Headers): ResponseMessage<Porukator.ListMessagesResponse> = client.unary(
     request,
@@ -178,6 +211,112 @@ public class AdminServiceClient(
     "porukator.v1.AdminService/ListMessages",
       porukator.v1.Porukator.ListMessagesRequest::class,
       porukator.v1.Porukator.ListMessagesResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  CreateUser creates a web-UI account. Admin only.
+   */
+  override suspend fun createUser(request: Porukator.CreateUserRequest, headers: Headers): ResponseMessage<Porukator.CreateUserResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/CreateUser",
+      porukator.v1.Porukator.CreateUserRequest::class,
+      porukator.v1.Porukator.CreateUserResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  ListUsers returns all accounts. Admin only.
+   */
+  override suspend fun listUsers(request: Porukator.ListUsersRequest, headers: Headers): ResponseMessage<Porukator.ListUsersResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/ListUsers",
+      porukator.v1.Porukator.ListUsersRequest::class,
+      porukator.v1.Porukator.ListUsersResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  SetUserRole changes an account's role. Admin only.
+   */
+  override suspend fun setUserRole(request: Porukator.SetUserRoleRequest, headers: Headers): ResponseMessage<Porukator.SetUserRoleResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/SetUserRole",
+      porukator.v1.Porukator.SetUserRoleRequest::class,
+      porukator.v1.Porukator.SetUserRoleResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  SetUserDisabled enables/disables an account; disabling revokes its sessions.
+   *  Admin only.
+   */
+  override suspend fun setUserDisabled(request: Porukator.SetUserDisabledRequest, headers: Headers): ResponseMessage<Porukator.SetUserDisabledResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/SetUserDisabled",
+      porukator.v1.Porukator.SetUserDisabledRequest::class,
+      porukator.v1.Porukator.SetUserDisabledResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  DeleteUser removes an account and its sessions. Admin only.
+   */
+  override suspend fun deleteUser(request: Porukator.DeleteUserRequest, headers: Headers): ResponseMessage<Porukator.DeleteUserResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/DeleteUser",
+      porukator.v1.Porukator.DeleteUserRequest::class,
+      porukator.v1.Porukator.DeleteUserResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  ListSessions returns active sessions across all users. Admin only.
+   */
+  override suspend fun listSessions(request: Porukator.ListSessionsRequest, headers: Headers): ResponseMessage<Porukator.ListSessionsResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/ListSessions",
+      porukator.v1.Porukator.ListSessionsRequest::class,
+      porukator.v1.Porukator.ListSessionsResponse::class,
+      StreamType.UNARY,
+    ),
+  )
+
+
+  /**
+   *  RevokeSession deletes one session by id. Admin only.
+   */
+  override suspend fun revokeSession(request: Porukator.RevokeSessionRequest, headers: Headers): ResponseMessage<Porukator.RevokeSessionResponse> = client.unary(
+    request,
+    headers,
+    MethodSpec(
+    "porukator.v1.AdminService/RevokeSession",
+      porukator.v1.Porukator.RevokeSessionRequest::class,
+      porukator.v1.Porukator.RevokeSessionResponse::class,
       StreamType.UNARY,
     ),
   )

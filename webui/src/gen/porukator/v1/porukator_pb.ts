@@ -20,7 +20,7 @@ import type { Message as Message$1 } from "@bufbuild/protobuf";
  * Describes the file porukator/v1/porukator.proto.
  */
 export const file_porukator_v1_porukator: GenFile = /*@__PURE__*/
-  fileDesc("Chxwb3J1a2F0b3IvdjEvcG9ydWthdG9yLnByb3RvEgxwb3J1a2F0b3IudjEirgIKB01lc3NhZ2USCgoCaWQYASABKAkSFAoMcGhvbmVfbnVtYmVyGAIgASgJEg8KB2NvbnRlbnQYAyABKAkSEQoJY2xpZW50X2lkGAQgASgJEisKBnN0YXR1cxgFIAEoDjIbLnBvcnVrYXRvci52MS5NZXNzYWdlU3RhdHVzEg0KBWVycm9yGAYgASgJEi8KC3JlY2VpdmVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIxCg1kaXNwYXRjaGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIrCgdzZW50X2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIQCghiYXRjaF9pZBgKIAEoCSKUAQoGQ2xpZW50EgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSDgoGb25saW5lGAMgASgIEjAKDGxhc3Rfc2Vlbl9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAihgEKCEFwaVRva2VuEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMAoMbGFzdF91c2VkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCIvCghTZXR0aW5ncxIQCghkZWxheV9tcxgBIAEoBRIRCglqaXR0ZXJfbXMYAiABKAUiIAoMTG9naW5SZXF1ZXN0EhAKCHBhc3N3b3JkGAEgASgJIhsKDUxvZ2luUmVzcG9uc2USCgoCb2sYASABKAgiIwoTQ3JlYXRlQ2xpZW50UmVxdWVzdBIMCgRuYW1lGAEgASgJImAKFENyZWF0ZUNsaWVudFJlc3BvbnNlEiQKBmNsaWVudBgBIAEoCzIULnBvcnVrYXRvci52MS5DbGllbnQSFAoMYWNjZXNzX3Rva2VuGAIgASgJEgwKBGhvc3QYAyABKAkiFAoSTGlzdENsaWVudHNSZXF1ZXN0IjwKE0xpc3RDbGllbnRzUmVzcG9uc2USJQoHY2xpZW50cxgBIAMoCzIULnBvcnVrYXRvci52MS5DbGllbnQiLwoTUmVuYW1lQ2xpZW50UmVxdWVzdBIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJIjwKFFJlbmFtZUNsaWVudFJlc3BvbnNlEiQKBmNsaWVudBgBIAEoCzIULnBvcnVrYXRvci52MS5DbGllbnQiIQoTUmV2b2tlQ2xpZW50UmVxdWVzdBIKCgJpZBgBIAEoCSIWChRSZXZva2VDbGllbnRSZXNwb25zZSIlChVDcmVhdGVBcGlUb2tlblJlcXVlc3QSDAoEbmFtZRgBIAEoCSJPChZDcmVhdGVBcGlUb2tlblJlc3BvbnNlEiUKBXRva2VuGAEgASgLMhYucG9ydWthdG9yLnYxLkFwaVRva2VuEg4KBnNlY3JldBgCIAEoCSIWChRMaXN0QXBpVG9rZW5zUmVxdWVzdCI/ChVMaXN0QXBpVG9rZW5zUmVzcG9uc2USJgoGdG9rZW5zGAEgAygLMhYucG9ydWthdG9yLnYxLkFwaVRva2VuIiMKFVJldm9rZUFwaVRva2VuUmVxdWVzdBIKCgJpZBgBIAEoCSIYChZSZXZva2VBcGlUb2tlblJlc3BvbnNlIhQKEkdldFNldHRpbmdzUmVxdWVzdCI/ChNHZXRTZXR0aW5nc1Jlc3BvbnNlEigKCHNldHRpbmdzGAEgASgLMhYucG9ydWthdG9yLnYxLlNldHRpbmdzIkEKFVVwZGF0ZVNldHRpbmdzUmVxdWVzdBIoCghzZXR0aW5ncxgBIAEoCzIWLnBvcnVrYXRvci52MS5TZXR0aW5ncyJCChZVcGRhdGVTZXR0aW5nc1Jlc3BvbnNlEigKCHNldHRpbmdzGAEgASgLMhYucG9ydWthdG9yLnYxLlNldHRpbmdzImQKE0xpc3RNZXNzYWdlc1JlcXVlc3QSKwoGc3RhdHVzGAEgASgOMhsucG9ydWthdG9yLnYxLk1lc3NhZ2VTdGF0dXMSEQoJY2xpZW50X2lkGAIgASgJEg0KBWxpbWl0GAMgASgFIj8KFExpc3RNZXNzYWdlc1Jlc3BvbnNlEicKCG1lc3NhZ2VzGAEgAygLMhUucG9ydWthdG9yLnYxLk1lc3NhZ2UiOAoPT3V0Z29pbmdNZXNzYWdlEhQKDHBob25lX251bWJlchgBIAEoCRIPCgdjb250ZW50GAIgASgJIloKE1NlbmRNZXNzYWdlc1JlcXVlc3QSLwoIbWVzc2FnZXMYASADKAsyHS5wb3J1a2F0b3IudjEuT3V0Z29pbmdNZXNzYWdlEhIKCmNsaWVudF9pZHMYAiADKAkiPQoUU2VuZE1lc3NhZ2VzUmVzcG9uc2USEAoIYmF0Y2hfaWQYASABKAkSEwoLbWVzc2FnZV9pZHMYAiADKAkiEwoRU3RyZWFtSm9ic1JlcXVlc3QieAoDSm9iEhIKCm1lc3NhZ2VfaWQYASABKAkSFAoMcGhvbmVfbnVtYmVyGAIgASgJEg8KB2NvbnRlbnQYAyABKAkSEAoIZGVsYXlfbXMYBCABKAUSEQoJaml0dGVyX21zGAUgASgFEhEKCWtlZXBhbGl2ZRgGIAEoCCJ4ChVSZXBvcnREZWxpdmVyeVJlcXVlc3QSEgoKbWVzc2FnZV9pZBgBIAEoCRIPCgdzdWNjZXNzGAIgASgIEisKB3NlbnRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg0KBWVycm9yGAQgASgJIhgKFlJlcG9ydERlbGl2ZXJ5UmVzcG9uc2UqngEKDU1lc3NhZ2VTdGF0dXMSHgoaTUVTU0FHRV9TVEFUVVNfVU5TUEVDSUZJRUQQABIaChZNRVNTQUdFX1NUQVRVU19QRU5ESU5HEAESHQoZTUVTU0FHRV9TVEFUVVNfRElTUEFUQ0hFRBACEhcKE01FU1NBR0VfU1RBVFVTX1NFTlQQAxIZChVNRVNTQUdFX1NUQVRVU19GQUlMRUQQBDLFBwoMQWRtaW5TZXJ2aWNlEkAKBUxvZ2luEhoucG9ydWthdG9yLnYxLkxvZ2luUmVxdWVzdBobLnBvcnVrYXRvci52MS5Mb2dpblJlc3BvbnNlElUKDENyZWF0ZUNsaWVudBIhLnBvcnVrYXRvci52MS5DcmVhdGVDbGllbnRSZXF1ZXN0GiIucG9ydWthdG9yLnYxLkNyZWF0ZUNsaWVudFJlc3BvbnNlElIKC0xpc3RDbGllbnRzEiAucG9ydWthdG9yLnYxLkxpc3RDbGllbnRzUmVxdWVzdBohLnBvcnVrYXRvci52MS5MaXN0Q2xpZW50c1Jlc3BvbnNlElUKDFJlbmFtZUNsaWVudBIhLnBvcnVrYXRvci52MS5SZW5hbWVDbGllbnRSZXF1ZXN0GiIucG9ydWthdG9yLnYxLlJlbmFtZUNsaWVudFJlc3BvbnNlElUKDFJldm9rZUNsaWVudBIhLnBvcnVrYXRvci52MS5SZXZva2VDbGllbnRSZXF1ZXN0GiIucG9ydWthdG9yLnYxLlJldm9rZUNsaWVudFJlc3BvbnNlElsKDkNyZWF0ZUFwaVRva2VuEiMucG9ydWthdG9yLnYxLkNyZWF0ZUFwaVRva2VuUmVxdWVzdBokLnBvcnVrYXRvci52MS5DcmVhdGVBcGlUb2tlblJlc3BvbnNlElgKDUxpc3RBcGlUb2tlbnMSIi5wb3J1a2F0b3IudjEuTGlzdEFwaVRva2Vuc1JlcXVlc3QaIy5wb3J1a2F0b3IudjEuTGlzdEFwaVRva2Vuc1Jlc3BvbnNlElsKDlJldm9rZUFwaVRva2VuEiMucG9ydWthdG9yLnYxLlJldm9rZUFwaVRva2VuUmVxdWVzdBokLnBvcnVrYXRvci52MS5SZXZva2VBcGlUb2tlblJlc3BvbnNlElIKC0dldFNldHRpbmdzEiAucG9ydWthdG9yLnYxLkdldFNldHRpbmdzUmVxdWVzdBohLnBvcnVrYXRvci52MS5HZXRTZXR0aW5nc1Jlc3BvbnNlElsKDlVwZGF0ZVNldHRpbmdzEiMucG9ydWthdG9yLnYxLlVwZGF0ZVNldHRpbmdzUmVxdWVzdBokLnBvcnVrYXRvci52MS5VcGRhdGVTZXR0aW5nc1Jlc3BvbnNlElUKDExpc3RNZXNzYWdlcxIhLnBvcnVrYXRvci52MS5MaXN0TWVzc2FnZXNSZXF1ZXN0GiIucG9ydWthdG9yLnYxLkxpc3RNZXNzYWdlc1Jlc3BvbnNlMrwBCg9Qcm9kdWNlclNlcnZpY2USUgoLTGlzdENsaWVudHMSIC5wb3J1a2F0b3IudjEuTGlzdENsaWVudHNSZXF1ZXN0GiEucG9ydWthdG9yLnYxLkxpc3RDbGllbnRzUmVzcG9uc2USVQoMU2VuZE1lc3NhZ2VzEiEucG9ydWthdG9yLnYxLlNlbmRNZXNzYWdlc1JlcXVlc3QaIi5wb3J1a2F0b3IudjEuU2VuZE1lc3NhZ2VzUmVzcG9uc2UysAEKDUNsaWVudFNlcnZpY2USQgoKU3RyZWFtSm9icxIfLnBvcnVrYXRvci52MS5TdHJlYW1Kb2JzUmVxdWVzdBoRLnBvcnVrYXRvci52MS5Kb2IwARJbCg5SZXBvcnREZWxpdmVyeRIjLnBvcnVrYXRvci52MS5SZXBvcnREZWxpdmVyeVJlcXVlc3QaJC5wb3J1a2F0b3IudjEuUmVwb3J0RGVsaXZlcnlSZXNwb25zZUJBWj9naXRodWIuY29tL2R1c2Fuc2ltaWMvcG9ydWthdG9yL2dlbi9nby9wb3J1a2F0b3IvdjE7cG9ydWthdG9ydjFiBnByb3RvMw", [file_google_protobuf_timestamp]);
+  fileDesc("Chxwb3J1a2F0b3IvdjEvcG9ydWthdG9yLnByb3RvEgxwb3J1a2F0b3IudjEirgIKB01lc3NhZ2USCgoCaWQYASABKAkSFAoMcGhvbmVfbnVtYmVyGAIgASgJEg8KB2NvbnRlbnQYAyABKAkSEQoJY2xpZW50X2lkGAQgASgJEisKBnN0YXR1cxgFIAEoDjIbLnBvcnVrYXRvci52MS5NZXNzYWdlU3RhdHVzEg0KBWVycm9yGAYgASgJEi8KC3JlY2VpdmVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIxCg1kaXNwYXRjaGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIrCgdzZW50X2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIQCghiYXRjaF9pZBgKIAEoCSLAAQoGQ2xpZW50EgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSDgoGb25saW5lGAMgASgIEjAKDGxhc3Rfc2Vlbl9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASEgoKY3JlYXRlZF9ieRgGIAEoCRIWCg5vd25lcl91c2VybmFtZRgHIAEoCSKIAQoEVXNlchIKCgJpZBgBIAEoCRIQCgh1c2VybmFtZRgCIAEoCRIgCgRyb2xlGAMgASgOMhIucG9ydWthdG9yLnYxLlJvbGUSEAoIZGlzYWJsZWQYBCABKAgSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiqwEKB1Nlc3Npb24SCgoCaWQYASABKAkSDwoHdXNlcl9pZBgCIAEoCRIQCgh1c2VybmFtZRgDIAEoCRIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIwCgxsYXN0X3VzZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg8KB2N1cnJlbnQYBiABKAgihgEKCEFwaVRva2VuEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMAoMbGFzdF91c2VkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCIvCghTZXR0aW5ncxIQCghkZWxheV9tcxgBIAEoBRIRCglqaXR0ZXJfbXMYAiABKAUiMgoMTG9naW5SZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIkAKDUxvZ2luUmVzcG9uc2USDQoFdG9rZW4YASABKAkSIAoEdXNlchgCIAEoCzISLnBvcnVrYXRvci52MS5Vc2VyIg8KDUxvZ291dFJlcXVlc3QiEAoOTG9nb3V0UmVzcG9uc2UiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IjoKFkdldEN1cnJlbnRVc2VyUmVzcG9uc2USIAoEdXNlchgBIAEoCzISLnBvcnVrYXRvci52MS5Vc2VyIlkKEUNyZWF0ZVVzZXJSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJEiAKBHJvbGUYAyABKA4yEi5wb3J1a2F0b3IudjEuUm9sZSI2ChJDcmVhdGVVc2VyUmVzcG9uc2USIAoEdXNlchgBIAEoCzISLnBvcnVrYXRvci52MS5Vc2VyIhIKEExpc3RVc2Vyc1JlcXVlc3QiNgoRTGlzdFVzZXJzUmVzcG9uc2USIQoFdXNlcnMYASADKAsyEi5wb3J1a2F0b3IudjEuVXNlciJCChJTZXRVc2VyUm9sZVJlcXVlc3QSCgoCaWQYASABKAkSIAoEcm9sZRgCIAEoDjISLnBvcnVrYXRvci52MS5Sb2xlIjcKE1NldFVzZXJSb2xlUmVzcG9uc2USIAoEdXNlchgBIAEoCzISLnBvcnVrYXRvci52MS5Vc2VyIjYKFlNldFVzZXJEaXNhYmxlZFJlcXVlc3QSCgoCaWQYASABKAkSEAoIZGlzYWJsZWQYAiABKAgiOwoXU2V0VXNlckRpc2FibGVkUmVzcG9uc2USIAoEdXNlchgBIAEoCzISLnBvcnVrYXRvci52MS5Vc2VyIh8KEURlbGV0ZVVzZXJSZXF1ZXN0EgoKAmlkGAEgASgJIhQKEkRlbGV0ZVVzZXJSZXNwb25zZSIVChNMaXN0U2Vzc2lvbnNSZXF1ZXN0Ij8KFExpc3RTZXNzaW9uc1Jlc3BvbnNlEicKCHNlc3Npb25zGAEgAygLMhUucG9ydWthdG9yLnYxLlNlc3Npb24iIgoUUmV2b2tlU2Vzc2lvblJlcXVlc3QSCgoCaWQYASABKAkiFwoVUmV2b2tlU2Vzc2lvblJlc3BvbnNlIiMKE0NyZWF0ZUNsaWVudFJlcXVlc3QSDAoEbmFtZRgBIAEoCSJgChRDcmVhdGVDbGllbnRSZXNwb25zZRIkCgZjbGllbnQYASABKAsyFC5wb3J1a2F0b3IudjEuQ2xpZW50EhQKDGFjY2Vzc190b2tlbhgCIAEoCRIMCgRob3N0GAMgASgJIhQKEkxpc3RDbGllbnRzUmVxdWVzdCI8ChNMaXN0Q2xpZW50c1Jlc3BvbnNlEiUKB2NsaWVudHMYASADKAsyFC5wb3J1a2F0b3IudjEuQ2xpZW50Ii8KE1JlbmFtZUNsaWVudFJlcXVlc3QSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCSI8ChRSZW5hbWVDbGllbnRSZXNwb25zZRIkCgZjbGllbnQYASABKAsyFC5wb3J1a2F0b3IudjEuQ2xpZW50IiEKE1Jldm9rZUNsaWVudFJlcXVlc3QSCgoCaWQYASABKAkiFgoUUmV2b2tlQ2xpZW50UmVzcG9uc2UiJQoVQ3JlYXRlQXBpVG9rZW5SZXF1ZXN0EgwKBG5hbWUYASABKAkiTwoWQ3JlYXRlQXBpVG9rZW5SZXNwb25zZRIlCgV0b2tlbhgBIAEoCzIWLnBvcnVrYXRvci52MS5BcGlUb2tlbhIOCgZzZWNyZXQYAiABKAkiFgoUTGlzdEFwaVRva2Vuc1JlcXVlc3QiPwoVTGlzdEFwaVRva2Vuc1Jlc3BvbnNlEiYKBnRva2VucxgBIAMoCzIWLnBvcnVrYXRvci52MS5BcGlUb2tlbiIjChVSZXZva2VBcGlUb2tlblJlcXVlc3QSCgoCaWQYASABKAkiGAoWUmV2b2tlQXBpVG9rZW5SZXNwb25zZSIUChJHZXRTZXR0aW5nc1JlcXVlc3QiPwoTR2V0U2V0dGluZ3NSZXNwb25zZRIoCghzZXR0aW5ncxgBIAEoCzIWLnBvcnVrYXRvci52MS5TZXR0aW5ncyJBChVVcGRhdGVTZXR0aW5nc1JlcXVlc3QSKAoIc2V0dGluZ3MYASABKAsyFi5wb3J1a2F0b3IudjEuU2V0dGluZ3MiQgoWVXBkYXRlU2V0dGluZ3NSZXNwb25zZRIoCghzZXR0aW5ncxgBIAEoCzIWLnBvcnVrYXRvci52MS5TZXR0aW5ncyJkChNMaXN0TWVzc2FnZXNSZXF1ZXN0EisKBnN0YXR1cxgBIAEoDjIbLnBvcnVrYXRvci52MS5NZXNzYWdlU3RhdHVzEhEKCWNsaWVudF9pZBgCIAEoCRINCgVsaW1pdBgDIAEoBSI/ChRMaXN0TWVzc2FnZXNSZXNwb25zZRInCghtZXNzYWdlcxgBIAMoCzIVLnBvcnVrYXRvci52MS5NZXNzYWdlIjgKD091dGdvaW5nTWVzc2FnZRIUCgxwaG9uZV9udW1iZXIYASABKAkSDwoHY29udGVudBgCIAEoCSJaChNTZW5kTWVzc2FnZXNSZXF1ZXN0Ei8KCG1lc3NhZ2VzGAEgAygLMh0ucG9ydWthdG9yLnYxLk91dGdvaW5nTWVzc2FnZRISCgpjbGllbnRfaWRzGAIgAygJIj0KFFNlbmRNZXNzYWdlc1Jlc3BvbnNlEhAKCGJhdGNoX2lkGAEgASgJEhMKC21lc3NhZ2VfaWRzGAIgAygJIhMKEVN0cmVhbUpvYnNSZXF1ZXN0IngKA0pvYhISCgptZXNzYWdlX2lkGAEgASgJEhQKDHBob25lX251bWJlchgCIAEoCRIPCgdjb250ZW50GAMgASgJEhAKCGRlbGF5X21zGAQgASgFEhEKCWppdHRlcl9tcxgFIAEoBRIRCglrZWVwYWxpdmUYBiABKAgieAoVUmVwb3J0RGVsaXZlcnlSZXF1ZXN0EhIKCm1lc3NhZ2VfaWQYASABKAkSDwoHc3VjY2VzcxgCIAEoCBIrCgdzZW50X2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBINCgVlcnJvchgEIAEoCSIYChZSZXBvcnREZWxpdmVyeVJlc3BvbnNlKp4BCg1NZXNzYWdlU3RhdHVzEh4KGk1FU1NBR0VfU1RBVFVTX1VOU1BFQ0lGSUVEEAASGgoWTUVTU0FHRV9TVEFUVVNfUEVORElORxABEh0KGU1FU1NBR0VfU1RBVFVTX0RJU1BBVENIRUQQAhIXChNNRVNTQUdFX1NUQVRVU19TRU5UEAMSGQoVTUVTU0FHRV9TVEFUVVNfRkFJTEVEEAQqPgoEUm9sZRIUChBST0xFX1VOU1BFQ0lGSUVEEAASDgoKUk9MRV9BRE1JThABEhAKDFJPTEVfTUFOQUdFUhACMrwNCgxBZG1pblNlcnZpY2USQAoFTG9naW4SGi5wb3J1a2F0b3IudjEuTG9naW5SZXF1ZXN0GhsucG9ydWthdG9yLnYxLkxvZ2luUmVzcG9uc2USQwoGTG9nb3V0EhsucG9ydWthdG9yLnYxLkxvZ291dFJlcXVlc3QaHC5wb3J1a2F0b3IudjEuTG9nb3V0UmVzcG9uc2USWwoOR2V0Q3VycmVudFVzZXISIy5wb3J1a2F0b3IudjEuR2V0Q3VycmVudFVzZXJSZXF1ZXN0GiQucG9ydWthdG9yLnYxLkdldEN1cnJlbnRVc2VyUmVzcG9uc2USVQoMQ3JlYXRlQ2xpZW50EiEucG9ydWthdG9yLnYxLkNyZWF0ZUNsaWVudFJlcXVlc3QaIi5wb3J1a2F0b3IudjEuQ3JlYXRlQ2xpZW50UmVzcG9uc2USUgoLTGlzdENsaWVudHMSIC5wb3J1a2F0b3IudjEuTGlzdENsaWVudHNSZXF1ZXN0GiEucG9ydWthdG9yLnYxLkxpc3RDbGllbnRzUmVzcG9uc2USVQoMUmVuYW1lQ2xpZW50EiEucG9ydWthdG9yLnYxLlJlbmFtZUNsaWVudFJlcXVlc3QaIi5wb3J1a2F0b3IudjEuUmVuYW1lQ2xpZW50UmVzcG9uc2USVQoMUmV2b2tlQ2xpZW50EiEucG9ydWthdG9yLnYxLlJldm9rZUNsaWVudFJlcXVlc3QaIi5wb3J1a2F0b3IudjEuUmV2b2tlQ2xpZW50UmVzcG9uc2USWwoOQ3JlYXRlQXBpVG9rZW4SIy5wb3J1a2F0b3IudjEuQ3JlYXRlQXBpVG9rZW5SZXF1ZXN0GiQucG9ydWthdG9yLnYxLkNyZWF0ZUFwaVRva2VuUmVzcG9uc2USWAoNTGlzdEFwaVRva2VucxIiLnBvcnVrYXRvci52MS5MaXN0QXBpVG9rZW5zUmVxdWVzdBojLnBvcnVrYXRvci52MS5MaXN0QXBpVG9rZW5zUmVzcG9uc2USWwoOUmV2b2tlQXBpVG9rZW4SIy5wb3J1a2F0b3IudjEuUmV2b2tlQXBpVG9rZW5SZXF1ZXN0GiQucG9ydWthdG9yLnYxLlJldm9rZUFwaVRva2VuUmVzcG9uc2USUgoLR2V0U2V0dGluZ3MSIC5wb3J1a2F0b3IudjEuR2V0U2V0dGluZ3NSZXF1ZXN0GiEucG9ydWthdG9yLnYxLkdldFNldHRpbmdzUmVzcG9uc2USWwoOVXBkYXRlU2V0dGluZ3MSIy5wb3J1a2F0b3IudjEuVXBkYXRlU2V0dGluZ3NSZXF1ZXN0GiQucG9ydWthdG9yLnYxLlVwZGF0ZVNldHRpbmdzUmVzcG9uc2USVQoMTGlzdE1lc3NhZ2VzEiEucG9ydWthdG9yLnYxLkxpc3RNZXNzYWdlc1JlcXVlc3QaIi5wb3J1a2F0b3IudjEuTGlzdE1lc3NhZ2VzUmVzcG9uc2USTwoKQ3JlYXRlVXNlchIfLnBvcnVrYXRvci52MS5DcmVhdGVVc2VyUmVxdWVzdBogLnBvcnVrYXRvci52MS5DcmVhdGVVc2VyUmVzcG9uc2USTAoJTGlzdFVzZXJzEh4ucG9ydWthdG9yLnYxLkxpc3RVc2Vyc1JlcXVlc3QaHy5wb3J1a2F0b3IudjEuTGlzdFVzZXJzUmVzcG9uc2USUgoLU2V0VXNlclJvbGUSIC5wb3J1a2F0b3IudjEuU2V0VXNlclJvbGVSZXF1ZXN0GiEucG9ydWthdG9yLnYxLlNldFVzZXJSb2xlUmVzcG9uc2USXgoPU2V0VXNlckRpc2FibGVkEiQucG9ydWthdG9yLnYxLlNldFVzZXJEaXNhYmxlZFJlcXVlc3QaJS5wb3J1a2F0b3IudjEuU2V0VXNlckRpc2FibGVkUmVzcG9uc2USTwoKRGVsZXRlVXNlchIfLnBvcnVrYXRvci52MS5EZWxldGVVc2VyUmVxdWVzdBogLnBvcnVrYXRvci52MS5EZWxldGVVc2VyUmVzcG9uc2USVQoMTGlzdFNlc3Npb25zEiEucG9ydWthdG9yLnYxLkxpc3RTZXNzaW9uc1JlcXVlc3QaIi5wb3J1a2F0b3IudjEuTGlzdFNlc3Npb25zUmVzcG9uc2USWAoNUmV2b2tlU2Vzc2lvbhIiLnBvcnVrYXRvci52MS5SZXZva2VTZXNzaW9uUmVxdWVzdBojLnBvcnVrYXRvci52MS5SZXZva2VTZXNzaW9uUmVzcG9uc2UyvAEKD1Byb2R1Y2VyU2VydmljZRJSCgtMaXN0Q2xpZW50cxIgLnBvcnVrYXRvci52MS5MaXN0Q2xpZW50c1JlcXVlc3QaIS5wb3J1a2F0b3IudjEuTGlzdENsaWVudHNSZXNwb25zZRJVCgxTZW5kTWVzc2FnZXMSIS5wb3J1a2F0b3IudjEuU2VuZE1lc3NhZ2VzUmVxdWVzdBoiLnBvcnVrYXRvci52MS5TZW5kTWVzc2FnZXNSZXNwb25zZTKwAQoNQ2xpZW50U2VydmljZRJCCgpTdHJlYW1Kb2JzEh8ucG9ydWthdG9yLnYxLlN0cmVhbUpvYnNSZXF1ZXN0GhEucG9ydWthdG9yLnYxLkpvYjABElsKDlJlcG9ydERlbGl2ZXJ5EiMucG9ydWthdG9yLnYxLlJlcG9ydERlbGl2ZXJ5UmVxdWVzdBokLnBvcnVrYXRvci52MS5SZXBvcnREZWxpdmVyeVJlc3BvbnNlQkFaP2dpdGh1Yi5jb20vZHVzYW5zaW1pYy9wb3J1a2F0b3IvZ2VuL2dvL3BvcnVrYXRvci92MTtwb3J1a2F0b3J2MWIGcHJvdG8z", [file_google_protobuf_timestamp]);
 
 /**
  * Message is one SMS tracked by the service.
@@ -146,6 +146,20 @@ export type Client = Message$1<"porukator.v1.Client"> & {
    * @generated from field: google.protobuf.Timestamp created_at = 5;
    */
   createdAt?: Timestamp | undefined;
+
+  /**
+   * UUID of the user who created the device; empty if the owner was removed.
+   *
+   * @generated from field: string created_by = 6;
+   */
+  createdBy: string;
+
+  /**
+   * Username of the owner, for display; empty when unowned.
+   *
+   * @generated from field: string owner_username = 7;
+   */
+  ownerUsername: string;
 };
 
 /**
@@ -154,6 +168,111 @@ export type Client = Message$1<"porukator.v1.Client"> & {
  */
 export const ClientSchema: GenMessage<Client> = /*@__PURE__*/
   messageDesc(file_porukator_v1_porukator, 1);
+
+/**
+ * User is a web-UI account.
+ *
+ * @generated from message porukator.v1.User
+ */
+export type User = Message$1<"porukator.v1.User"> & {
+  /**
+   * Server-generated UUID.
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * Unique login name.
+   *
+   * @generated from field: string username = 2;
+   */
+  username: string;
+
+  /**
+   * Permission level.
+   *
+   * @generated from field: porukator.v1.Role role = 3;
+   */
+  role: Role;
+
+  /**
+   * True when the account is disabled (cannot log in; sessions revoked).
+   *
+   * @generated from field: bool disabled = 4;
+   */
+  disabled: boolean;
+
+  /**
+   * When the account was created.
+   *
+   * @generated from field: google.protobuf.Timestamp created_at = 5;
+   */
+  createdAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message porukator.v1.User.
+ * Use `create(UserSchema)` to create a new message.
+ */
+export const UserSchema: GenMessage<User> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 2);
+
+/**
+ * Session is an active web-UI login.
+ *
+ * @generated from message porukator.v1.Session
+ */
+export type Session = Message$1<"porukator.v1.Session"> & {
+  /**
+   * Server-generated UUID.
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * UUID of the owning user.
+   *
+   * @generated from field: string user_id = 2;
+   */
+  userId: string;
+
+  /**
+   * Username of the owning user, for display.
+   *
+   * @generated from field: string username = 3;
+   */
+  username: string;
+
+  /**
+   * When the session was created.
+   *
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * Last time the session authenticated a request.
+   *
+   * @generated from field: google.protobuf.Timestamp last_used_at = 5;
+   */
+  lastUsedAt?: Timestamp | undefined;
+
+  /**
+   * True if this is the session making the current request.
+   *
+   * @generated from field: bool current = 6;
+   */
+  current: boolean;
+};
+
+/**
+ * Describes the message porukator.v1.Session.
+ * Use `create(SessionSchema)` to create a new message.
+ */
+export const SessionSchema: GenMessage<Session> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 3);
 
 /**
  * ApiToken is a credential for an upstream producer service.
@@ -195,7 +314,7 @@ export type ApiToken = Message$1<"porukator.v1.ApiToken"> & {
  * Use `create(ApiTokenSchema)` to create a new message.
  */
 export const ApiTokenSchema: GenMessage<ApiToken> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 2);
+  messageDesc(file_porukator_v1_porukator, 4);
 
 /**
  * Settings holds the global send-pacing configuration.
@@ -223,18 +342,25 @@ export type Settings = Message$1<"porukator.v1.Settings"> & {
  * Use `create(SettingsSchema)` to create a new message.
  */
 export const SettingsSchema: GenMessage<Settings> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 3);
+  messageDesc(file_porukator_v1_porukator, 5);
 
 /**
- * LoginRequest carries the master password.
+ * LoginRequest carries the account credentials.
  *
  * @generated from message porukator.v1.LoginRequest
  */
 export type LoginRequest = Message$1<"porukator.v1.LoginRequest"> & {
   /**
-   * The master password configured at service start.
+   * Account login name.
    *
-   * @generated from field: string password = 1;
+   * @generated from field: string username = 1;
+   */
+  username: string;
+
+  /**
+   * Account password.
+   *
+   * @generated from field: string password = 2;
    */
   password: string;
 };
@@ -244,20 +370,27 @@ export type LoginRequest = Message$1<"porukator.v1.LoginRequest"> & {
  * Use `create(LoginRequestSchema)` to create a new message.
  */
 export const LoginRequestSchema: GenMessage<LoginRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 4);
+  messageDesc(file_porukator_v1_porukator, 6);
 
 /**
- * LoginResponse reports whether the password matched.
+ * LoginResponse returns the session token and the authenticated user.
  *
  * @generated from message porukator.v1.LoginResponse
  */
 export type LoginResponse = Message$1<"porukator.v1.LoginResponse"> & {
   /**
-   * True when the password is valid.
+   * Opaque session bearer token; send it as Authorization on later requests.
    *
-   * @generated from field: bool ok = 1;
+   * @generated from field: string token = 1;
    */
-  ok: boolean;
+  token: string;
+
+  /**
+   * The authenticated user.
+   *
+   * @generated from field: porukator.v1.User user = 2;
+   */
+  user?: User | undefined;
 };
 
 /**
@@ -265,7 +398,371 @@ export type LoginResponse = Message$1<"porukator.v1.LoginResponse"> & {
  * Use `create(LoginResponseSchema)` to create a new message.
  */
 export const LoginResponseSchema: GenMessage<LoginResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 5);
+  messageDesc(file_porukator_v1_porukator, 7);
+
+/**
+ * LogoutRequest is empty; the session comes from the bearer token.
+ *
+ * @generated from message porukator.v1.LogoutRequest
+ */
+export type LogoutRequest = Message$1<"porukator.v1.LogoutRequest"> & {
+};
+
+/**
+ * Describes the message porukator.v1.LogoutRequest.
+ * Use `create(LogoutRequestSchema)` to create a new message.
+ */
+export const LogoutRequestSchema: GenMessage<LogoutRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 8);
+
+/**
+ * LogoutResponse is empty.
+ *
+ * @generated from message porukator.v1.LogoutResponse
+ */
+export type LogoutResponse = Message$1<"porukator.v1.LogoutResponse"> & {
+};
+
+/**
+ * Describes the message porukator.v1.LogoutResponse.
+ * Use `create(LogoutResponseSchema)` to create a new message.
+ */
+export const LogoutResponseSchema: GenMessage<LogoutResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 9);
+
+/**
+ * GetCurrentUserRequest is empty.
+ *
+ * @generated from message porukator.v1.GetCurrentUserRequest
+ */
+export type GetCurrentUserRequest = Message$1<"porukator.v1.GetCurrentUserRequest"> & {
+};
+
+/**
+ * Describes the message porukator.v1.GetCurrentUserRequest.
+ * Use `create(GetCurrentUserRequestSchema)` to create a new message.
+ */
+export const GetCurrentUserRequestSchema: GenMessage<GetCurrentUserRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 10);
+
+/**
+ * GetCurrentUserResponse returns the authenticated user.
+ *
+ * @generated from message porukator.v1.GetCurrentUserResponse
+ */
+export type GetCurrentUserResponse = Message$1<"porukator.v1.GetCurrentUserResponse"> & {
+  /**
+   * The authenticated user.
+   *
+   * @generated from field: porukator.v1.User user = 1;
+   */
+  user?: User | undefined;
+};
+
+/**
+ * Describes the message porukator.v1.GetCurrentUserResponse.
+ * Use `create(GetCurrentUserResponseSchema)` to create a new message.
+ */
+export const GetCurrentUserResponseSchema: GenMessage<GetCurrentUserResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 11);
+
+/**
+ * CreateUserRequest names a new account.
+ *
+ * @generated from message porukator.v1.CreateUserRequest
+ */
+export type CreateUserRequest = Message$1<"porukator.v1.CreateUserRequest"> & {
+  /**
+   * Unique login name.
+   *
+   * @generated from field: string username = 1;
+   */
+  username: string;
+
+  /**
+   * Initial password.
+   *
+   * @generated from field: string password = 2;
+   */
+  password: string;
+
+  /**
+   * Permission level.
+   *
+   * @generated from field: porukator.v1.Role role = 3;
+   */
+  role: Role;
+};
+
+/**
+ * Describes the message porukator.v1.CreateUserRequest.
+ * Use `create(CreateUserRequestSchema)` to create a new message.
+ */
+export const CreateUserRequestSchema: GenMessage<CreateUserRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 12);
+
+/**
+ * CreateUserResponse returns the created account.
+ *
+ * @generated from message porukator.v1.CreateUserResponse
+ */
+export type CreateUserResponse = Message$1<"porukator.v1.CreateUserResponse"> & {
+  /**
+   * The created user.
+   *
+   * @generated from field: porukator.v1.User user = 1;
+   */
+  user?: User | undefined;
+};
+
+/**
+ * Describes the message porukator.v1.CreateUserResponse.
+ * Use `create(CreateUserResponseSchema)` to create a new message.
+ */
+export const CreateUserResponseSchema: GenMessage<CreateUserResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 13);
+
+/**
+ * ListUsersRequest is empty.
+ *
+ * @generated from message porukator.v1.ListUsersRequest
+ */
+export type ListUsersRequest = Message$1<"porukator.v1.ListUsersRequest"> & {
+};
+
+/**
+ * Describes the message porukator.v1.ListUsersRequest.
+ * Use `create(ListUsersRequestSchema)` to create a new message.
+ */
+export const ListUsersRequestSchema: GenMessage<ListUsersRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 14);
+
+/**
+ * ListUsersResponse returns all accounts.
+ *
+ * @generated from message porukator.v1.ListUsersResponse
+ */
+export type ListUsersResponse = Message$1<"porukator.v1.ListUsersResponse"> & {
+  /**
+   * All accounts.
+   *
+   * @generated from field: repeated porukator.v1.User users = 1;
+   */
+  users: User[];
+};
+
+/**
+ * Describes the message porukator.v1.ListUsersResponse.
+ * Use `create(ListUsersResponseSchema)` to create a new message.
+ */
+export const ListUsersResponseSchema: GenMessage<ListUsersResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 15);
+
+/**
+ * SetUserRoleRequest changes an account's role.
+ *
+ * @generated from message porukator.v1.SetUserRoleRequest
+ */
+export type SetUserRoleRequest = Message$1<"porukator.v1.SetUserRoleRequest"> & {
+  /**
+   * UUID of the account.
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * New role.
+   *
+   * @generated from field: porukator.v1.Role role = 2;
+   */
+  role: Role;
+};
+
+/**
+ * Describes the message porukator.v1.SetUserRoleRequest.
+ * Use `create(SetUserRoleRequestSchema)` to create a new message.
+ */
+export const SetUserRoleRequestSchema: GenMessage<SetUserRoleRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 16);
+
+/**
+ * SetUserRoleResponse returns the updated account.
+ *
+ * @generated from message porukator.v1.SetUserRoleResponse
+ */
+export type SetUserRoleResponse = Message$1<"porukator.v1.SetUserRoleResponse"> & {
+  /**
+   * The updated user.
+   *
+   * @generated from field: porukator.v1.User user = 1;
+   */
+  user?: User | undefined;
+};
+
+/**
+ * Describes the message porukator.v1.SetUserRoleResponse.
+ * Use `create(SetUserRoleResponseSchema)` to create a new message.
+ */
+export const SetUserRoleResponseSchema: GenMessage<SetUserRoleResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 17);
+
+/**
+ * SetUserDisabledRequest enables or disables an account.
+ *
+ * @generated from message porukator.v1.SetUserDisabledRequest
+ */
+export type SetUserDisabledRequest = Message$1<"porukator.v1.SetUserDisabledRequest"> & {
+  /**
+   * UUID of the account.
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * True to disable (and revoke sessions), false to enable.
+   *
+   * @generated from field: bool disabled = 2;
+   */
+  disabled: boolean;
+};
+
+/**
+ * Describes the message porukator.v1.SetUserDisabledRequest.
+ * Use `create(SetUserDisabledRequestSchema)` to create a new message.
+ */
+export const SetUserDisabledRequestSchema: GenMessage<SetUserDisabledRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 18);
+
+/**
+ * SetUserDisabledResponse returns the updated account.
+ *
+ * @generated from message porukator.v1.SetUserDisabledResponse
+ */
+export type SetUserDisabledResponse = Message$1<"porukator.v1.SetUserDisabledResponse"> & {
+  /**
+   * The updated user.
+   *
+   * @generated from field: porukator.v1.User user = 1;
+   */
+  user?: User | undefined;
+};
+
+/**
+ * Describes the message porukator.v1.SetUserDisabledResponse.
+ * Use `create(SetUserDisabledResponseSchema)` to create a new message.
+ */
+export const SetUserDisabledResponseSchema: GenMessage<SetUserDisabledResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 19);
+
+/**
+ * DeleteUserRequest identifies an account to remove.
+ *
+ * @generated from message porukator.v1.DeleteUserRequest
+ */
+export type DeleteUserRequest = Message$1<"porukator.v1.DeleteUserRequest"> & {
+  /**
+   * UUID of the account.
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message porukator.v1.DeleteUserRequest.
+ * Use `create(DeleteUserRequestSchema)` to create a new message.
+ */
+export const DeleteUserRequestSchema: GenMessage<DeleteUserRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 20);
+
+/**
+ * DeleteUserResponse is empty.
+ *
+ * @generated from message porukator.v1.DeleteUserResponse
+ */
+export type DeleteUserResponse = Message$1<"porukator.v1.DeleteUserResponse"> & {
+};
+
+/**
+ * Describes the message porukator.v1.DeleteUserResponse.
+ * Use `create(DeleteUserResponseSchema)` to create a new message.
+ */
+export const DeleteUserResponseSchema: GenMessage<DeleteUserResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 21);
+
+/**
+ * ListSessionsRequest is empty.
+ *
+ * @generated from message porukator.v1.ListSessionsRequest
+ */
+export type ListSessionsRequest = Message$1<"porukator.v1.ListSessionsRequest"> & {
+};
+
+/**
+ * Describes the message porukator.v1.ListSessionsRequest.
+ * Use `create(ListSessionsRequestSchema)` to create a new message.
+ */
+export const ListSessionsRequestSchema: GenMessage<ListSessionsRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 22);
+
+/**
+ * ListSessionsResponse returns active sessions.
+ *
+ * @generated from message porukator.v1.ListSessionsResponse
+ */
+export type ListSessionsResponse = Message$1<"porukator.v1.ListSessionsResponse"> & {
+  /**
+   * All active sessions.
+   *
+   * @generated from field: repeated porukator.v1.Session sessions = 1;
+   */
+  sessions: Session[];
+};
+
+/**
+ * Describes the message porukator.v1.ListSessionsResponse.
+ * Use `create(ListSessionsResponseSchema)` to create a new message.
+ */
+export const ListSessionsResponseSchema: GenMessage<ListSessionsResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 23);
+
+/**
+ * RevokeSessionRequest identifies a session to delete.
+ *
+ * @generated from message porukator.v1.RevokeSessionRequest
+ */
+export type RevokeSessionRequest = Message$1<"porukator.v1.RevokeSessionRequest"> & {
+  /**
+   * UUID of the session.
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message porukator.v1.RevokeSessionRequest.
+ * Use `create(RevokeSessionRequestSchema)` to create a new message.
+ */
+export const RevokeSessionRequestSchema: GenMessage<RevokeSessionRequest> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 24);
+
+/**
+ * RevokeSessionResponse is empty.
+ *
+ * @generated from message porukator.v1.RevokeSessionResponse
+ */
+export type RevokeSessionResponse = Message$1<"porukator.v1.RevokeSessionResponse"> & {
+};
+
+/**
+ * Describes the message porukator.v1.RevokeSessionResponse.
+ * Use `create(RevokeSessionResponseSchema)` to create a new message.
+ */
+export const RevokeSessionResponseSchema: GenMessage<RevokeSessionResponse> = /*@__PURE__*/
+  messageDesc(file_porukator_v1_porukator, 25);
 
 /**
  * CreateClientRequest names a new device.
@@ -286,7 +783,7 @@ export type CreateClientRequest = Message$1<"porukator.v1.CreateClientRequest"> 
  * Use `create(CreateClientRequestSchema)` to create a new message.
  */
 export const CreateClientRequestSchema: GenMessage<CreateClientRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 6);
+  messageDesc(file_porukator_v1_porukator, 26);
 
 /**
  * CreateClientResponse returns the new device and its one-time token.
@@ -321,7 +818,7 @@ export type CreateClientResponse = Message$1<"porukator.v1.CreateClientResponse"
  * Use `create(CreateClientResponseSchema)` to create a new message.
  */
 export const CreateClientResponseSchema: GenMessage<CreateClientResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 7);
+  messageDesc(file_porukator_v1_porukator, 27);
 
 /**
  * ListClientsRequest is empty.
@@ -336,7 +833,7 @@ export type ListClientsRequest = Message$1<"porukator.v1.ListClientsRequest"> & 
  * Use `create(ListClientsRequestSchema)` to create a new message.
  */
 export const ListClientsRequestSchema: GenMessage<ListClientsRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 8);
+  messageDesc(file_porukator_v1_porukator, 28);
 
 /**
  * ListClientsResponse returns all devices.
@@ -357,7 +854,7 @@ export type ListClientsResponse = Message$1<"porukator.v1.ListClientsResponse"> 
  * Use `create(ListClientsResponseSchema)` to create a new message.
  */
 export const ListClientsResponseSchema: GenMessage<ListClientsResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 9);
+  messageDesc(file_porukator_v1_porukator, 29);
 
 /**
  * RenameClientRequest renames a device.
@@ -385,7 +882,7 @@ export type RenameClientRequest = Message$1<"porukator.v1.RenameClientRequest"> 
  * Use `create(RenameClientRequestSchema)` to create a new message.
  */
 export const RenameClientRequestSchema: GenMessage<RenameClientRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 10);
+  messageDesc(file_porukator_v1_porukator, 30);
 
 /**
  * RenameClientResponse returns the updated device.
@@ -406,7 +903,7 @@ export type RenameClientResponse = Message$1<"porukator.v1.RenameClientResponse"
  * Use `create(RenameClientResponseSchema)` to create a new message.
  */
 export const RenameClientResponseSchema: GenMessage<RenameClientResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 11);
+  messageDesc(file_porukator_v1_porukator, 31);
 
 /**
  * RevokeClientRequest identifies a device to delete.
@@ -427,7 +924,7 @@ export type RevokeClientRequest = Message$1<"porukator.v1.RevokeClientRequest"> 
  * Use `create(RevokeClientRequestSchema)` to create a new message.
  */
 export const RevokeClientRequestSchema: GenMessage<RevokeClientRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 12);
+  messageDesc(file_porukator_v1_porukator, 32);
 
 /**
  * RevokeClientResponse is empty.
@@ -442,7 +939,7 @@ export type RevokeClientResponse = Message$1<"porukator.v1.RevokeClientResponse"
  * Use `create(RevokeClientResponseSchema)` to create a new message.
  */
 export const RevokeClientResponseSchema: GenMessage<RevokeClientResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 13);
+  messageDesc(file_porukator_v1_porukator, 33);
 
 /**
  * CreateApiTokenRequest names a new producer token.
@@ -463,7 +960,7 @@ export type CreateApiTokenRequest = Message$1<"porukator.v1.CreateApiTokenReques
  * Use `create(CreateApiTokenRequestSchema)` to create a new message.
  */
 export const CreateApiTokenRequestSchema: GenMessage<CreateApiTokenRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 14);
+  messageDesc(file_porukator_v1_porukator, 34);
 
 /**
  * CreateApiTokenResponse returns the token metadata and one-time secret.
@@ -491,7 +988,7 @@ export type CreateApiTokenResponse = Message$1<"porukator.v1.CreateApiTokenRespo
  * Use `create(CreateApiTokenResponseSchema)` to create a new message.
  */
 export const CreateApiTokenResponseSchema: GenMessage<CreateApiTokenResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 15);
+  messageDesc(file_porukator_v1_porukator, 35);
 
 /**
  * ListApiTokensRequest is empty.
@@ -506,7 +1003,7 @@ export type ListApiTokensRequest = Message$1<"porukator.v1.ListApiTokensRequest"
  * Use `create(ListApiTokensRequestSchema)` to create a new message.
  */
 export const ListApiTokensRequestSchema: GenMessage<ListApiTokensRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 16);
+  messageDesc(file_porukator_v1_porukator, 36);
 
 /**
  * ListApiTokensResponse returns all producer tokens.
@@ -527,7 +1024,7 @@ export type ListApiTokensResponse = Message$1<"porukator.v1.ListApiTokensRespons
  * Use `create(ListApiTokensResponseSchema)` to create a new message.
  */
 export const ListApiTokensResponseSchema: GenMessage<ListApiTokensResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 17);
+  messageDesc(file_porukator_v1_porukator, 37);
 
 /**
  * RevokeApiTokenRequest identifies a token to delete.
@@ -548,7 +1045,7 @@ export type RevokeApiTokenRequest = Message$1<"porukator.v1.RevokeApiTokenReques
  * Use `create(RevokeApiTokenRequestSchema)` to create a new message.
  */
 export const RevokeApiTokenRequestSchema: GenMessage<RevokeApiTokenRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 18);
+  messageDesc(file_porukator_v1_porukator, 38);
 
 /**
  * RevokeApiTokenResponse is empty.
@@ -563,7 +1060,7 @@ export type RevokeApiTokenResponse = Message$1<"porukator.v1.RevokeApiTokenRespo
  * Use `create(RevokeApiTokenResponseSchema)` to create a new message.
  */
 export const RevokeApiTokenResponseSchema: GenMessage<RevokeApiTokenResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 19);
+  messageDesc(file_porukator_v1_porukator, 39);
 
 /**
  * GetSettingsRequest is empty.
@@ -578,7 +1075,7 @@ export type GetSettingsRequest = Message$1<"porukator.v1.GetSettingsRequest"> & 
  * Use `create(GetSettingsRequestSchema)` to create a new message.
  */
 export const GetSettingsRequestSchema: GenMessage<GetSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 20);
+  messageDesc(file_porukator_v1_porukator, 40);
 
 /**
  * GetSettingsResponse returns the pacing configuration.
@@ -599,7 +1096,7 @@ export type GetSettingsResponse = Message$1<"porukator.v1.GetSettingsResponse"> 
  * Use `create(GetSettingsResponseSchema)` to create a new message.
  */
 export const GetSettingsResponseSchema: GenMessage<GetSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 21);
+  messageDesc(file_porukator_v1_porukator, 41);
 
 /**
  * UpdateSettingsRequest carries new pacing values.
@@ -620,7 +1117,7 @@ export type UpdateSettingsRequest = Message$1<"porukator.v1.UpdateSettingsReques
  * Use `create(UpdateSettingsRequestSchema)` to create a new message.
  */
 export const UpdateSettingsRequestSchema: GenMessage<UpdateSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 22);
+  messageDesc(file_porukator_v1_porukator, 42);
 
 /**
  * UpdateSettingsResponse returns the stored settings.
@@ -641,7 +1138,7 @@ export type UpdateSettingsResponse = Message$1<"porukator.v1.UpdateSettingsRespo
  * Use `create(UpdateSettingsResponseSchema)` to create a new message.
  */
 export const UpdateSettingsResponseSchema: GenMessage<UpdateSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 23);
+  messageDesc(file_porukator_v1_porukator, 43);
 
 /**
  * ListMessagesRequest filters the message log.
@@ -676,7 +1173,7 @@ export type ListMessagesRequest = Message$1<"porukator.v1.ListMessagesRequest"> 
  * Use `create(ListMessagesRequestSchema)` to create a new message.
  */
 export const ListMessagesRequestSchema: GenMessage<ListMessagesRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 24);
+  messageDesc(file_porukator_v1_porukator, 44);
 
 /**
  * ListMessagesResponse returns matching messages.
@@ -697,7 +1194,7 @@ export type ListMessagesResponse = Message$1<"porukator.v1.ListMessagesResponse"
  * Use `create(ListMessagesResponseSchema)` to create a new message.
  */
 export const ListMessagesResponseSchema: GenMessage<ListMessagesResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 25);
+  messageDesc(file_porukator_v1_porukator, 45);
 
 /**
  * OutgoingMessage is one message a producer wants sent.
@@ -725,7 +1222,7 @@ export type OutgoingMessage = Message$1<"porukator.v1.OutgoingMessage"> & {
  * Use `create(OutgoingMessageSchema)` to create a new message.
  */
 export const OutgoingMessageSchema: GenMessage<OutgoingMessage> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 26);
+  messageDesc(file_porukator_v1_porukator, 46);
 
 /**
  * SendMessagesRequest submits a batch and the devices to balance it across.
@@ -753,7 +1250,7 @@ export type SendMessagesRequest = Message$1<"porukator.v1.SendMessagesRequest"> 
  * Use `create(SendMessagesRequestSchema)` to create a new message.
  */
 export const SendMessagesRequestSchema: GenMessage<SendMessagesRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 27);
+  messageDesc(file_porukator_v1_porukator, 47);
 
 /**
  * SendMessagesResponse acknowledges acceptance.
@@ -781,7 +1278,7 @@ export type SendMessagesResponse = Message$1<"porukator.v1.SendMessagesResponse"
  * Use `create(SendMessagesResponseSchema)` to create a new message.
  */
 export const SendMessagesResponseSchema: GenMessage<SendMessagesResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 28);
+  messageDesc(file_porukator_v1_porukator, 48);
 
 /**
  * StreamJobsRequest is empty; identity comes from the access token.
@@ -796,7 +1293,7 @@ export type StreamJobsRequest = Message$1<"porukator.v1.StreamJobsRequest"> & {
  * Use `create(StreamJobsRequestSchema)` to create a new message.
  */
 export const StreamJobsRequestSchema: GenMessage<StreamJobsRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 29);
+  messageDesc(file_porukator_v1_porukator, 49);
 
 /**
  * Job is a single SMS for the device to send. The device paces consecutive
@@ -856,7 +1353,7 @@ export type Job = Message$1<"porukator.v1.Job"> & {
  * Use `create(JobSchema)` to create a new message.
  */
 export const JobSchema: GenMessage<Job> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 30);
+  messageDesc(file_porukator_v1_porukator, 50);
 
 /**
  * ReportDeliveryRequest reports one send outcome.
@@ -898,7 +1395,7 @@ export type ReportDeliveryRequest = Message$1<"porukator.v1.ReportDeliveryReques
  * Use `create(ReportDeliveryRequestSchema)` to create a new message.
  */
 export const ReportDeliveryRequestSchema: GenMessage<ReportDeliveryRequest> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 31);
+  messageDesc(file_porukator_v1_porukator, 51);
 
 /**
  * ReportDeliveryResponse is empty.
@@ -913,7 +1410,7 @@ export type ReportDeliveryResponse = Message$1<"porukator.v1.ReportDeliveryRespo
  * Use `create(ReportDeliveryResponseSchema)` to create a new message.
  */
 export const ReportDeliveryResponseSchema: GenMessage<ReportDeliveryResponse> = /*@__PURE__*/
-  messageDesc(file_porukator_v1_porukator, 32);
+  messageDesc(file_porukator_v1_porukator, 52);
 
 /**
  * MessageStatus tracks a single SMS through its lifecycle.
@@ -964,14 +1461,50 @@ export const MessageStatusSchema: GenEnum<MessageStatus> = /*@__PURE__*/
   enumDesc(file_porukator_v1_porukator, 0);
 
 /**
- * AdminService is the management API behind the web UI. All RPCs require the
- * master password as a bearer token.
+ * Role is a user's permission level.
+ *
+ * @generated from enum porukator.v1.Role
+ */
+export enum Role {
+  /**
+   * Default, never persisted.
+   *
+   * @generated from enum value: ROLE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * Full access to everything.
+   *
+   * @generated from enum value: ROLE_ADMIN = 1;
+   */
+  ADMIN = 1,
+
+  /**
+   * May manage only their own client devices and view those devices' messages.
+   *
+   * @generated from enum value: ROLE_MANAGER = 2;
+   */
+  MANAGER = 2,
+}
+
+/**
+ * Describes the enum porukator.v1.Role.
+ */
+export const RoleSchema: GenEnum<Role> = /*@__PURE__*/
+  enumDesc(file_porukator_v1_porukator, 1);
+
+/**
+ * AdminService is the management API behind the web UI. Except for Login, every
+ * RPC requires a session token (from Login) as a bearer token. Admin-only RPCs
+ * reject manager sessions with PermissionDenied; device RPCs are scoped to the
+ * caller's own devices for managers.
  *
  * @generated from service porukator.v1.AdminService
  */
 export const AdminService: GenService<{
   /**
-   * Login validates the master password. Returns ok=true when it matches.
+   * Login authenticates a username + password and returns a session token.
    *
    * @generated from rpc porukator.v1.AdminService.Login
    */
@@ -981,8 +1514,28 @@ export const AdminService: GenService<{
     output: typeof LoginResponseSchema;
   },
   /**
-   * CreateClient registers a device and returns its one-time access token plus
-   * the connection host, for display/QR. The token is never retrievable again.
+   * Logout revokes the caller's current session.
+   *
+   * @generated from rpc porukator.v1.AdminService.Logout
+   */
+  logout: {
+    methodKind: "unary";
+    input: typeof LogoutRequestSchema;
+    output: typeof LogoutResponseSchema;
+  },
+  /**
+   * GetCurrentUser returns the authenticated user (whoami).
+   *
+   * @generated from rpc porukator.v1.AdminService.GetCurrentUser
+   */
+  getCurrentUser: {
+    methodKind: "unary";
+    input: typeof GetCurrentUserRequestSchema;
+    output: typeof GetCurrentUserResponseSchema;
+  },
+  /**
+   * CreateClient registers a device owned by the caller and returns its
+   * one-time access token plus the connection host, for display/QR.
    *
    * @generated from rpc porukator.v1.AdminService.CreateClient
    */
@@ -992,7 +1545,7 @@ export const AdminService: GenService<{
     output: typeof CreateClientResponseSchema;
   },
   /**
-   * ListClients returns all devices with live online state.
+   * ListClients returns devices: all for admins, own only for managers.
    *
    * @generated from rpc porukator.v1.AdminService.ListClients
    */
@@ -1002,7 +1555,7 @@ export const AdminService: GenService<{
     output: typeof ListClientsResponseSchema;
   },
   /**
-   * RenameClient changes a device's display name.
+   * RenameClient changes a device's display name (managers: own devices only).
    *
    * @generated from rpc porukator.v1.AdminService.RenameClient
    */
@@ -1012,7 +1565,7 @@ export const AdminService: GenService<{
     output: typeof RenameClientResponseSchema;
   },
   /**
-   * RevokeClient deletes a device and its access token.
+   * RevokeClient deletes a device (managers: own devices only).
    *
    * @generated from rpc porukator.v1.AdminService.RevokeClient
    */
@@ -1022,7 +1575,7 @@ export const AdminService: GenService<{
     output: typeof RevokeClientResponseSchema;
   },
   /**
-   * CreateApiToken issues a producer token, returned once in plaintext.
+   * CreateApiToken issues a producer token, returned once in plaintext. Admin only.
    *
    * @generated from rpc porukator.v1.AdminService.CreateApiToken
    */
@@ -1032,7 +1585,7 @@ export const AdminService: GenService<{
     output: typeof CreateApiTokenResponseSchema;
   },
   /**
-   * ListApiTokens lists producer tokens (without secrets).
+   * ListApiTokens lists producer tokens (without secrets). Admin only.
    *
    * @generated from rpc porukator.v1.AdminService.ListApiTokens
    */
@@ -1042,7 +1595,7 @@ export const AdminService: GenService<{
     output: typeof ListApiTokensResponseSchema;
   },
   /**
-   * RevokeApiToken deletes a producer token.
+   * RevokeApiToken deletes a producer token. Admin only.
    *
    * @generated from rpc porukator.v1.AdminService.RevokeApiToken
    */
@@ -1052,7 +1605,7 @@ export const AdminService: GenService<{
     output: typeof RevokeApiTokenResponseSchema;
   },
   /**
-   * GetSettings returns the current pacing configuration.
+   * GetSettings returns the current pacing configuration. Admin only.
    *
    * @generated from rpc porukator.v1.AdminService.GetSettings
    */
@@ -1062,7 +1615,7 @@ export const AdminService: GenService<{
     output: typeof GetSettingsResponseSchema;
   },
   /**
-   * UpdateSettings replaces the pacing configuration.
+   * UpdateSettings replaces the pacing configuration. Admin only.
    *
    * @generated from rpc porukator.v1.AdminService.UpdateSettings
    */
@@ -1072,7 +1625,8 @@ export const AdminService: GenService<{
     output: typeof UpdateSettingsResponseSchema;
   },
   /**
-   * ListMessages returns recent messages, newest first, with optional filters.
+   * ListMessages returns recent messages: all for admins, own-device only for
+   * managers.
    *
    * @generated from rpc porukator.v1.AdminService.ListMessages
    */
@@ -1080,6 +1634,77 @@ export const AdminService: GenService<{
     methodKind: "unary";
     input: typeof ListMessagesRequestSchema;
     output: typeof ListMessagesResponseSchema;
+  },
+  /**
+   * CreateUser creates a web-UI account. Admin only.
+   *
+   * @generated from rpc porukator.v1.AdminService.CreateUser
+   */
+  createUser: {
+    methodKind: "unary";
+    input: typeof CreateUserRequestSchema;
+    output: typeof CreateUserResponseSchema;
+  },
+  /**
+   * ListUsers returns all accounts. Admin only.
+   *
+   * @generated from rpc porukator.v1.AdminService.ListUsers
+   */
+  listUsers: {
+    methodKind: "unary";
+    input: typeof ListUsersRequestSchema;
+    output: typeof ListUsersResponseSchema;
+  },
+  /**
+   * SetUserRole changes an account's role. Admin only.
+   *
+   * @generated from rpc porukator.v1.AdminService.SetUserRole
+   */
+  setUserRole: {
+    methodKind: "unary";
+    input: typeof SetUserRoleRequestSchema;
+    output: typeof SetUserRoleResponseSchema;
+  },
+  /**
+   * SetUserDisabled enables/disables an account; disabling revokes its sessions.
+   * Admin only.
+   *
+   * @generated from rpc porukator.v1.AdminService.SetUserDisabled
+   */
+  setUserDisabled: {
+    methodKind: "unary";
+    input: typeof SetUserDisabledRequestSchema;
+    output: typeof SetUserDisabledResponseSchema;
+  },
+  /**
+   * DeleteUser removes an account and its sessions. Admin only.
+   *
+   * @generated from rpc porukator.v1.AdminService.DeleteUser
+   */
+  deleteUser: {
+    methodKind: "unary";
+    input: typeof DeleteUserRequestSchema;
+    output: typeof DeleteUserResponseSchema;
+  },
+  /**
+   * ListSessions returns active sessions across all users. Admin only.
+   *
+   * @generated from rpc porukator.v1.AdminService.ListSessions
+   */
+  listSessions: {
+    methodKind: "unary";
+    input: typeof ListSessionsRequestSchema;
+    output: typeof ListSessionsResponseSchema;
+  },
+  /**
+   * RevokeSession deletes one session by id. Admin only.
+   *
+   * @generated from rpc porukator.v1.AdminService.RevokeSession
+   */
+  revokeSession: {
+    methodKind: "unary";
+    input: typeof RevokeSessionRequestSchema;
+    output: typeof RevokeSessionResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_porukator_v1_porukator, 0);

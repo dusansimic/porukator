@@ -1,0 +1,5 @@
+DROP INDEX IF EXISTS clients_created_by_idx;
+ALTER TABLE clients DROP COLUMN IF EXISTS created_by;
+DROP TABLE IF EXISTS sessions;
+DROP TABLE IF EXISTS users;
+DROP TYPE IF EXISTS user_role;
