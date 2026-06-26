@@ -1,11 +1,18 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LogOut, Smartphone, KeyRound, MessageSquare, SlidersHorizontal, Users as UsersIcon } from "lucide-react";
 import { createClient } from "@connectrpc/connect";
+import {
+  KeyRound,
+  LogOut,
+  MessageSquare,
+  SlidersHorizontal,
+  Smartphone,
+  Users as UsersIcon,
+} from "lucide-react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { AdminService, Role } from "@/gen/porukator/v1/porukator_pb";
 import { transport } from "@/lib/transport";
-import { useAuthStore, isAdmin } from "@/stores/auth";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { isAdmin, useAuthStore } from "@/stores/auth";
 
 const admin = createClient(AdminService, transport);
 
@@ -50,7 +57,9 @@ export function Layout() {
                 className={({ isActive }) =>
                   cn(
                     "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-                    isActive ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-secondary/60",
+                    isActive
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:bg-secondary/60",
                   )
                 }
               >

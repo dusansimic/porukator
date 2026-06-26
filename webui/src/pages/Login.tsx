@@ -1,12 +1,12 @@
+import { useMutation } from "@connectrpc/connect-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@connectrpc/connect-query";
-import { AdminService } from "@/gen/porukator/v1/porukator_pb";
-import { useAuthStore } from "@/stores/auth";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { AdminService } from "@/gen/porukator/v1/porukator_pb";
+import { useAuthStore } from "@/stores/auth";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -47,14 +47,28 @@ export function Login() {
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
-              <Input id="username" value={username} autoFocus onChange={(e) => setUsername(e.target.value)} />
+              <Input
+                id="username"
+                value={username}
+                autoFocus
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="pw">Password</Label>
-              <Input id="pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input
+                id="pw"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full" disabled={login.isPending || !username || !password}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={login.isPending || !username || !password}
+            >
               {login.isPending ? "Signing in…" : "Sign in"}
             </Button>
           </form>

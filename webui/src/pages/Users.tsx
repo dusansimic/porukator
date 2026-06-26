@@ -1,19 +1,29 @@
-import { useState } from "react";
-import { useQuery, useMutation } from "@connectrpc/connect-query";
+import { useMutation, useQuery } from "@connectrpc/connect-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { Plus, Trash2, Ban, CircleCheck } from "lucide-react";
-import { AdminService, Role, type User, type Session } from "@/gen/porukator/v1/porukator_pb";
-import { useAuthStore } from "@/stores/auth";
+import { Ban, CircleCheck, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger,
-} from "@/components/ui/dialog";
+import { AdminService, Role, type Session, type User } from "@/gen/porukator/v1/porukator_pb";
+import { useAuthStore } from "@/stores/auth";
 
 function ts(t?: { seconds: bigint }) {
   return t ? new Date(Number(t.seconds) * 1000).toLocaleString() : "—";
@@ -23,7 +33,11 @@ export function Users() {
   const qc = useQueryClient();
   const me = useAuthStore((s) => s.user);
   const { data: users } = useQuery(AdminService.method.listUsers, {});
-  const { data: sessions } = useQuery(AdminService.method.listSessions, {}, { refetchInterval: 5000 });
+  const { data: sessions } = useQuery(
+    AdminService.method.listSessions,
+    {},
+    { refetchInterval: 5000 },
+  );
 
   const create = useMutation(AdminService.method.createUser);
   const setRole = useMutation(AdminService.method.setUserRole);
@@ -61,9 +75,17 @@ export function Users() {
           <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
           <p className="text-muted-foreground text-sm">Web-UI accounts and active sessions.</p>
         </div>
-        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setErr(""); }}>
+        <Dialog
+          open={open}
+          onOpenChange={(o) => {
+            setOpen(o);
+            if (!o) setErr("");
+          }}
+        >
           <DialogTrigger asChild>
-            <Button><Plus className="h-4 w-4" /> New user</Button>
+            <Button>
+              <Plus className="h-4 w-4" /> New user
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -73,11 +95,21 @@ export function Users() {
             <form onSubmit={onCreate} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="u">Username</Label>
-                <Input id="u" value={newUsername} autoFocus onChange={(e) => setNewUsername(e.target.value)} />
+                <Input
+                  id="u"
+                  value={newUsername}
+                  autoFocus
+                  onChange={(e) => setNewUsername(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="p">Password</Label>
-                <Input id="p" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                <Input
+                  id="p"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="r">Role</Label>
@@ -92,7 +124,9 @@ export function Users() {
                 </select>
               </div>
               {err && <p className="text-sm text-destructive">{err}</p>}
-              <Button type="submit" disabled={!newUsername || !newPassword || create.isPending}>Create</Button>
+              <Button type="submit" disabled={!newUsername || !newPassword || create.isPending}>
+                Create
+              </Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -131,7 +165,11 @@ export function Users() {
                   </select>
                 </TableCell>
                 <TableCell>
-                  {u.disabled ? <Badge variant="destructive">disabled</Badge> : <Badge variant="success">active</Badge>}
+                  {u.disabled ? (
+                    <Badge variant="destructive">disabled</Badge>
+                  ) : (
+                    <Badge variant="success">active</Badge>
+                  )}
                 </TableCell>
                 <TableCell className="text-muted-foreground">{ts(u.createdAt)}</TableCell>
                 <TableCell className="text-right space-x-1">
@@ -141,7 +179,11 @@ export function Users() {
                     title={u.disabled ? "Enable" : "Disable"}
                     onClick={async () => {
                       const verb = u.disabled ? "Enable" : "Disable";
-                      if (confirm(`${verb} ${u.username}?${!u.disabled ? " This revokes all their sessions." : ""}`)) {
+                      if (
+                        confirm(
+                          `${verb} ${u.username}?${!u.disabled ? " This revokes all their sessions." : ""}`,
+                        )
+                      ) {
                         await setDisabled.mutateAsync({ id: u.id, disabled: !u.disabled });
                         invalidate();
                       }
@@ -185,7 +227,9 @@ export function Users() {
               <TableRow key={s.id}>
                 <TableCell className="font-medium">
                   {s.username}
-                  {s.current && <span className="ml-2 text-xs text-muted-foreground">(this session)</span>}
+                  {s.current && (
+                    <span className="ml-2 text-xs text-muted-foreground">(this session)</span>
+                  )}
                 </TableCell>
                 <TableCell className="text-muted-foreground">{ts(s.createdAt)}</TableCell>
                 <TableCell className="text-muted-foreground">{ts(s.lastUsedAt)}</TableCell>
@@ -195,7 +239,13 @@ export function Users() {
                     size="icon"
                     title="Revoke session"
                     onClick={async () => {
-                      if (confirm(s.current ? "Revoke your current session? You'll be logged out." : `Revoke ${s.username}'s session?`)) {
+                      if (
+                        confirm(
+                          s.current
+                            ? "Revoke your current session? You'll be logged out."
+                            : `Revoke ${s.username}'s session?`,
+                        )
+                      ) {
                         await revokeSession.mutateAsync({ id: s.id });
                         invalidate();
                       }

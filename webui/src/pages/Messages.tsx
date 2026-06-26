@@ -1,10 +1,15 @@
-import { useState } from "react";
 import { useQuery } from "@connectrpc/connect-query";
-import { AdminService, MessageStatus, type Message } from "@/gen/porukator/v1/porukator_pb";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
+import { AdminService, type Message, MessageStatus } from "@/gen/porukator/v1/porukator_pb";
 
 const STATUS_LABEL: Record<MessageStatus, string> = {
   [MessageStatus.UNSPECIFIED]: "—",

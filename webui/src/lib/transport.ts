@@ -1,5 +1,5 @@
-import { createConnectTransport } from "@connectrpc/connect-web";
 import type { Interceptor } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
 import { useAuthStore } from "@/stores/auth";
 
 // Attach the session token as a bearer token on every request. The Login RPC is

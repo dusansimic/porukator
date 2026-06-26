@@ -1,18 +1,28 @@
-import { useState } from "react";
-import { useQuery, useMutation } from "@connectrpc/connect-query";
+import { useMutation, useQuery } from "@connectrpc/connect-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { Plus, Trash2, Copy } from "lucide-react";
-import { AdminService, type ApiToken } from "@/gen/porukator/v1/porukator_pb";
-import { useAuthStore, isAdmin } from "@/stores/auth";
+import { Copy, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger,
-} from "@/components/ui/dialog";
+import { AdminService, type ApiToken } from "@/gen/porukator/v1/porukator_pb";
+import { isAdmin, useAuthStore } from "@/stores/auth";
 
 export function ApiTokens() {
   const qc = useQueryClient();
@@ -40,23 +50,39 @@ export function ApiTokens() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">API Tokens</h1>
-          <p className="text-muted-foreground text-sm">Credentials for upstream services that submit messages.</p>
+          <p className="text-muted-foreground text-sm">
+            Credentials for upstream services that submit messages.
+          </p>
         </div>
-        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setSecret(null); }}>
+        <Dialog
+          open={open}
+          onOpenChange={(o) => {
+            setOpen(o);
+            if (!o) setSecret(null);
+          }}
+        >
           <DialogTrigger asChild>
-            <Button><Plus className="h-4 w-4" /> New token</Button>
+            <Button>
+              <Plus className="h-4 w-4" /> New token
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>New API token</DialogTitle>
               <DialogDescription>
-                {secret ? "Copy this token now — it is shown only once." : "Name the consuming service."}
+                {secret
+                  ? "Copy this token now — it is shown only once."
+                  : "Name the consuming service."}
               </DialogDescription>
             </DialogHeader>
             {secret ? (
               <div className="flex gap-2">
                 <Input readOnly value={secret} className="font-mono text-xs" />
-                <Button variant="outline" size="icon" onClick={() => navigator.clipboard.writeText(secret)}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => navigator.clipboard.writeText(secret)}
+                >
                   <Copy className="h-4 w-4" />
                 </Button>
               </div>
@@ -64,9 +90,16 @@ export function ApiTokens() {
               <form onSubmit={onCreate} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="tname">Name</Label>
-                  <Input id="tname" value={newName} autoFocus onChange={(e) => setNewName(e.target.value)} />
+                  <Input
+                    id="tname"
+                    value={newName}
+                    autoFocus
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
                 </div>
-                <Button type="submit" disabled={!newName || create.isPending}>Create</Button>
+                <Button type="submit" disabled={!newName || create.isPending}>
+                  Create
+                </Button>
               </form>
             )}
           </DialogContent>
@@ -94,7 +127,9 @@ export function ApiTokens() {
                 {t.createdAt ? new Date(Number(t.createdAt.seconds) * 1000).toLocaleString() : "—"}
               </TableCell>
               <TableCell className="text-muted-foreground">
-                {t.lastUsedAt ? new Date(Number(t.lastUsedAt.seconds) * 1000).toLocaleString() : "never"}
+                {t.lastUsedAt
+                  ? new Date(Number(t.lastUsedAt.seconds) * 1000).toLocaleString()
+                  : "never"}
               </TableCell>
               <TableCell className="text-right">
                 <Button
@@ -114,7 +149,10 @@ export function ApiTokens() {
           ))}
           {data && data.tokens.length === 0 && (
             <TableRow>
-              <TableCell colSpan={showOwner ? 5 : 4} className="text-center text-muted-foreground py-8">
+              <TableCell
+                colSpan={showOwner ? 5 : 4}
+                className="text-center text-muted-foreground py-8"
+              >
                 No tokens yet.
               </TableCell>
             </TableRow>

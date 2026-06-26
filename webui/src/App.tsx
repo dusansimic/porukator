@@ -1,17 +1,17 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@connectrpc/connect";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Layout } from "@/components/Layout";
 import { AdminService, Role } from "@/gen/porukator/v1/porukator_pb";
 import { transport } from "@/lib/transport";
-import { useAuthStore, isAdmin } from "@/stores/auth";
-import { Layout } from "@/components/Layout";
-import { Login } from "@/pages/Login";
-import { Clients } from "@/pages/Clients";
 import { ApiTokens } from "@/pages/ApiTokens";
+import { Clients } from "@/pages/Clients";
+import { Login } from "@/pages/Login";
 import { Messages } from "@/pages/Messages";
 import { Settings } from "@/pages/Settings";
 import { Users } from "@/pages/Users";
+import { isAdmin, useAuthStore } from "@/stores/auth";
 
 const admin = createClient(AdminService, transport);
 
@@ -64,8 +64,22 @@ export default function App() {
         <Route path="/clients" element={<Clients />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/tokens" element={<ApiTokens />} />
-        <Route path="/settings" element={<AdminRoute><Settings /></AdminRoute>} />
-        <Route path="/users" element={<AdminRoute><Users /></AdminRoute>} />
+        <Route
+          path="/settings"
+          element={
+            <AdminRoute>
+              <Settings />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <AdminRoute>
+              <Users />
+            </AdminRoute>
+          }
+        />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

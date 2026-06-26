@@ -1,20 +1,30 @@
-import { useState } from "react";
-import { useQuery, useMutation } from "@connectrpc/connect-query";
+import { useMutation, useQuery } from "@connectrpc/connect-query";
 import { useQueryClient } from "@tanstack/react-query";
+import { Copy, Pencil, Plus, Trash2 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
-import { Plus, Trash2, Pencil, Copy } from "lucide-react";
-import { AdminService, type Client } from "@/gen/porukator/v1/porukator_pb";
-import { useAuthStore, isAdmin } from "@/stores/auth";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger,
-} from "@/components/ui/dialog";
+import { AdminService, type Client } from "@/gen/porukator/v1/porukator_pb";
+import { isAdmin, useAuthStore } from "@/stores/auth";
 
 // Connection payload encoded in the QR a device scans during setup.
 function qrPayload(host: string, token: string, name: string) {
@@ -30,7 +40,9 @@ export function Clients() {
   const revoke = useMutation(AdminService.method.revokeClient);
 
   const [newName, setNewName] = useState("");
-  const [created, setCreated] = useState<{ name: string; token: string; host: string } | null>(null);
+  const [created, setCreated] = useState<{ name: string; token: string; host: string } | null>(
+    null,
+  );
   const [addOpen, setAddOpen] = useState(false);
 
   const invalidate = () => qc.invalidateQueries();
@@ -48,11 +60,21 @@ export function Clients() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Devices</h1>
-          <p className="text-muted-foreground text-sm">Android phones that send SMS for the gateway.</p>
+          <p className="text-muted-foreground text-sm">
+            Android phones that send SMS for the gateway.
+          </p>
         </div>
-        <Dialog open={addOpen} onOpenChange={(o) => { setAddOpen(o); if (!o) setCreated(null); }}>
+        <Dialog
+          open={addOpen}
+          onOpenChange={(o) => {
+            setAddOpen(o);
+            if (!o) setCreated(null);
+          }}
+        >
           <DialogTrigger asChild>
-            <Button><Plus className="h-4 w-4" /> Add device</Button>
+            <Button>
+              <Plus className="h-4 w-4" /> Add device
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -66,13 +88,20 @@ export function Clients() {
             {created ? (
               <div className="space-y-4">
                 <div className="flex justify-center rounded-lg bg-white p-4">
-                  <QRCodeSVG value={qrPayload(created.host, created.token, created.name)} size={220} />
+                  <QRCodeSVG
+                    value={qrPayload(created.host, created.token, created.name)}
+                    size={220}
+                  />
                 </div>
                 <div className="space-y-1">
                   <Label>Access token</Label>
                   <div className="flex gap-2">
                     <Input readOnly value={created.token} className="font-mono text-xs" />
-                    <Button variant="outline" size="icon" onClick={() => navigator.clipboard.writeText(created.token)}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => navigator.clipboard.writeText(created.token)}
+                    >
                       <Copy className="h-4 w-4" />
                     </Button>
                   </div>
@@ -83,9 +112,16 @@ export function Clients() {
               <form onSubmit={onCreate} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Device name</Label>
-                  <Input id="name" value={newName} autoFocus onChange={(e) => setNewName(e.target.value)} />
+                  <Input
+                    id="name"
+                    value={newName}
+                    autoFocus
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
                 </div>
-                <Button type="submit" disabled={!newName || create.isPending}>Create</Button>
+                <Button type="submit" disabled={!newName || create.isPending}>
+                  Create
+                </Button>
               </form>
             )}
           </DialogContent>
@@ -106,14 +142,20 @@ export function Clients() {
           {(data?.clients ?? []).map((c: Client) => (
             <TableRow key={c.id}>
               <TableCell>
-                {c.online ? <Badge variant="success">online</Badge> : <Badge variant="secondary">offline</Badge>}
+                {c.online ? (
+                  <Badge variant="success">online</Badge>
+                ) : (
+                  <Badge variant="secondary">offline</Badge>
+                )}
               </TableCell>
               <TableCell className="font-medium">{c.name}</TableCell>
               {showOwner && (
                 <TableCell className="text-muted-foreground">{c.ownerUsername || "—"}</TableCell>
               )}
               <TableCell className="text-muted-foreground">
-                {c.lastSeenAt ? new Date(Number(c.lastSeenAt.seconds) * 1000).toLocaleString() : "—"}
+                {c.lastSeenAt
+                  ? new Date(Number(c.lastSeenAt.seconds) * 1000).toLocaleString()
+                  : "—"}
               </TableCell>
               <TableCell className="text-right space-x-1">
                 <Button
@@ -146,7 +188,10 @@ export function Clients() {
           ))}
           {data && data.clients.length === 0 && (
             <TableRow>
-              <TableCell colSpan={showOwner ? 5 : 4} className="text-center text-muted-foreground py-8">
+              <TableCell
+                colSpan={showOwner ? 5 : 4}
+                className="text-center text-muted-foreground py-8"
+              >
                 No devices yet.
               </TableCell>
             </TableRow>
